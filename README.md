@@ -54,7 +54,11 @@ sudo apt install cmake
 En ordenadores macOS hay que tener instalada la herramienta de desarrollo de **XCode**.
 Este herramienta de desarrollo incorpora el compilador de C++ del proyecto LLVM, así como el _framework_ de **OpenGL**.
 
-### Descarga e instalación de GLFW con _homebrew_
+### Instalación de la orden _cmake_
+
+Para la versión con OpenGL 3.3 hará falta la orden _cmake_ para macOS. El programa puede descargarse directamente de la Web del desarrollador ([https://cmake.org/download/](https://cmake.org/download/)). También se puede instalar con  _homebrew_, con `brew install cmake`.
+
+### Descarga e instalación de GLFW
 
 Usando la herramienta **homebrew** para mac, se puede instalar fácilmente la librería **GLFW**. En caso de no tenerlo disponible, es necesario instalar _homebrew_ ([https://brew.sh/](brew.sh)). Una vez disponible, podemos instalar el paquete `glfw` simplemente con:
 
@@ -62,15 +66,10 @@ Usando la herramienta **homebrew** para mac, se puede instalar fácilmente la li
 brew install glfw
 ```
 
-### Instalación de la orden _cmake_
 
-Para la versión con OpenGL 3.3 hará falta la orden _cmake_ para macOS. El programa puede descargarse directamente de la Web del desarrollador ([https://cmake.org/download/](https://cmake.org/download/)). También se puede instalar con  _homebrew_, con `brew install cmake`.
+Si no se quiere usar **homebrew**, se puede descargar y compilar GLFW directamente, como se describe a continuación (es bastante más complicado que usar _homebrew_).
 
-### Descarga e instalación de GLFW sin _homebrew_
-
-Si no se quiere usar **homebrew**, se puede descargar y compilar GLFW directamente.
-
-Una vez que se tiene disponible la orden `cmake`, se puede descargar el archivo _zip_ de GLFW para macOS del sitio web de GLFW ([http://www.glfw.org/download.html](http://www.glfw.org/download.html)), después se abre el archivo en una carpeta nueva vacía, y al abrirlo se crea un subcarpeta de nombre `glfw-...` (los caracteres concretos en el lugar de los puntos suspensivos dependen de la versión, estos fuentes requieren la versión 3). Finalmente se puede compilar la librería de esta forma:
+Una vez disponible la orden `cmake`, se puede descargar el archivo _zip_ de GLFW para macOS del sitio web de GLFW ([http://www.glfw.org/download.html](http://www.glfw.org/download.html)), después se abre el archivo en una carpeta nueva vacía, y al abrirlo se crea un subcarpeta de nombre `glfw-...` (los caracteres concretos en el lugar de los puntos suspensivos dependen de la versión, estos fuentes requieren la versión 3). Finalmente se puede compilar la librería de esta forma:
 
 ```
 cd glfw-....
