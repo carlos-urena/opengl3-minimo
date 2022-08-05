@@ -1,0 +1,76 @@
+// https://code.visualstudio.com/docs/editor/tasks#_custom-tasks
+
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label"   : "Compilar y ejecutar",
+      "type"    : "shell",
+      "command" : "make",
+      "group"   : 
+      {
+        "kind"      : "build",
+        "isDefault" : true
+      },
+      "problemMatcher" : "$gcc",
+      "presentation"   : 
+      {
+        "reveal": "always"
+      }
+    },
+    {
+      "label"   : "Compilar si es necesario",
+      "type"    : "shell",
+      "command" : "make ./main_linux_exe",
+      "group"   : 
+      {
+        "kind"      : "build",
+        "isDefault" : false
+      },
+      "problemMatcher" : "$gcc",
+      "presentation" : 
+      {
+        "reveal" : "always"
+      }
+    },
+    {
+      "label"   : "Limpiar y Compilar",
+      "type"    : "shell",
+      "command" : "make clean ; make ./main_linux_exe",
+      "group"   : 
+      {
+        "kind"      : "build",
+        "isDefault" : false
+      },
+      "problemMatcher" : "$gcc",
+      "presentation" : 
+      {
+        "reveal" : "always"
+      }
+    },
+    {
+      "label"   : "Ejecutar",
+      "type"    : "shell",
+      "command" : "./main_linux_exe",
+      "group"   : 
+      { "kind"      : "test",
+        "isDefault" : true
+      },
+      "presentation": 
+      { "reveal" : "always"
+      }
+    },
+    {
+      "label"   : "Limpiar",
+      "type"    : "shell",
+      "command" : "make clean",
+      "group"   : 
+      { "kind"      : "build",
+        "isDefault" : false
+      },
+      "presentation" : 
+      { "reveal": "always"
+      }
+    }
+  ]    
+}

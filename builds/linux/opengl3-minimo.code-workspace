@@ -1,0 +1,15 @@
+{
+  "folders": 
+  [ { "name": "BUILD (linux)",
+      "path": "."
+    },
+    { "name": "FUENTES",
+      "path": "../../src"
+    }
+  ],
+
+  "settings" : 
+  {
+    "C_Cpp.default.cppStandard": "c++11"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "folders": 
+  [ { "name": "BUILD (macOS)",
+      "path": "."
+    },
+    { "name": "FUENTES",
+      "path": "../../src"
+    }
+  ],
+
+  "settings" : 
+  {
+    "C_Cpp.default.cppStandard": "c++11",
+    "C_Cpp.default.includePath" : [
+                                    "../../src",
+                                    "/usr/local/include",
+                                  ],
+  }
+}
