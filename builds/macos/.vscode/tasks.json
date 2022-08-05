@@ -67,7 +67,7 @@
     {
       "label"   : "Regenerar archivos de compilación",
       "type"    : "shell",
-      "command" : "cd bin-cmake && rm -rf * && cmake ..",
+      "command" : "cd bin-cmake && touch tmp && rm -rf * && cmake ..",
       "group"   : 
       { "kind"      : "build",
         "isDefault" : false
