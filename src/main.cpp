@@ -25,9 +25,11 @@
 #ifdef _WIN32
 //------------------------------------------------
 // Includes y definiciones específicos en Windows
-#include <OpenGL/gl3.h>
+// tener en cuenta esto:
+//   https://www.glfw.org/docs/3.0/build.html#build_include
 #include <GLFW/glfw3.h>
 // ------------------------------------------------
+#else
 // Emitir error por sistema operativo no soportado
 #error "No puedo determinar el sistema operativo, o no esta soportado"
 #endif
