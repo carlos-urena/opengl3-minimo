@@ -4,11 +4,11 @@
 // ver: https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/
 // ...
 
-
-
 #include <cassert>  // para 'assert' (verificación de condiciones lógicas)
 #include <cstring>  // para 'strlen' (al compilar shaders)
 #include <iostream>
+
+#include <tup_mat.h>
 
 #ifdef __linux__
 // -----------------------------------------------
@@ -629,6 +629,8 @@ void InicializaOpenGL()
 
 void BucleEventosGLFW()
 {
+   
+
     while ( ! terminar_programa )
     {   if ( redibujar_ventana )
         {   VisualizarFrame();
@@ -644,6 +646,8 @@ int main( int argc, char *argv[] )
 {
     using namespace std ;
     cout << "Programa mínimo de OpenGL 3.3 o superior" << endl ;
+
+    tup_mat::MAT_Tests() ;
 
     InicializaGLFW( argc, argv ); // Crea una ventana, fija funciones gestoras de eventos
     InicializaOpenGL() ;          // Compila vertex y fragment shaders. Enlaza y activa programa. Inicializa GLEW.
