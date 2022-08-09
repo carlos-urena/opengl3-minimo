@@ -22,9 +22,15 @@
 #include <OpenGL/gl3.h>
 #include <GLFW/glfw3.h>
 #else
+#ifdef _WIN32
+//------------------------------------------------
+// Includes y definiciones específicos en Windows
+#include <OpenGL/gl3.h>
+#include <GLFW/glfw3.h>
 // ------------------------------------------------
 // Emitir error por sistema operativo no soportado
 #error "No puedo determinar el sistema operativo, o no esta soportado"
+#endif
 #endif
 #endif
 
