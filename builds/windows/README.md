@@ -1,0 +1,1 @@
+Aquí estoy trabajando en soporte para Windows, compilando con nmake o cmake sobre Visual Studio, y para editar con VSCode
