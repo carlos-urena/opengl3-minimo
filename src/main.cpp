@@ -27,6 +27,7 @@
 // Includes y definiciones específicos en Windows
 // tener en cuenta esto:
 //   https://www.glfw.org/docs/3.0/build.html#build_include
+//  https://www.glfw.org/docs/3.0.3/build.html
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 // ------------------------------------------------
@@ -468,7 +469,7 @@ void InicializaGLFW( int argc, char * argv[] )
    // (pedimos opengl 330, tipo "core" (sin compatibilidad con versiones anteriores)
    glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
    glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
-   glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE );
+   glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, 1 ); // GLFW_TRUE );
    glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 
     // especificar que función se llamará ante un error de GLFW
@@ -515,6 +516,7 @@ void InicializaGLEW()
 
 void CompilarEnlazarShaders( )
 {
+    glGetError();
     assert( glGetError() == GL_NO_ERROR );
     using namespace std ;
 
@@ -529,7 +531,7 @@ void CompilarEnlazarShaders( )
 
     // crear y compilar el vertex shader
     const GLuint id_vs = glCreateShader( GL_VERTEX_SHADER );
-    glShaderSource( id_vs, 1, &fuente_vs,  &longitud_vs ) ;
+    glShaderSource( id_vs, 1, (const GLchar **) &fuente_vs,  &longitud_vs ) ;
     glCompileShader( id_vs ) ;
 
     // ver errores al compilar el vertex shader, si hay alguno, si hay abortar
@@ -545,7 +547,7 @@ void CompilarEnlazarShaders( )
 
     // crear y compilar el fragment shader
     const GLuint id_fs = glCreateShader( GL_FRAGMENT_SHADER ) ;
-    glShaderSource( id_fs, 1, &fuente_fs, &longitud_fs ) ;
+    glShaderSource( id_fs, 1, (const GLchar **) &fuente_fs, &longitud_fs ) ;
     glCompileShader( id_fs ) ;
 
     // ver errores al compilar el fragment shader, si hay alguno, si hay abortar
