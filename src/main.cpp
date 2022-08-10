@@ -27,6 +27,7 @@
 // Includes y definiciones específicos en Windows
 // tener en cuenta esto:
 //   https://www.glfw.org/docs/3.0/build.html#build_include
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 // ------------------------------------------------
 #else
