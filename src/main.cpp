@@ -8,7 +8,7 @@
 #include <cstring>  // para 'strlen' (al compilar shaders)
 #include <iostream>
 
-#include <tup_mat.h>
+#include <tup_mat.h> // clases Tupla.. y Matriz..
 
 #ifdef __linux__
 // -----------------------------------------------
@@ -371,6 +371,9 @@ void VisualizarFrame( )
 
     // habilitar EPO por Z-buffer (test de profundidad)
     glEnable( GL_DEPTH_TEST );
+
+    // usar el color interpolado para el segundo triángulo
+    glUniform1i( loc_usar_color_plano, GL_FALSE );
 
     // Dibujar un triángulo 
     DibujarTriangulo_NoInd();
