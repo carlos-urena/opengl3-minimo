@@ -10,6 +10,8 @@
 
 #include <tup_mat.h> // clases Tupla.. y Matriz..
 
+using namespace tup_mat ;
+
 #ifdef __linux__
 // -----------------------------------------------
 // Includes y definiciones específicos en Linux
@@ -26,7 +28,7 @@
 //------------------------------------------------
 // Includes y definiciones específicos en Windows
 // tener en cuenta esto:
-//   https://www.glfw.org/docs/3.0/build.html#build_include
+//  https://www.glfw.org/docs/3.0/build.html#build_include
 //  https://www.glfw.org/docs/3.0.3/build.html
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -67,12 +69,7 @@ constexpr void *
     desplazamiento = 0 ;           // 'desplazamiento' siempre es 0 (una única tabla x VBO)
 
 
-constexpr GLfloat mat_ident[] =    // matriz 4x4 identidad (para fijar valor inicial de las matrices)
-    {   1.0, 0.0, 0.0, 0.0,
-        0.0, 1.0, 0.0, 0.0,
-        0.0, 0.0, 1.0, 0.0,
-        0.0, 0.0, 0.0, 1.0,
-    } ;
+
 
 // ---------------------------------------------------------------------------------------------
 // Fuentes para el vertex shader y el fragment shader
@@ -360,11 +357,11 @@ void VisualizarFrame( )
 
     // fija la matriz de transformación de posiciones de los shaders ('u_modelview'),
     // (la hace igual a la matriz identidad)
-    glUniformMatrix4fv( loc_mat_modelview, 1, GL_TRUE, mat_ident );
+    glUniformMatrix4fv( loc_mat_modelview, 1, GL_TRUE, MAT_Ident() );
 
     // fija la matriz de proyeccion 'modelview' de los shaders ('u_proyeccion')
     // (la hace igual a la matriz identidad)
-    glUniformMatrix4fv( loc_mat_proyeccion, 1, GL_TRUE, mat_ident );
+    glUniformMatrix4fv( loc_mat_proyeccion, 1, GL_TRUE, MAT_Ident() );
 
     // limpiar la ventana
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -379,14 +376,8 @@ void VisualizarFrame( )
     DibujarTriangulo_NoInd();
 
     // Cambiar la matriz de transformación de posiciones (matriz 'u_modelview')
-    constexpr float incremento_z = -0.1 ;
-    const GLfloat mat_despl[] =     // matriz 4x4 desplazamiento
-    {   1.0, 0.0, 0.0, 0.4,         // (0,4 en X y en Y, -0.1 en Z (más cerca))
-        0.0, 1.0, 0.0, 0.4,
-        0.0, 0.0, 1.0, incremento_z,
-        0.0, 0.0, 0.0, 1.0,
-    } ;
-    glUniformMatrix4fv( loc_mat_modelview, 1, GL_TRUE, mat_despl );
+    // (se usa una matriz de traslación, a modo de ejemplo)
+    glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, MAT_Traslacion( {0.4,0.1,-0.1}) );
 
     // usa el color plano para el segundo triángulo
     glUniform1i( loc_usar_color_plano, GL_TRUE );

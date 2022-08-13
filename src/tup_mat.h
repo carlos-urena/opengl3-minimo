@@ -262,13 +262,11 @@ void MAT_Tests() ;
 // creación y operadores de matrices: transformaciones de modelado
 
 inline Matriz4f MAT_Ident( ) ;
-inline Matriz4f MAT_Traslacion( const float d[3] ) ;
-inline Matriz4f MAT_Traslacion( const float dx, const float dy , const float dz ) ;
-
+inline Matriz4f MAT_Traslacion( const Tupla3f & d ) ;
 inline Matriz4f MAT_Escalado( const float sx, const float sy, const float sz ) ;
-inline Matriz4f MAT_Rotacion( const float ang_gra, const float ex, const float ey, const float ez ) ;
 inline Matriz4f MAT_Rotacion( const float ang_gra, const Tupla3f & eje ) ;
-inline Matriz4f MAT_Filas( const Tupla3f & fila0, const Tupla3f & fila1, const Tupla3f & fila2 );
+inline Matriz4f MAT_Filas( const Tupla3f & fila0, const Tupla3f & fila1, 
+                           const Tupla3f & fila2 );
 
 // ---------------------------------------------------------------------
 // matrices auxiliares para la transformación de vista
@@ -853,25 +851,25 @@ inline Matriz4f MAT_Filas( const Tupla3f & fila0, const Tupla3f & fila1, const T
 }
 // ---------------------------------------------------------------------
 
-inline Matriz4f MAT_Traslacion( const float vec[3] )
-{
-   Matriz4f res = MAT_Ident();
+// inline Matriz4f MAT_Traslacion( const float vec[3] )
+// {
+//    Matriz4f res = MAT_Ident();
 
-   for( unsigned fil = 0 ; fil < 3 ; fil++ )
-      res(fil,3) = vec[fil] ;
+//    for( unsigned fil = 0 ; fil < 3 ; fil++ )
+//       res(fil,3) = vec[fil] ;
 
-   return res ;
-}
+//    return res ;
+// }
 
 // ---------------------------------------------------------------------
 
-inline Matriz4f MAT_Traslacion( const float dx, const float dy , const float dz )
+inline Matriz4f MAT_Traslacion( const Tupla3f & d )
 {
    Matriz4f res = MAT_Ident();
 
-   res(0,3) = dx ;
-   res(1,3) = dy ;
-   res(2,3) = dz ;
+   res(0,3) = d(0) ;
+   res(1,3) = d(1) ;
+   res(2,3) = d(2) ;
 
    return res ;
 }
@@ -890,9 +888,9 @@ inline Matriz4f MAT_Escalado( const float sx, const float sy, const float sz )
 
 // ---------------------------------------------------------------------
 
-inline Matriz4f MAT_Rotacion( const float ang_gra, const float ex, const float ey , const float ez )
+inline Matriz4f MAT_Rotacion( const float ang_gra, const Tupla3f & eje )
 {
-   const Tupla3f ejen = Tupla3f(ex,ey,ez).normalized() ;
+   const Tupla3f ejen = eje.normalized() ;
 
    const double
       ang_rad = double(ang_gra)*double(2.0)*double(M_PI)/double(360.0) ,
@@ -918,10 +916,10 @@ inline Matriz4f MAT_Rotacion( const float ang_gra, const float ex, const float e
 
 // ---------------------------------------------------------------------
 
-inline Matriz4f MAT_Rotacion( const float ang_gra, const Tupla3f & eje )
-{
-   return MAT_Rotacion( ang_gra, eje(0), eje(1), eje(2) );
-}
+// inline Matriz4f MAT_Rotacion( const float ang_gra, const Tupla3f & eje )
+// {
+//    return MAT_Rotacion( ang_gra, eje(0), eje(1), eje(2) );
+// }
 
 // ---------------------------------------------------------------------
 
@@ -935,7 +933,7 @@ inline Matriz4f MAT_LookAt( const float origen[3], const float centro[3], const 
    eje[Y] = eje[Z].cross( eje[X] );                     // eje Y perpendicular a los otros dos.
 
    Matriz4f
-      trasl = MAT_Traslacion( -origen[X], -origen[Y], -origen[Z] ),
+      trasl = MAT_Traslacion( {-origen[X], -origen[Y], -origen[Z] }),
       rot   = MAT_Ident() ; // matriz de cambio de base mundo --> camara
 
    for( unsigned col = X ; col <= Z ; col++ )
@@ -976,7 +974,9 @@ inline Matriz4f MAT_Frustum( const float l, const float r, const float b, const 
 
 // ---------------------------------------------------------------------
 
-inline Matriz4f MAT_Ortografica( const float l, const float r, const float b, const float t, const float n, const float f )
+inline Matriz4f MAT_Ortografica( const float l, const float r, 
+                                 const float b, const float t, 
+                                 const float n, const float f )
 {
    const float eps = 1e-6 ;
    assert( fabs(r-l) > eps && fabs(t-b) > eps  && fabs(n-f) > eps );
@@ -1070,20 +1070,20 @@ inline Matriz4f MAT_Columnas( const Tupla3f colum[3] )
 
 inline Matriz4f MAT_Viewport( int org_x, int org_y, int ancho, int alto )
 {
-   return MAT_Traslacion( float(org_x), float(org_y), 0.0 )*
+   return MAT_Traslacion( { float(org_x), float(org_y), 0.0 } )*
           MAT_Escalado( float(ancho), float(alto), 1.0 )*
           MAT_Escalado( 0.5, 0.5, 1.0 )*
-          MAT_Traslacion( 1.0, 1.0, 1.0 ) ;
+          MAT_Traslacion( { 1.0, 1.0, 1.0 }) ;
 }
 // ---------------------------------------------------------------------
 // matriz inversa de la matriz del viewport
 
 inline Matriz4f MAT_Viewport_inv( int org_x, int org_y, int ancho, int alto )
 {
-   return MAT_Traslacion( -1.0, -1.0, -1.0 ) *
+   return MAT_Traslacion( { -1.0, -1.0, -1.0 } ) *
           MAT_Escalado( 2.0, 2.0, 1.0 )*
           MAT_Escalado( 1.0/float(ancho), 1.0/float(alto), 1.0 )*
-          MAT_Traslacion( -float(org_x), -float(org_y), 0.0 ) ;
+          MAT_Traslacion( { -float(org_x), -float(org_y), 0.0 } ) ;
 }
 
 // ---------------------------------------------------------------------
@@ -1190,11 +1190,11 @@ inline void MAT_Tests()
 
    // test de la matriz inversa:
    const Matriz4f mat1 = MAT_Escalado( 0.5, 0.9, -1.1 )*
-                        MAT_Rotacion( 34.0, 1.0, 2.0, 3.0 )*MAT_Traslacion( 1.5, -2.2, -1.1 )*MAT_Escalado( -1.5, -2.7, 5.0 )*
-                        MAT_Rotacion( -130.0, -3.2, 2.0, -1.0 )*MAT_Traslacion( -0.8, 1.0, -1.7 )*MAT_Escalado( 0.5, 2.0, -1.5 );
+                        MAT_Rotacion( 34.0, { 1.0, 2.0, 3.0 } )*MAT_Traslacion( { 1.5, -2.2, -1.1 })*MAT_Escalado( -1.5, -2.7, 5.0 )*
+                        MAT_Rotacion( -130.0, { -3.2, 2.0, -1.0 } )*MAT_Traslacion( { -0.8, 1.0, -1.7 } )*MAT_Escalado( 0.5, 2.0, -1.5 );
 
-   const Matriz4f mt = MAT_Traslacion( 1.0, 2.0, 3.0 ),
-                  mr = MAT_Rotacion( -130.0, -3.2, 2.0, -1.0 ),
+   const Matriz4f mt = MAT_Traslacion( { 1.0, 2.0, 3.0 }),
+                  mr = MAT_Rotacion( -130.0, { -3.2, 2.0, -1.0 } ),
                   me = MAT_Escalado( 2.0, -1.0, 0.7 ) ;
 
    MAT_TestInv( me*mat1*mt*mr*me );
