@@ -1,4 +1,11 @@
 {
+    "C_Cpp.default.cppStandard": "c++11",
+    "C_Cpp.default.includePath" : [  ".",
+                                     "/usr/local/include",
+                                  ],
+                                  
     "cmake.configureOnOpen"    : false,
-    "makefile.configureOnOpen" : false
+    "makefile.configureOnOpen" : false,
+    "cmake.configureOnEdit"    : false,
+    "makefile.configureOnEdit" : false
 }

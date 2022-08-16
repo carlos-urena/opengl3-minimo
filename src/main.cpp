@@ -238,7 +238,40 @@ GLenum CrearVBOInd( GLenum tipo_indices, GLint num_indices, const void * indices
    // 5. hecho, devolver el nombre o identificador de VBO
    return nombre_vbo ;
 }
+// ----------------------------------------------------------------------------
+// crea un VAO vacio para una secuencia de vértices, devuelve el nombre del VAO
 
+GLenum CrearVAO(   )
+{
+   assert( glGetError() == GL_NO_ERROR );
+   GLenum nombre_vao = 0 ;
+   glGenVertexArrays( 1, &nombre_vao );
+   glBindVertexArray( nombre_vao );
+   assert( glGetError() == GL_NO_ERROR );
+
+   return nombre_vao ;
+}
+
+// // ----------------------------------------------------------------------------
+// // crea un VAO para una secuencia de vértices, devuelve el nombre del VAO
+// // Se especifican los parámetros descriptores de la tabla de vértices
+
+// GLenum CrearVAO(  GLenum  tipo_datos, GLint num_vals_tupla, 
+//                   GLsizei num_tuplas, const GLvoid * posiciones )
+// {
+//    assert( glGetError() == GL_NO_ERROR );
+//    assert( posiciones != nullptr );
+//    assert( 0 < num_tuplas  );
+//    assert( 2 <= num_vals_tupla && num_vals_tupla <=4 );
+
+//    GLenum nombre_vao = 0 ;
+//    glGenVertexArrays( 1, &nombre_vao );
+//    glBindVertexArray( nombre_vao );
+//    CrearVBOAtrib( ind_atrib_posiciones, tipo_datos, num_vals_tupla, num_tuplas, posiciones );
+//    assert( glGetError() == GL_NO_ERROR );
+
+//    return nombre_vao ;
+// }
 
 // ----------------------------------------------------------------------------
 // crea un VAO para una secuencia de vértices, devuelve el nombre del VAO
@@ -282,8 +315,9 @@ void DibujarTriangulo_NoInd( )
     if ( id_vao_no_ind == 0 )
     {
         // Crear VAO con posiciones, colores e indices
-        id_vao_no_ind = CrearVAO( GL_FLOAT, 2, num_verts, posiciones );
-        CrearVBOAtrib( ind_atrib_colores, GL_FLOAT, 3, num_verts, colores ) ;
+        id_vao_no_ind = CrearVAO( );
+        CrearVBOAtrib( ind_atrib_posiciones, GL_FLOAT, 2, num_verts, posiciones );
+        CrearVBOAtrib( ind_atrib_colores,    GL_FLOAT, 3, num_verts, colores    ) ;
         assert( glGetError() == GL_NO_ERROR );
     }
     else
@@ -323,8 +357,9 @@ void DibujarTriangulo_Ind( )
     if ( id_vao_ind == 0 )
     {
         // Crear VAO con posiciones, colores e indices
-        id_vao_ind = CrearVAO( GL_FLOAT, 2, num_verts, posiciones );
-        CrearVBOAtrib( ind_atrib_colores, GL_FLOAT, 3, num_verts, colores ) ;
+        id_vao_ind = CrearVAO( );
+        CrearVBOAtrib( ind_atrib_posiciones, GL_FLOAT, 2, num_verts, posiciones );
+        CrearVBOAtrib( ind_atrib_colores,    GL_FLOAT, 3, num_verts, colores ) ;
         CrearVBOInd( GL_UNSIGNED_INT, num_inds, indices );
         assert( glGetError() == GL_NO_ERROR );
     }
