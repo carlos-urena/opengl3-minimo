@@ -278,7 +278,7 @@ inline Matriz4f MAT_Columnas      ( const Tupla3f colum[3] );
 // ---------------------------------------------------------------------
 // matrices para la transformacion de vista:
 
-inline Matriz4f MAT_LookAt( const float origen[3], const float centro[3], const float vup[3] );
+inline Matriz4f MAT_LookAt( const Tupla3f & org, const Tupla3f & at, const Tupla3f & vup );
 inline Matriz4f MAT_Vista         ( const Tupla3f eje[3], const Tupla3f& org );
 inline Matriz4f MAT_Vista_inv     ( const Tupla3f eje[3], const Tupla3f& org );
 
@@ -923,17 +923,21 @@ inline Matriz4f MAT_Rotacion( const float ang_gra, const Tupla3f & eje )
 
 // ---------------------------------------------------------------------
 
-inline Matriz4f MAT_LookAt( const float origen[3], const float centro[3], const float vup[3] )
+inline Matriz4f MAT_LookAt( const Tupla3f & org, const Tupla3f & at, const Tupla3f & vup ) 
+                          //( const float origen[3], const float centro[3], const float vup[3] )
 {
-   Tupla3f
-      eje[3] ; // array con los tres vectores de los ejes del S.R. de la cámara
+   const Tupla3f n           = org-at ;
+   const float   n_length_sq = n.lengthSq();
+   assert( 0.0 < n_length_sq );
 
-   eje[Z] = ( Tupla3f(origen) - Tupla3f(centro) ).normalized() ; // eje Z desde el p.a. hacia el obs., normalizado
-   eje[X] = ( Tupla3f(vup).cross( eje[Z] )).normalized(),  // eje Z apunta en la dir. contraria a la camara
-   eje[Y] = eje[Z].cross( eje[X] );                     // eje Y perpendicular a los otros dos.
+   Tupla3f eje[3] ; // array con los tres vectores de los ejes del S.R. de la cámara
+
+   eje[Z] = n/std::sqrt( n_length_sq );           // eje Z desde el p.a. hacia el obs., normalizado
+   eje[X] = ( vup.cross( eje[Z] )).normalized(),  // eje Z apunta en la dir. contraria a la camara
+   eje[Y] = eje[Z].cross( eje[X] );               // eje Y perpendicular a los otros dos.
 
    Matriz4f
-      trasl = MAT_Traslacion( {-origen[X], -origen[Y], -origen[Z] }),
+      trasl = MAT_Traslacion( -org ),
       rot   = MAT_Ident() ; // matriz de cambio de base mundo --> camara
 
    for( unsigned col = X ; col <= Z ; col++ )
