@@ -1,8 +1,5 @@
 // Ejemplo mínimo de código OpenGL, usa OpenGL 3.3 + GLSL 3.3
-//
-// Ver referencia de la API aquí:
-// ver: https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/
-// ...
+
 
 #include <cassert>  // para 'assert' (verificación de condiciones lógicas)
 #include <cstring>  // para 'strlen' (al compilar shaders)

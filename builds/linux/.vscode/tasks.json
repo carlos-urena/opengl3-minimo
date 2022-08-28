@@ -6,22 +6,23 @@
     {
       "label"   : "Compilar y ejecutar",
       "type"    : "shell",
-      "command" : "make",
+      "command" : "cd bin-cmake && make && ./main_linux_exe",
       "group"   : 
       {
         "kind"      : "build",
         "isDefault" : true
       },
       "problemMatcher" : "$gcc",
-      "presentation"   : 
+      "presentation" : 
       {
-        "reveal": "always"
+        "reveal": "always",
+        "panel": "new"
       }
     },
     {
       "label"   : "Compilar si es necesario",
       "type"    : "shell",
-      "command" : "make ./main_linux_exe",
+      "command" : "cd bin-cmake && make",
       "group"   : 
       {
         "kind"      : "build",
@@ -30,13 +31,14 @@
       "problemMatcher" : "$gcc",
       "presentation" : 
       {
-        "reveal" : "always"
+        "reveal" : "always",
+        "panel"  : "new"
       }
     },
     {
-      "label"   : "Limpiar y Compilar",
+      "label"   : "Limpiar y Recompilar",
       "type"    : "shell",
-      "command" : "make clean ; make ./main_linux_exe",
+      "command" : "cd bin-cmake && make clean && make",
       "group"   : 
       {
         "kind"      : "build",
@@ -45,31 +47,34 @@
       "problemMatcher" : "$gcc",
       "presentation" : 
       {
-        "reveal" : "always"
+        "reveal" : "always",
+        "panel"  : "new"
       }
     },
     {
       "label"   : "Ejecutar",
       "type"    : "shell",
-      "command" : "./main_linux_exe",
+      "command" : "cd bin-cmake && ./main_macos_exe",
       "group"   : 
       { "kind"      : "test",
         "isDefault" : true
       },
       "presentation": 
-      { "reveal" : "always"
+      { "reveal" : "always",
+        "panel"  : "new"
       }
     },
     {
-      "label"   : "Limpiar",
+      "label"   : "Regenerar archivos de compilación",
       "type"    : "shell",
-      "command" : "make clean",
+      "command" : "cd bin-cmake && touch tmp && rm -rf * && cmake ..",
       "group"   : 
       { "kind"      : "build",
         "isDefault" : false
       },
       "presentation" : 
-      { "reveal": "always"
+      { "reveal": "always",
+        "panel": "new"
       }
     }
   ]    

@@ -10,6 +10,10 @@
 
   "settings" : 
   {
-    "C_Cpp.default.cppStandard": "c++11"
+    "C_Cpp.default.cppStandard": "c++11",
+    "cmake.configureOnOpen"    : false,
+    "makefile.configureOnOpen" : false,
+    "cmake.configureOnEdit"    : false,
+    "makefile.configureOnEdit" : false
   }
 }
