@@ -420,18 +420,13 @@ void VisualizarFrame( )
     // usar el color interpolado para el segundo triángulo
     glUniform1i( loc_usar_color_plano, GL_FALSE );
 
-    // Dibujar un triángulo 
+    // Dibujar un triángulo, es una secuncia de vértice no indexada.
     DibujarTriangulo_NoInd();
-
-    // Cambiar la matriz de transformación de posiciones (matriz 'u_modelview')
-    // (se usa una matriz de traslación, a modo de ejemplo)
-    //glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, MAT_Traslacion( {0.4,0.1,-0.1}) );
-    
 
     // usa el color plano para el segundo triángulo
     glUniform1i( loc_usar_color_plano, GL_TRUE );
 
-    // dibujar triángulo (desplazado y rotado) en modo inmediato.
+    // dibujar triángulo indexado (rotado y luego desplazado) 
     pushMM();
         compMM( MAT_Traslacion({0.4,0.1,-0.1}));
         compMM( MAT_Rotacion( 23.0, {0.0,0.0,1.0}));

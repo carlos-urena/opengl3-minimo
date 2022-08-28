@@ -12,8 +12,7 @@
   {
     "C_Cpp.default.cppStandard": "c++11",
     "C_Cpp.default.includePath" : [
-                                    "../../src",
-                                    "/usr/local/include",
+                                    "${workspaceFolder}"
                                   ],
                                   
     "cmake.configureOnOpen"    : false,
