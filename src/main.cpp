@@ -288,7 +288,7 @@ void DibujarTriangulo_NoInd( )
     // tablas de posiciones y colores de vértices (posiciones en 2D, con Z=0)
     const GLfloat
         posiciones[ num_verts*2 ] = {  -0.8, -0.8,      +0.8, -0.8,     0.0, 0.8      },
-        colores   [ num_verts*3 ] = {  1.0, 0.0, 0.0,   0.0, 1.0, 0.0,  0.0, 0.0, 1.0 } ;
+        colores   [ num_verts*3 ] = {  1.0, 0.0, 0.0,   0.0, 1.0, 0.0,  0.0, 0.0, 1.0 };
 
     // la primera vez, crear e inicializar el VAO
     if ( nombre_vao_no_ind == 0 )
