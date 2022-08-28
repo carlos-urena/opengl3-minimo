@@ -1,7 +1,7 @@
 {
     "C_Cpp.default.cppStandard": "c++11",
     "C_Cpp.default.includePath" : [  ".",
-                                     "/usr/local/include",
+                                     "/usr/local/include"
                                   ],
                                   
     "cmake.configureOnOpen"    : false,
