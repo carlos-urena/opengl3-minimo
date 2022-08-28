@@ -273,6 +273,15 @@ GLenum CrearVAO(  GLenum  tipo_datos, GLint num_vals_tupla,
 }
 
 
+// ---------------------------------------------------------------------------------------------
+// Hace la matriz modelview igual a la matriz identidad
+
+void resetMM()
+{
+    modelview = MAT_Ident();
+    pila_modelview.clear();
+    glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, modelview );
+}
 
 // ---------------------------------------------------------------------------------------------
 // Guarda una copia de la matriz de modelado actual en la pila
@@ -288,7 +297,6 @@ void compMM( const Matriz4f & m )
 {
     modelview = modelview * m ;
     glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, modelview );
-
 }
 // ---------------------------------------------------------------------------------------------
 // Restaura la ultima copia de modelview guardada y la elimina de la pila
@@ -399,7 +407,7 @@ void VisualizarFrame( )
 
     // fija la matriz de transformación de posiciones de los shaders ('u_modelview'),
     // (la hace igual a la matriz identidad)
-    glUniformMatrix4fv( loc_mat_modelview, 1, GL_TRUE, MAT_Ident() );
+    resetMM();
 
     // fija la matriz de proyeccion 'modelview' de los shaders ('u_proyeccion')
     // (la hace igual a la matriz identidad)
