@@ -7,7 +7,7 @@
 #include <cassert>  // para 'assert' (verificación de condiciones lógicas)
 #include <cstring>  // para 'strlen' (al compilar shaders)
 #include <iostream>
-
+#include <vector>
 #include <tup_mat.h> // clases Tupla.. y Matriz..
 
 using namespace tup_mat ;
@@ -67,6 +67,11 @@ constexpr GLsizei
     long_paso      = 0 ;           // 'long_paso' siempre es 0  (ya que usamos opción SOA, no AOS)
 constexpr void *  
     desplazamiento = 0 ;           // 'desplazamiento' siempre es 0 (una única tabla x VBO)
+
+std::vector<Matriz4f> 
+    pila_modelview ;               // pila de matrices modelview ya guardadas
+Matriz4f 
+    modelview = MAT_Ident() ;      // matriz modelview actual
 
 
 
@@ -273,6 +278,35 @@ GLenum CrearVAO(  GLenum  tipo_datos, GLint num_vals_tupla,
    return nombre_vao ;
 }
 
+
+
+// ---------------------------------------------------------------------------------------------
+// Guarda una copia de la matriz de modelado actual en la pila
+
+void pushMM()
+{
+    pila_modelview.push_back( modelview );
+}
+// ---------------------------------------------------------------------------------------------
+// compone una matriz 'm' con la matriz de modelado actual.
+
+void compMM( const Matriz4f & m )
+{
+    modelview = modelview * m ;
+    glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, modelview );
+
+}
+// ---------------------------------------------------------------------------------------------
+// Restaura la ultima copia de modelview guardada y la elimina de la pila
+
+void popMM()
+{
+    assert( 0 < pila_modelview.size() );
+    modelview = pila_modelview[ pila_modelview.size()-1 ] ;
+    pila_modelview.pop_back();
+    glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, modelview );
+}
+
 // ---------------------------------------------------------------------------------------------
 // función que se encarga de visualizar un triángulo relleno en modo diferido,
 // no indexado, con 'glDrawArrays'
@@ -391,13 +425,18 @@ void VisualizarFrame( )
 
     // Cambiar la matriz de transformación de posiciones (matriz 'u_modelview')
     // (se usa una matriz de traslación, a modo de ejemplo)
-    glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, MAT_Traslacion( {0.4,0.1,-0.1}) );
+    //glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, MAT_Traslacion( {0.4,0.1,-0.1}) );
+    
 
     // usa el color plano para el segundo triángulo
     glUniform1i( loc_usar_color_plano, GL_TRUE );
 
-    // dibujar triángulo (desplazado) en modo inmediato.
-    DibujarTriangulo_Ind();     // indexado
+    // dibujar triángulo (desplazado y rotado) en modo inmediato.
+    pushMM();
+        compMM( MAT_Traslacion({0.4,0.1,-0.1}));
+        compMM( MAT_Rotacion( 23.0, {0.0,0.0,1.0}));
+        DibujarTriangulo_Ind();     // indexado
+    popMM();
 
     // comprobar y limpiar variable interna de error
     assert( glGetError() == GL_NO_ERROR );
@@ -642,11 +681,11 @@ void InicializaOpenGL()
 
 void BucleEventosGLFW()
 {
-   
-
     while ( ! terminar_programa )
-    {   if ( redibujar_ventana )
-        {   VisualizarFrame();
+    {   
+        if ( redibujar_ventana )
+        {   
+            VisualizarFrame();
             redibujar_ventana = false; // (evita que se redibuje continuamente)
         }
         glfwWaitEvents(); // esperar evento y llamar FGE (si hay alguna)
