@@ -73,9 +73,6 @@ std::vector<Matriz4f>
 Matriz4f 
     modelview = MAT_Ident() ;      // matriz modelview actual
 
-
-
-
 // ---------------------------------------------------------------------------------------------
 // Fuentes para el vertex shader y el fragment shader
 
