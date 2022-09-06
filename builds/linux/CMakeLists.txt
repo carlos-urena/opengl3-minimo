@@ -21,8 +21,7 @@ set (CMAKE_CXX_FLAGS        "${CMAKE_CXX_FLAGS}        ${flags_compilador}"  )
 set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${flags_enlazador}"   )
 
 link_directories ( /usr/local/lib )
-find_library ( ogllib OpenGL )
 
 add_executable ( ${ejecutable} ${unidades} ${cabeceras} )
 target_include_directories ( ${ejecutable} PUBLIC ${carpeta_fuentes} "/usr/local/include")
-target_link_libraries( ${ejecutable} glfw GLEW jpeg ${ogllib})
+target_link_libraries( ${ejecutable} glfw jpeg GLEW GL )

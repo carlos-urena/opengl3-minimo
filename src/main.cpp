@@ -507,6 +507,7 @@ void InicializaGLFW( int argc, char * argv[] )
     using namespace std ;
 
     // intentar inicializar, terminar si no se puede
+    glfwSetErrorCallback( ErrorGLFW );
     if ( ! glfwInit() )
     {
         cout << "Imposible inicializar GLFW. Termino." << endl ;
@@ -517,7 +518,7 @@ void InicializaGLFW( int argc, char * argv[] )
    // (pedimos opengl 330, tipo "core" (sin compatibilidad con versiones anteriores)
    glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
    glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 ); 
-   glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, 1 ); // GLFW_TRUE );
+   glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE );
    glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 
     // especificar que función se llamará ante un error de GLFW
@@ -663,18 +664,19 @@ void CompilarEnlazarShaders( )
 void InicializaOpenGL()
 {
     using namespace std ;
-    assert( glGetError() == GL_NO_ERROR );
-
     
-
+    assert( glGetError() == GL_NO_ERROR );
     cout << "1" << endl ;
     const GLubyte * version_str = glGetString(GL_VERSION);
+    assert( glGetError() == GL_NO_ERROR );
     cout << "2, version_str == " << ((unsigned long) version_str) << endl ;
     if ( version_str == nullptr )
     {
         cout << "error, aborto" << endl ;
         exit(1);
     }
+
+    
     
 
     cout  << "Datos de versión e implementación de OpenGL" << endl
@@ -715,6 +717,7 @@ int main( int argc, char *argv[] )
     InicializaGLFW( argc, argv ); // Crea una ventana, fija funciones gestoras de eventos
     InicializaGLEW();             // En linux y windows, fija punteros a funciones de OpenGL version 2.0 o superiores
     InicializaOpenGL() ;          // Compila vertex y fragment shaders. Enlaza y activa programa. Inicializa GLEW.
+
     BucleEventosGLFW() ;          // Esperar eventos y procesarlos hasta que 'terminar_programa == true'
     glfwTerminate();              // Terminar GLFW (cierra la ventana)
 
