@@ -448,6 +448,8 @@ void VisualizarFrame( )
 
 void FGE_CambioTamano( GLFWwindow* ventana, int nuevo_ancho, int nuevo_alto )
 {
+    using namespace std ;
+    cout << "FGE cambio tamaño" << endl ;
     ancho_actual      = nuevo_ancho ;
     alto_actual       = nuevo_alto ;
     redibujar_ventana = true ; // fuerza a redibujar la ventana
@@ -457,6 +459,8 @@ void FGE_CambioTamano( GLFWwindow* ventana, int nuevo_ancho, int nuevo_alto )
 
 void FGE_PulsarLevantarTecla( GLFWwindow* ventana, int key, int scancode, int action, int mods )
 {
+    using namespace std ;
+    cout << "FGE pulsar levantar tecla" << endl ;
     // si se pulsa la tecla 'ESC', acabar el programa
     if ( key == GLFW_KEY_ESCAPE )
         terminar_programa = true ;
@@ -512,7 +516,7 @@ void InicializaGLFW( int argc, char * argv[] )
     // especificar versión de OpenGL y parámetros de compatibilidad que se querrán
    // (pedimos opengl 330, tipo "core" (sin compatibilidad con versiones anteriores)
    glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
-   glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
+   glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 ); 
    glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, 1 ); // GLFW_TRUE );
    glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 
@@ -659,6 +663,19 @@ void CompilarEnlazarShaders( )
 void InicializaOpenGL()
 {
     using namespace std ;
+    assert( glGetError() == GL_NO_ERROR );
+
+    
+
+    cout << "1" << endl ;
+    const GLubyte * version_str = glGetString(GL_VERSION);
+    cout << "2, version_str == " << ((unsigned long) version_str) << endl ;
+    if ( version_str == nullptr )
+    {
+        cout << "error, aborto" << endl ;
+        exit(1);
+    }
+    
 
     cout  << "Datos de versión e implementación de OpenGL" << endl
          << "    implementación de : " << glGetString(GL_VENDOR)  << endl
@@ -666,12 +683,11 @@ void InicializaOpenGL()
          << "    version de OpenGL : " << glGetString(GL_VERSION) << endl
          << "    version de GLSL   : " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl ;
 
-    InicializaGLEW(); // Fijar puntero a funciones de OpenGL versión 2.0 y posteriores
-    CompilarEnlazarShaders();
-    assert( glGetError() == GL_NO_ERROR );
+    
+    CompilarEnlazarShaders();  // Compilar código fuente de los shader, crear objeto programa
     glLineWidth( 1.0 );
-    assert( glGetError() == GL_NO_ERROR );
     glClearColor( 1.0, 1.0, 1.0, 0.0 ); // color para 'glClear' (blanco, 100% opaco)
+
     assert( glGetError() == GL_NO_ERROR );
 }
 // ---------------------------------------------------------------------------------------------
@@ -696,9 +712,8 @@ int main( int argc, char *argv[] )
     using namespace std ;
     cout << "Programa mínimo de OpenGL 3.3 o superior" << endl ;
 
-    tup_mat::MAT_Tests() ;
-
     InicializaGLFW( argc, argv ); // Crea una ventana, fija funciones gestoras de eventos
+    InicializaGLEW();             // En linux y windows, fija punteros a funciones de OpenGL version 2.0 o superiores
     InicializaOpenGL() ;          // Compila vertex y fragment shaders. Enlaza y activa programa. Inicializa GLEW.
     BucleEventosGLFW() ;          // Esperar eventos y procesarlos hasta que 'terminar_programa == true'
     glfwTerminate();              // Terminar GLFW (cierra la ventana)
