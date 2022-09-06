@@ -250,29 +250,6 @@ GLenum CrearVAO(   )
 
    return nombre_vao ;
 }
-
-// ----------------------------------------------------------------------------
-// crea un VAO para una secuencia de vértices, devuelve el nombre del VAO
-// Se especifican los parámetros descriptores de la tabla de vértices
-
-GLenum CrearVAO(  GLenum  tipo_datos, GLint num_vals_tupla, 
-                  GLsizei num_tuplas, const GLvoid * posiciones )
-{
-   assert( glGetError() == GL_NO_ERROR );
-   assert( posiciones != nullptr );
-   assert( 0 < num_tuplas  );
-   assert( 2 <= num_vals_tupla && num_vals_tupla <=4 );
-
-   GLenum nombre_vao = 0 ;
-   glGenVertexArrays( 1, &nombre_vao );
-   glBindVertexArray( nombre_vao );
-   CrearVBOAtrib( ind_atrib_posiciones, tipo_datos, num_vals_tupla, num_tuplas, posiciones );
-   assert( glGetError() == GL_NO_ERROR );
-
-   return nombre_vao ;
-}
-
-
 // ---------------------------------------------------------------------------------------------
 // Hace la matriz modelview igual a la matriz identidad
 
@@ -666,18 +643,6 @@ void InicializaOpenGL()
     using namespace std ;
     
     assert( glGetError() == GL_NO_ERROR );
-    cout << "1" << endl ;
-    const GLubyte * version_str = glGetString(GL_VERSION);
-    assert( glGetError() == GL_NO_ERROR );
-    cout << "2, version_str == " << ((unsigned long) version_str) << endl ;
-    if ( version_str == nullptr )
-    {
-        cout << "error, aborto" << endl ;
-        exit(1);
-    }
-
-    
-    
 
     cout  << "Datos de versión e implementación de OpenGL" << endl
          << "    implementación de : " << glGetString(GL_VENDOR)  << endl
