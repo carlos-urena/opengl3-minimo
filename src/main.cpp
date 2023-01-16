@@ -27,6 +27,7 @@ using namespace tup_mat ;
 // tener en cuenta esto:
 //  https://www.glfw.org/docs/3.0/build.html#build_include
 //  https://www.glfw.org/docs/3.0.3/build.html
+#define GLEW_STATIC   // podría hacerse mejor en CMakeLists específico de windows
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 // ------------------------------------------------
