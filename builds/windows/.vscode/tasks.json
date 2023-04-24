@@ -6,7 +6,7 @@
     {
       "label"   : "Compilar y ejecutar",
       "type"    : "shell",
-      "command" : "nmake",
+      "command" : "cd bin-cmake ; cmake --build .",
       "group"   : 
       {
         "kind"      : "build",

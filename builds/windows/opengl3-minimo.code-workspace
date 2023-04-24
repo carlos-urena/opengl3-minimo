@@ -11,15 +11,11 @@
   "settings" : 
   {
     "C_Cpp.default.cppStandard": "c++14",
-    "C_Cpp.default.includePath" : [
-                                    "../../src",
-                                    "../../../librerias/glfw-3.3.8.bin.WIN64/include",
-                                    "../../../librerias/glew-2.1.0/include"
-                                  ],
-                                  
-    "cmake.configureOnOpen"    : false,
-    "makefile.configureOnOpen" : false,
-    "cmake.configureOnEdit"    : false,
-    "makefile.configureOnEdit" : false
+    "C_Cpp.default.includePath" : 
+    [
+      "~/vcpkg/installed/x64-windows/include",
+      "${workspaceFolder:FUENTES}",
+      "${default}"
+    ]
   }
 }
