@@ -69,13 +69,11 @@ sudo apt install cmake
 
 ## Requisitos en macOS
 
-En ordenadores macOS hay que tener instalada la herramienta de desarrollo de **XCode**.
-Este herramienta de desarrollo incorpora el compilador de C++ del proyecto LLVM, así como el _framework_ de **OpenGL**.
+En ordenadores macOS hay que tener instalada la herramienta de desarrollo de **XCode** ([developer.apple.com/xcode](https://developer.apple.com/xcode/)).
+Este herramienta de desarrollo incorpora el compilador de C++ del proyecto LLVM adaptado por Apple, así como el _framework_ de **OpenGL**.
 
-Además de _XCode_, también podemos usar el instalador de paquetes open source **Homebrew**, para instalarlo se deben seguir las instrucciones que podemos encontrar en su página Web:  
-
-[https://brew.sh/index_es](brew.sh)
-
+Además de _XCode_, también podemos usar el instalador de paquetes open source **Homebrew** ([brew.sh](https://brew.sh/index_es))
+), para instalarlo se deben seguir las instrucciones que podemos encontrar en la página Web.
 
 La librería OpenGL ya viene instalada con _XCode_, así que únicamente hará falta instalar la orden **cmake** y la librería **GLFW**. Ambos paquetes se pueden instalar fácilmente con _homebrew_, usando:  
 
@@ -84,32 +82,38 @@ brew install cmake
 brew install glfw
 ```
 
-
 ## Requisitos en Windows
 
-En Windows hay que instalar **Visual Studio** de Microsoft. Se puede descargar e instalar de aquí:
+En Windows hay que instalar **Visual Studio** ([visualstudio.microsoft.com](https://visualstudio.microsoft.com))
+ de Microsoft, es un entorno de desarrollo y una suite compiladores e intérpretes para varios lenguajes de programación. 
 
-[https://visualstudio.microsoft.com](visualstudio.microsoft.com)
+Este entorno de desarrollo incluye numerosos componentes para sus distintos lenguajes de programación. Para este repositorio únicamente hay que instalar los componentes para desarrollo de aplicaciones de escritorio con C y C++, aquí hay instrucciones específicas para esto:
 
-Este entorno de desarrollo incluye numerosos componentes para varios lenguajes de programación. Para este repositorio únicamente hay que instalar los componentes para desarollo de aplicaciones de escritorio con C y C++, aquí hay instrucciones específicas para esto:
-
-[https://learn.microsoft.com/es-es/cpp/build/vscpp-step-0-installation](https://learn.microsoft.com/es-es/cpp/build/vscpp-step-0-installation)
+[learn.microsoft.com/es-es/cpp/build/vscpp-step-0-installation](https://learn.microsoft.com/es-es/cpp/build/vscpp-step-0-installation)
 
 Este software incluye tanto _cmake_ como _git_.
 
-
-Los archivos de compilación están preparados para compilar en la línea de órdenes usando librerías instaladas con **vcpkg**, que es un instalador (open source) de paquetes con librerías de C/C++ de Microsoft ([https://vcpkg.io](vcpkg.io)).  Para instalar _vcpkg_ debes hacer `cd` a tu carpeta _home_ (es decir, la carpeta `C:\Users\usuario\`) y una vez en ella clonar el repositorio de _vcpkg_ con:
+Los archivos de compilación están preparados para compilar en la línea de órdenes usando librerías instaladas con **vcpkg**, que es un instalador (open source) de paquetes con librerías de C/C++ de Microsoft ([vcpkg.io](https://vcpkg.io)).  Para instalar _vcpkg_ debes hacer `cd` a tu carpeta _home_ (es decir, la carpeta `C:\Users\usuario\`) y una vez en ella clonar el repositorio de _vcpkg_ con:
 
 ```
 git clone https://github.com/Microsoft/vcpkg.git
 ```
 
-Si todo va bien se crea una carpeta de nombre `vcpkg` dentro de tu carpeta _home_. Es posible situar esta carpeta en cualquier otro lugar del sistemade archivos, pero los scripts de compilación y otros archivos de configuración esperan que esté en tu _home_. Por tanto, si la situas en otro sitio, tendrás que adapatar dichos scripts de compilación. Para finalizar la instalación debes hacer `cd` a tu carpeta _home_, y ahí ejecutar:
+Si todo va bien se crea una carpeta de nombre `vcpkg` dentro de tu carpeta _home_. Es posible situar esta carpeta en cualquier otro lugar del sistema de archivos, pero los scripts de compilación y otros archivos de configuración esperan que esté en tu _home_. Por tanto, si la situas en otro sitio, tendrás que adapatar dichos scripts de compilación. Para finalizar la instalación debes hacer `cd` a tu carpeta _home_, y ahí ejecutar:
 
 ```
 .\vcpkg\bootstrap-vcpkg.bat
 ```
 
+En la carpeta `vcpkg` quedará el archivo ejecutable `vcpkg.exe`, que se puede ejecutar directamente desde la línea de órdenes. En windows debemos de instalar las librerías **GLEW** y **GLFW**, se puede hacer `cd` a la carpeta `vcpkg` y ejecutar 
+
+```
+.\vcpkg install libjpeg-turbo --triplet x64-windows
+.\vcpkg install glew  --triplet x64-windows
+.\vcpkg install glfw3 --triplet x64-windows
+```
+
+El _switch_ `--triplet` indica que se instalen las versiones de 64 bits _dinámicas_ de estas librerías. La instalación de GLEW conlleva la instalación de la librería OpenGL.
 
 
 
