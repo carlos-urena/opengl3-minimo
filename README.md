@@ -1,24 +1,41 @@
 # Un ejemplo OpenGL mínimo (usando OpenGL 3.3)
 
-En esta carpeta se encuentra el código fuente mínimo de una programa OpenGL en C++11, suficiente para dibujar un triángulo. Se usa exclusivamente funcionalidad de OpenGL 3.3, y por tanto se requiere esa versión como mínimo.
+En esta carpeta se encuentra el código fuente mínimo de una programa OpenGL en C++11, suficiente para dibujar un triángulo. Se usa exclusivamente funcionalidad de OpenGL 3.3, y por tanto se requiere esa versión como mínimo. Los fuentes se pueden compilar y ejecutar en Windows, Linux o macOS, para ello se deben de instalar los requisitos software que se indican aquí abajo, y después compilar siguiendo estas instrucciones.
 
 ## Compilar, ejecutar y depurar
 
 Este programa se puede compilar y ejecutar en la línea de órdenes o bien usando VS Code.
 
-### Compilar y ejecutar en la línea de órdenes
+### Compilar y ejecutar en la línea de órdenes, en macOS, Linux o Windows
 
-Este programa se puede compilar con `cmake`, para ello es necesario ir a la carpeta `builds/macos` o `build/linux`, según el sistema operativo.
+En Windows hay que usar el terminal llamado __Developer Command Prompt__, es la aplicación de terminal de Windows, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. En Linux y macOS se puede usar un terminal normal.
 
-En esa carpeta debemos asegurarnos de que la carpeta `bin-cmake` está vacía (si no lo estaba ya, borrar todos los archivos ahí, excepto `.gitignore`), entrar en ella y hacer `cmake ..` (una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación). Esto genera diversos archivos en `bin-cmake`.
+Estos fuentes se deben compilar con `cmake`, para ello es necesario ir a la carpeta `builds/macos`, `builds/linux`, o `builds\windows`, según el sistema operativo. 
+En esa carpeta debemos asegurarnos de que la carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`), entrar en ella y hacer 
 
-Para compilar los fuentes, basta con hacer `make` en la carpeta `bin-cmake`. Si va bien se genera el ejecutable `main_macos_exe`, que se ejecuta con `./main_macos_exe` (o bien `main_linux_exe`, en Linux).
+```
+cmake ..
+``` 
 
-Para forzar un recompilado de los fuentes, hacer `make clean && make` en `bin-cmake`.
+Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación. Esto genera diversos archivos y carpetas en `bin-cmake`. Después, para compilar los fuentes, basta con hacer `cd` a la carpeta `bin-cmake` y una vez ahí ejecutar 
 
-### Uso de VS Code
+```
+cmake --build .
+```
 
-Las carpetas `build/linux` y `build/macos` incluyen sendos archivos de extensión `.code-workspace`. Estos archivos se pueden abrir con VS Code de Microsoft, para poder editar, compilar, ejecutar y depurar fácilmente el código.
+o bien, en macOS y Linux, podemos hacer simplemente 
+
+``` 
+make 
+``` 
+
+Si la compilación va bien se genera el ejecutable, que tiene el nombre  `main_linux_exe` en Linux,  `main_macos_exe` en macOS o bien `main_windows.exe` en Windows (este último en la subcarpeta `Debug` dentro de `bin-cmake`).
+Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake` y volver a hacer `cmake ..` en ella.
+
+
+### Uso de VS Code en Linux, macOS y Windows.
+
+Las carpetas `build/linux`, `build/macos` y `build/windows` incluyen archivos de extensión `.code-workspace`. Estos archivos se pueden abrir con VS Code de Microsoft, para poder editar, compilar, ejecutar y depurar fácilmente el código.
 
 ## Requisitos en Linux
 
@@ -49,31 +66,55 @@ Igualmente, se puede usar _apt_ para instalar _cmake_, que se usa en la versión
 sudo apt install cmake
 ```
 
+
 ## Requisitos en macOS
 
 En ordenadores macOS hay que tener instalada la herramienta de desarrollo de **XCode**.
 Este herramienta de desarrollo incorpora el compilador de C++ del proyecto LLVM, así como el _framework_ de **OpenGL**.
 
-### Instalación de la orden _cmake_
+Además de _XCode_, también podemos usar el instalador de paquetes open source **Homebrew**, para instalarlo se deben seguir las instrucciones que podemos encontrar en su página Web:  
 
-Para la versión con OpenGL 3.3 hará falta la orden _cmake_ para macOS. El programa puede descargarse directamente de la Web del desarrollador ([https://cmake.org/download/](https://cmake.org/download/)). También se puede instalar con  _homebrew_, con `brew install cmake`.
+[https://brew.sh/index_es](brew.sh)
 
-### Descarga e instalación de GLFW
 
-Usando la herramienta **homebrew** para mac, se puede instalar fácilmente la librería **GLFW**. En caso de no tenerlo disponible, es necesario instalar _homebrew_ ([https://brew.sh/](brew.sh)). Una vez disponible, podemos instalar el paquete `glfw` simplemente con:
+La librería OpenGL ya viene instalada con _XCode_, así que únicamente hará falta instalar la orden **cmake** y la librería **GLFW**. Ambos paquetes se pueden instalar fácilmente con _homebrew_, usando:  
 
 ```
+brew install cmake
 brew install glfw
 ```
 
 
-Si no se quiere usar **homebrew**, se puede descargar y compilar GLFW directamente, como se describe a continuación (es bastante más complicado que usar _homebrew_).
+## Requisitos en Windows
 
-Una vez disponible la orden `cmake`, se puede descargar el archivo _zip_ de GLFW para macOS del sitio web de GLFW ([http://www.glfw.org/download.html](http://www.glfw.org/download.html)), después se abre el archivo en una carpeta nueva vacía, y al abrirlo se crea un subcarpeta de nombre `glfw-...` (los caracteres concretos en el lugar de los puntos suspensivos dependen de la versión, estos fuentes requieren la versión 3). Finalmente se puede compilar la librería de esta forma:
+En Windows hay que instalar **Visual Studio** de Microsoft. Se puede descargar e instalar de aquí:
+
+[https://visualstudio.microsoft.com](visualstudio.microsoft.com)
+
+Este entorno de desarrollo incluye numerosos componentes para varios lenguajes de programación. Para este repositorio únicamente hay que instalar los componentes para desarollo de aplicaciones de escritorio con C y C++, aquí hay instrucciones específicas para esto:
+
+[https://learn.microsoft.com/es-es/cpp/build/vscpp-step-0-installation](https://learn.microsoft.com/es-es/cpp/build/vscpp-step-0-installation)
+
+Este software incluye tanto _cmake_ como _git_.
+
+
+Los archivos de compilación están preparados para compilar en la línea de órdenes usando librerías instaladas con **vcpkg**, que es un instalador (open source) de paquetes con librerías de C/C++ de Microsoft ([https://vcpkg.io](vcpkg.io)).  Para instalar _vcpkg_ debes hacer `cd` a tu carpeta _home_ (es decir, la carpeta `C:\Users\usuario\`) y una vez en ella clonar el repositorio de _vcpkg_ con:
 
 ```
-cd glfw-....
-cmake -DBUILD_SHARED_LIBS=ON .
-make
-sudo make install
+git clone https://github.com/Microsoft/vcpkg.git
 ```
+
+Si todo va bien se crea una carpeta de nombre `vcpkg` dentro de tu carpeta _home_. Es posible situar esta carpeta en cualquier otro lugar del sistemade archivos, pero los scripts de compilación y otros archivos de configuración esperan que esté en tu _home_. Por tanto, si la situas en otro sitio, tendrás que adapatar dichos scripts de compilación. Para finalizar la instalación debes hacer `cd` a tu carpeta _home_, y ahí ejecutar:
+
+```
+.\vcpkg\bootstrap-vcpkg.bat
+```
+
+
+
+
+
+
+
+
+
