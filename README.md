@@ -76,8 +76,11 @@ Este herramienta de desarrollo incorpora (entre otros) el compilador de C++ del 
 xcode-select --install
 ```
 
-Además de _XCode_, también podemos usar el instalador de paquetes open source **Homebrew** ([brew.sh](https://brew.sh/index_es))
-), para instalarlo se deben seguir las instrucciones que podemos encontrar en la página Web.
+Además de _XCode_, también podemos usar el instalador de paquetes open source **Homebrew** ([brew.sh](https://brew.sh/index_es)), para instalarlo se deben seguir las instrucciones que podemos encontrar en la página Web, aunque en realidad es fácil hacerlo desde la línea de órdenes con:
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
 La librería OpenGL ya viene instalada con _XCode_, así que únicamente hará falta instalar la orden **cmake** y la librería **GLFW**. Ambos paquetes se pueden instalar fácilmente con _homebrew_, usando:  
 
