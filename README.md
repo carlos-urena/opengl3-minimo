@@ -70,7 +70,11 @@ sudo apt install cmake
 ## Requisitos en macOS
 
 En ordenadores macOS hay que tener instalada la herramienta de desarrollo de **XCode** ([developer.apple.com/xcode](https://developer.apple.com/xcode/)).
-Este herramienta de desarrollo incorpora el compilador de C++ del proyecto LLVM adaptado por Apple, así como el _framework_ de **OpenGL**.
+Este herramienta de desarrollo incorpora (entre otros) el compilador de C++ del proyecto LLVM adaptado por Apple, el IDE de desarrollo para Apple, así como el _framework_ de **OpenGL**. Para compilar desde la línea de órdenes, es necesario instalar un componente de XCode llamado _Command line Tools_ (CLT), se puede hacer desde la línea de órdenes con:
+
+```
+xcode-select --install
+```
 
 Además de _XCode_, también podemos usar el instalador de paquetes open source **Homebrew** ([brew.sh](https://brew.sh/index_es))
 ), para instalarlo se deben seguir las instrucciones que podemos encontrar en la página Web.
@@ -108,7 +112,6 @@ Si todo va bien se crea una carpeta de nombre `vcpkg` dentro de tu carpeta _home
 En la carpeta `vcpkg` quedará el archivo ejecutable `vcpkg.exe`, que se puede ejecutar directamente desde la línea de órdenes. En windows debemos de instalar las librerías **GLEW** y **GLFW**, se puede hacer `cd` a la carpeta `vcpkg` y ejecutar 
 
 ```
-.\vcpkg install libjpeg-turbo --triplet x64-windows
 .\vcpkg install glew  --triplet x64-windows
 .\vcpkg install glfw3 --triplet x64-windows
 ```
