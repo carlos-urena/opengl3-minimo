@@ -60,7 +60,7 @@ sudo apt install libglew-dev
 sudo apt install libglfw3-dev
 ```
 
-Igualmente, se puede usar _apt_ para instalar _cmake_, que se usa en la versión de OpenGL 3.3.
+Igualmente, se puede usar _apt_ para instalar _cmake_, que se usa para poder compilar fácilmente el ejemplo, se hace con:
 
 ```
 sudo apt install cmake
