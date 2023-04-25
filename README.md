@@ -70,7 +70,9 @@ sudo apt install cmake
 ## Requisitos en macOS
 
 En ordenadores macOS hay que tener instalada la herramienta de desarrollo de **XCode** ([developer.apple.com/xcode](https://developer.apple.com/xcode/)).
-Este herramienta de desarrollo incorpora (entre otros) el compilador de C++ del proyecto LLVM adaptado por Apple, el IDE de desarrollo para Apple, así como el _framework_ de **OpenGL**. Para compilar desde la línea de órdenes, es necesario instalar un componente de XCode llamado _Command line Tools_ (CLT), se puede hacer desde la línea de órdenes con:
+Este herramienta de desarrollo incorpora (entre otros) el compilador de C++ del proyecto LLVM adaptado por Apple, el IDE de desarrollo para Apple, así como el _framework_ de **OpenGL**. 
+
+Una vez instalado _XCode_ (y si no se ha hecho durante la instalación) es necesario instalar un componente adicional de XCode llamado _Command line Tools_ (CLT), se puede hacer desde la propia línea de órdenes con:
 
 ```
 xcode-select --install
