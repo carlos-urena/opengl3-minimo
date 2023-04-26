@@ -14,11 +14,7 @@
     "C_Cpp.default.includePath" : [
                                     "${default}",
                                     "${workspaceFolder:FUENTES}"
-                                  ],
+                                  ]
                                   
-    "cmake.configureOnOpen"    : false,
-    "makefile.configureOnOpen" : false,
-    "cmake.configureOnEdit"    : false,
-    "makefile.configureOnEdit" : false
   }
 }
