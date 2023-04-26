@@ -1,13 +1,8 @@
 // Ejemplo mínimo de código OpenGL, usa OpenGL 3.3 + GLSL 3.3
 
 
-#include <cassert>  // para 'assert' (verificación de condiciones lógicas)
-#include <cstring>  // para 'strlen' (al compilar shaders)
-#include <iostream>
-#include <vector>
-#include "tup_mat.h" // clases Tupla.. y Matriz..
 
-using namespace tup_mat ;
+
 
 #ifdef __linux__
 // -----------------------------------------------
@@ -37,6 +32,13 @@ using namespace tup_mat ;
 #endif
 #endif
 
+#include <cassert>  // para 'assert' (verificación de condiciones lógicas)
+#include <cstring>  // para 'strlen' (al compilar shaders)
+#include <iostream>
+#include <vector>
+#include "tup_mat.h" // clases Tupla.. y Matriz..
+
+using namespace tup_mat ;
 
 // ---------------------------------------------------------------------------------------------
 // Constantes y variables globales
