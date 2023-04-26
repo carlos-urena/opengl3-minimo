@@ -2,15 +2,15 @@
 ## Ejemplo OpenGL mínimo, versión OpenGL+GLSL 3.3
 ##
 ## Archivo de configuración para compilar usando CMake en macOS
-## creado: 27-Julio de 2022
+## creado: 26-Abril de 2023
 ##
 ## --------------------------------------------------------------------------------
 
 cmake_minimum_required (VERSION 3.5.1)
 project (main_macos_exe)
 
-set ( ejecutable       "main_macos_exe" )
-set ( flags_compilador "-g -std=c++11 -Wall -Wfatal-errors -Wno-deprecated-declarations" ) 
+set ( ejecutable       "${PROJECT_NAME}" )
+set ( flags_compilador "-g -std=c++17 -Wall -Wfatal-errors -Wno-deprecated-declarations" ) 
 set ( flags_enlazador  "")
 set ( carpeta_fuentes  "../../src")
 
@@ -22,6 +22,7 @@ set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${flags_enlazador}"   )
 
 link_directories ( /usr/local/lib )
 find_library ( ogllib OpenGL )
+message( "-- Encontrada librería OpenGL en : ${ogllib}" )
 
 add_executable ( ${ejecutable} ${unidades} ${cabeceras} )
 target_include_directories ( ${ejecutable} PUBLIC ${carpeta_fuentes} "/usr/local/include")

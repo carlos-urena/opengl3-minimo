@@ -10,11 +10,8 @@
 
   "settings" : 
   {
-    "C_Cpp.default.cppStandard": "c++11",
-    "C_Cpp.default.includePath" : [
-                                    "${default}",
-                                    "${workspaceFolder:FUENTES}"
-                                  ]
+    "C_Cpp.default.cppStandard" : "c++17",
+    "C_Cpp.default.includePath" : [ "${workspaceFolder:FUENTES}", "${default}" ]
                                   
   }
 }
