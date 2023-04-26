@@ -5,7 +5,7 @@
 #include <cstring>  // para 'strlen' (al compilar shaders)
 #include <iostream>
 #include <vector>
-#include <tup_mat.h> // clases Tupla.. y Matriz..
+#include "tup_mat.h" // clases Tupla.. y Matriz..
 
 using namespace tup_mat ;
 
