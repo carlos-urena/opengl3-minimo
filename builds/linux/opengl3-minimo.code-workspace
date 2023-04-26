@@ -11,9 +11,18 @@
   "settings" : 
   {
     "C_Cpp.default.cppStandard": "c++11",
-    "cmake.configureOnOpen"    : false,
-    "makefile.configureOnOpen" : false,
-    "cmake.configureOnEdit"    : false,
-    "makefile.configureOnEdit" : false
+
+    // es importante decirle aquí a IntelliSense que use el compilador de GNU, 
+    // fijando la variable "compilerPath" a lo que sea. Si no se hace así y se 
+    // tiene también instalado el compilador clang, entonces vscode se hace un 
+    // lio con los includes, y señala con subrayado errores de includes imposibles 
+    // de quitar 
+    "C_Cpp.default.compilerPath" : "/usr/bin/g++", 
+    
+    "C_Cpp.default.includePath"      : 
+    [ 
+      "${workspaceFolder:FUENTES}", 
+      "${default}"
+    ]
   }
 }
