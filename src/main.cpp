@@ -1,8 +1,4 @@
-// Ejemplo mínimo de código OpenGL, usa OpenGL 3.3 + GLSL 3.3
-
-
-
-
+// Ejemplo mínimo de código OpenGL, usa OpenGL 3.3 + GLSL 3.3 + GLFW
 
 #ifdef __linux__
 // -----------------------------------------------
@@ -76,9 +72,13 @@ Matriz4f
 // Fuentes para el vertex shader y el fragment shader
 
 // Cadena con el código fuente para el vertex shader sencillo, se invoca una vez por cada vértice.
-// su función es escribir en 'gl_Position' las posiciones del vértice
-// además, puede escribir otros atributos del vértice en variables 'out' (tambíen llamadas 'varying')
-// (en este caso escribe el color en 'var_color')
+// Las entradas son: 
+//     * variables 'in' con atributos del vértice ('atrib_posicion' y 'atrib_color')
+//     * variables 'uniform' con valores constantes en cada primitiva
+// Las salidas son:  
+//     * variable 'gl_Position', con la posición (transformada) del vértice. Es obligatorio escribirla. 
+//     * atributos adicionales del vértice (variables 'out')  ('var_color' y 'var_color_plano')
+
 
 const char * const fuente_vs = R"glsl(
     #version 330 core
