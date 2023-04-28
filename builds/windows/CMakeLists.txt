@@ -10,12 +10,13 @@
 cmake_minimum_required (VERSION 3.5.1)
 set( CMAKE_TOOLCHAIN_FILE ~/vcpkg/scripts/buildsystems/vcpkg.cmake)
 project (opengl3_minimo_windows)
+set (ejecutable ${PROJECT_NAME})  ## nombre del ejecutable
+
 
 ## Opciones para el compilador (configurables)
 
-set (ejecutable "opengl3_minimo_windows")  ## nombre del ejecutable
 set (opcs_warnings "/wd4244 /wd4305 /wd4267") ## deshabilitar warnings de conversión implicita double --> float, size_t --> int (este ultimo es dudoso..)
-set (opcs_primer_error "") ##"-Wfatal-errors")  --> no hay nada equivalente a esto en el compilador de microsoft, no se puede parar con el 1er error
+set (opcs_primer_error "") ## "-Wfatal-errors")  --> no hay nada equivalente a esto en el compilador de microsoft, no se puede parar con el 1er error
 
 ## Paths a las distintas carpetas
 set (dir_src   "../../src")
