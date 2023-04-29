@@ -1,7 +1,7 @@
 ## --------------------------------------------------------------------------------
 ## Ejemplo OpenGL mínimo, versión OpenGL+GLSL 3.3
 ##
-## Archivo de configuración para compilar usando CMake en macOS
+## Archivo de configuración para compilar usando CMake en Linux
 ## creado: 26-Abril de 2023
 ##
 ## --------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ file (GLOB unidades  ${carpeta_fuentes}/*.cpp )
 file (GLOB cabeceras ${carpeta_fuentes}/*.h   )
 
 set (CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${flags_compilador}")
-set( OpenGL_GL_PREFERENCE "GLVND" ) ## sirve para seleccionar Nvidia en ordenadores con GPU discreta nvidia e integrada INTEL 
+set( OpenGL_GL_PREFERENCE "GLVND" ) ## usado en 'find_package( OpenGL )',  sirve para seleccionar Nvidia en ordenadores con GPU discreta nvidia e integrada INTEL 
 
 find_package( GLEW REQUIRED )
 find_package( OpenGL REQUIRED )
