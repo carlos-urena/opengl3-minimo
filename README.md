@@ -8,7 +8,7 @@ Este programa se puede compilar y ejecutar en la línea de órdenes o bien usand
 
 ### Compilar y ejecutar en la línea de órdenes, en macOS, Linux o Windows
 
-En Windows hay que usar el terminal llamado __Developer Command Prompt__, es la aplicación de terminal de Windows, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. En Linux y macOS se puede usar un terminal normal.
+En Windows hay que usar el terminal llamado __Developer PowerShell for VS__, es la aplicación de terminal para _PowerShell_ de Microsoft, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. También es posible usar __Developer Command Prompt__, en este caso es un terminal clásico (no _Powershell_). En Linux y macOS se puede usar un terminal normal.
 
 Estos fuentes se deben compilar con `cmake`, para ello es necesario ir a la carpeta `builds/macos`, `builds/linux`, o `builds\windows`, según el sistema operativo. 
 En esa carpeta debemos asegurarnos de que la carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`), entrar en ella y hacer 
@@ -23,11 +23,8 @@ Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quie
 cmake --build .
 ```
 
-o bien, en macOS y Linux, podemos hacer simplemente 
+o bien, en macOS y Linux, podemos usar simplemente `make` en lugar de `cmake --build`.
 
-``` 
-make 
-``` 
 
 Si la compilación va bien se genera el ejecutable, que tiene el nombre  `main_linux_exe` en Linux,  `main_macos_exe` en macOS o bien `main_windows.exe` en Windows (este último en la subcarpeta `Debug` dentro de `bin-cmake`).
 Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake` y volver a hacer `cmake ..` en ella.
