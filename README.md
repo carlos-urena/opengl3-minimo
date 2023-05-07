@@ -23,7 +23,7 @@ Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quie
 cmake --build .
 ```
 
-o bien, en macOS y Linux, podemos usar simplemente `make` en lugar de `cmake --build`.
+o bien, en macOS y Linux, podemos usar simplemente `make` en lugar de `cmake --build .`.
 
 Si la compilación va bien se genera el ejecutable, que tiene el nombre  `main_linux_exe` en Linux,  `main_macos_exe` en macOS o bien `main_windows.exe` en Windows (este último en la subcarpeta `Debug` dentro de `bin-cmake`).
 Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake` y volver a hacer `cmake ..` en ella.
