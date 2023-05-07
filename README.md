@@ -8,16 +8,16 @@ Este programa se puede compilar y ejecutar en la línea de órdenes o bien usand
 
 ### Compilar y ejecutar en la línea de órdenes, en macOS, Linux o Windows
 
-En Windows hay que usar el terminal llamado __Developer PowerShell for VS__, es la aplicación de terminal para _PowerShell_ de Microsoft, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. También es posible usar __Developer Command Prompt__, en este caso es un terminal clásico (no _Powershell_). En Linux y macOS se puede usar un terminal normal.
+En Windows hay que usar el terminal llamado __Developer PowerShell for VS__, es la aplicación de terminal para _PowerShell_ de Microsoft, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. En Linux y macOS se puede usar un terminal normal.
 
 Estos fuentes se deben compilar con `cmake`, para ello es necesario ir a la carpeta `builds/macos`, `builds/linux`, o `builds\windows`, según el sistema operativo. 
-En esa carpeta debemos asegurarnos de que la carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`), entrar en ella y hacer 
+En esa carpeta debemos asegurarnos de que la sub-carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`).  Para generar los archivos de compilación, hay que hacer `cd` a `bin-cmake` y ahí escribir: 
 
 ```
 cmake ..
 ``` 
 
-Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación. Esto genera diversos archivos y carpetas en `bin-cmake`. Después, para compilar los fuentes, basta con hacer `cd` a la carpeta `bin-cmake` y una vez ahí ejecutar 
+Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación. Esto genera diversos archivos y carpetas en `bin-cmake`. Después, para compilar los fuentes, hay que ejecutar (en esa misma carpeta):
 
 ```
 cmake --build .
@@ -25,10 +25,15 @@ cmake --build .
 
 o bien, en macOS y Linux, podemos usar simplemente `make` en lugar de `cmake --build`.
 
-
 Si la compilación va bien se genera el ejecutable, que tiene el nombre  `main_linux_exe` en Linux,  `main_macos_exe` en macOS o bien `main_windows.exe` en Windows (este último en la subcarpeta `Debug` dentro de `bin-cmake`).
 Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake` y volver a hacer `cmake ..` en ella.
 
+En windows, las sentencias `cout` o `printf` de C/C++ que contengan acentos o la eñe producen caracteres extraños en el terminal, ya que el terminal no asume por defecto que las cadenas que se imprimen están codificadas en UTF-8, mientras que los programaas fuentes de este repositorio sí están codificadas en ese formato (deben estarlo así). Para solucionar este problema, hay que ejecutar una vez esta orden en el terminal Powershell:
+
+```
+$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+```
+(probado en Mayo de 2023).
 
 ### Uso de VS Code en Linux, macOS y Windows.
 
