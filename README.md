@@ -41,7 +41,7 @@ Las carpetas `build/linux`, `build/macos` y `build/windows` incluyen archivos de
 
 ## Requisitos en Linux
 
-En linux es necesario tener instalado el compilador de C++ de GNU o del proyecto LLVM, esto permite invocar la orden `g++` y la orden `make`. Si no se tiene disponible, el compilador de GNU puede instalarse con
+En linux es necesario tener instalado el compilador de C++ de GNU o del proyecto LLVM, esto permite invocar la orden `g++` y la orden `make`. Si no se tienen disponibles, estas herramientas se pueden instalar con la orden:
 
 ```
 sudo apt install build-essential
@@ -54,19 +54,20 @@ sudo apt install clang
 sudo apt install make
 ```
 
+Se debe usar _apt_ para instalar _cmake_, que se usa para poder compilar fácilmente el ejemplo, se hace con:
 
-Además se deben instalar los paquetes _libglew-dev_ y _glfw3-dev_, se puede hacer con:
+```
+sudo apt install cmake
+```
+
+Finalmente se deben instalar los paquetes _libglew-dev_ y _glfw3-dev_ (tienen las librerías que se usan en estos fuentes), se puede hacer con:
 
 ```
 sudo apt install libglew-dev
 sudo apt install libglfw3-dev
 ```
 
-Igualmente, se puede usar _apt_ para instalar _cmake_, que se usa para poder compilar fácilmente el ejemplo, se hace con:
 
-```
-sudo apt install cmake
-```
 
 
 ## Requisitos en macOS
