@@ -25,8 +25,15 @@ cmake --build .
 
 o bien, en macOS y Linux, podemos usar simplemente `make` en lugar de `cmake --build .`.
 
-Si la compilación va bien se genera el ejecutable, que tiene el nombre  `main_linux_exe` en Linux,  `main_macos_exe` en macOS o bien `main_windows.exe` en Windows (este último en la subcarpeta `Debug` dentro de `bin-cmake`).
+Si la compilación va bien se genera el ejecutable, que tiene el nombre  `opengl3_minimo_linux_exe` en Linux,  `opengl3_minimo_macos_exe` en macOS o bien `opngl3_minimo_windows.exe` en Windows (este último en la subcarpeta `Debug` dentro de `bin-cmake`).
 Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake` y volver a hacer `cmake ..` en ella.
+
+En windows, por defecto, se genera una versión _debug_ del ejecutable, si se quiere generar una versión _release_, el paso de compilación debe ser de esta forma:
+
+```
+cmake --build . --config Release
+```
+en este caso, el ejecutable quedará en la subcarpeta `Release` dentro de `bin-cmake`.
 
 En windows, las sentencias `cout` o `printf` de C/C++ que contengan acentos o la eñe producen caracteres extraños en el terminal, ya que el terminal no asume por defecto que las cadenas que se imprimen están codificadas en UTF-8, mientras que los programaas fuentes de este repositorio sí están codificadas en ese formato (deben estarlo así). Para solucionar este problema, hay que ejecutar una vez esta orden en el terminal Powershell:
 
