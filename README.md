@@ -2,50 +2,6 @@
 
 En esta carpeta se encuentra el código fuente mínimo de una programa OpenGL en C++11, suficiente para dibujar un triángulo. Se usa exclusivamente funcionalidad de OpenGL 3.3, y por tanto se requiere esa versión como mínimo. Los fuentes se pueden compilar y ejecutar en Windows, Linux o macOS, para ello se deben de instalar los requisitos software que se indican aquí abajo, y después compilar siguiendo estas instrucciones.
 
-## Compilar, ejecutar y depurar
-
-Este programa se puede compilar y ejecutar en la línea de órdenes o bien usando VS Code.
-
-### Compilar y ejecutar en la línea de órdenes, en macOS, Linux o Windows
-
-En Windows hay que usar el terminal llamado __Developer PowerShell for VS__, es la aplicación de terminal para _PowerShell_ de Microsoft, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. En Linux y macOS se puede usar un terminal normal.
-
-Estos fuentes se deben compilar con `cmake`, para ello es necesario ir a la carpeta `builds/macos`, `builds/linux`, o `builds\windows`, según el sistema operativo. 
-En esa carpeta debemos asegurarnos de que la sub-carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`).  Para generar los archivos de compilación, hay que hacer `cd` a `bin-cmake` y ahí escribir: 
-
-```
-cmake ..
-``` 
-
-Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación. Esto genera diversos archivos y carpetas en `bin-cmake`. Después, para compilar los fuentes, hay que ejecutar (en esa misma carpeta):
-
-```
-cmake --build .
-```
-
-o bien, en macOS y Linux, podemos usar simplemente `make` en lugar de `cmake --build .`.
-
-Si la compilación va bien se genera el ejecutable, que tiene el nombre  `opengl3_minimo_linux_exe` en Linux,  `opengl3_minimo_macos_exe` en macOS o bien `opngl3_minimo_windows.exe` en Windows (este último en la subcarpeta `Debug` dentro de `bin-cmake`).
-Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake` y volver a hacer `cmake ..` en ella.
-
-En windows, por defecto, se genera una versión _debug_ del ejecutable, si se quiere generar una versión _release_, el paso de compilación debe ser de esta forma:
-
-```
-cmake --build . --config Release
-```
-en este caso, el ejecutable quedará en la subcarpeta `Release` dentro de `bin-cmake`.
-
-En windows, las sentencias `cout` o `printf` de C/C++ que contengan acentos o la eñe producen caracteres extraños en el terminal, ya que el terminal no asume por defecto que las cadenas que se imprimen están codificadas en UTF-8, mientras que los programaas fuentes de este repositorio sí están codificadas en ese formato (deben estarlo así). Para solucionar este problema, hay que ejecutar una vez esta orden en el terminal Powershell:
-
-```
-$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
-```
-(probado en Mayo de 2023).
-
-### Uso de VS Code en Linux, macOS y Windows.
-
-Las carpetas `build/linux`, `build/macos` y `build/windows` incluyen archivos de extensión `.code-workspace`. Estos archivos se pueden abrir con VS Code de Microsoft, para poder editar, compilar, ejecutar y depurar fácilmente el código.
-
 ## Requisitos en Linux
 
 En linux es necesario tener instalado el compilador de C++ de GNU o del proyecto LLVM, esto permite invocar la orden `g++` y la orden `make`. Si no se tienen disponibles, estas herramientas se pueden instalar con la orden:
@@ -73,9 +29,6 @@ Finalmente se deben instalar los paquetes _libglew-dev_ y _glfw3-dev_ (tienen la
 sudo apt install libglew-dev
 sudo apt install libglfw3-dev
 ```
-
-
-
 
 ## Requisitos en macOS
 
@@ -134,9 +87,51 @@ En la carpeta `vcpkg` quedará el archivo ejecutable `vcpkg.exe`, que se puede e
 El _switch_ `--triplet` indica que se instalen las versiones de 64 bits _dinámicas_ de estas librerías. La instalación de GLEW conlleva la instalación de la librería OpenGL.
 
 
+## Compilar, ejecutar y depurar
 
+Este programa se puede compilar y ejecutar en la línea de órdenes o bien usando VS Code.
 
+### Compilar y ejecutar en la línea de órdenes, en macOS, Linux o Windows
 
+En Windows hay que usar el terminal llamado __Developer PowerShell for VS__, es la aplicación de terminal para _PowerShell_ de Microsoft, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. En Linux y macOS se puede usar un terminal normal.
 
+Estos fuentes se deben compilar con `cmake`, para ello es necesario ir a la carpeta `builds/macos`, `builds/linux`, o `builds\windows`, según el sistema operativo. 
+En esa carpeta debemos asegurarnos de que la sub-carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`).  Para generar los archivos de compilación, hay que hacer `cd` a `bin-cmake` y ahí escribir: 
 
+```
+cmake ..
+``` 
+
+Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación. Esto genera diversos archivos y carpetas en `bin-cmake`. Después, para compilar los fuentes, hay que ejecutar (en esa misma carpeta):
+
+```
+cmake --build .
+```
+
+o bien, en macOS y Linux, podemos usar simplemente `make` en lugar de `cmake --build .`.
+
+Si la compilación va bien se genera el ejecutable, que tiene el nombre  `opengl3_minimo_linux_exe` en Linux,  `opengl3_minimo_macos_exe` en macOS o bien `opngl3_minimo_windows.exe`. En Linux y macOs, este archivo está en la carpeta `bin-cmake`. En  Windows está en la subcarpeta `Debug` dentro de `bin-cmake`, dicha carpeta también incluye archivos `.dll`.
+
+Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake` y volver a hacer `cmake ..` en ella.
+
+En Windows se genera por defecto una versión _Debug_ del ejecutable, si se quiere generar una versión _Release_, el paso de compilación debe ser de esta forma:
+
+```
+cmake --build . --config Release
+```
+en este caso, el ejecutable (y sus DLLs) quedará en la subcarpeta `Release` dentro de `bin-cmake`.
+
+En windows, las sentencias `cout` o `printf` de C/C++ que contengan acentos o la eñe producen caracteres extraños en el terminal, ya que el terminal no asume por defecto que las cadenas que se imprimen están codificadas en UTF-8, mientras que los programaas fuentes de este repositorio sí están codificadas en ese formato (deben estarlo así). Para solucionar este problema, hay que ejecutar una vez esta orden en el terminal Powershell (incluyendo el carácter `$` inicial):
+
+```
+$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+```
+
+Si no se quiere teclear esto en cada inicio de sesión, se puede añadir esa línea al archivo de script (tipo `.ps1`) que se ejecuta cada vez que se abre _Powershell_, el nombre comleto de dicho archivo está en la variable de entorno `$profile` de _Powershell_.
+
+(Nota: todo esto se ha probado probado en Mayo-Junio de 2023 en Windows 11).
+
+### Uso de VS Code en Linux, macOS y Windows.
+
+Las carpetas `build/linux`, `build/macos` y `build/windows` incluyen archivos de extensión `.code-workspace`. Estos archivos se pueden abrir con VS Code de Microsoft, para poder editar, compilar, ejecutar y depurar fácilmente el código.
 
