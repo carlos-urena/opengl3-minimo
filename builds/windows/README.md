@@ -1,1 +1,1 @@
-Aquí estoy trabajando en soporte para Windows, compilando con nmake o cmake sobre Visual Studio, y para editar con VSCode
+Archivos de configuración específicos de Windows, útiles para editar los fuentes con VS Code y para compilar en la línea de órdenes.
