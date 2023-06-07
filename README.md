@@ -91,12 +91,11 @@ El _switch_ `--triplet` indica que se instalen las versiones de 64 bits _dinámi
 
 Este programa se puede compilar y ejecutar en la línea de órdenes o bien usando VS Code.
 
-### Compilar y ejecutar en la línea de órdenes, en macOS, Linux o Windows
+### Compilar y ejecutar en la línea de órdenes, en macOS o Linux
 
-En Windows hay que usar el terminal llamado __Developer PowerShell for VS__, es la aplicación de terminal para _PowerShell_ de Microsoft, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. En Linux y macOS se puede usar un terminal normal.
+En estos sistemas operativos podemos compilar en la línea de órdenes usando un terminal normal.
 
-Estos fuentes se deben compilar con `cmake`, para ello es necesario ir a la carpeta `builds/macos`, `builds/linux`, o `builds\windows`, según el sistema operativo. 
-En esa carpeta debemos asegurarnos de que la sub-carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`).  Para generar los archivos de compilación, hay que hacer `cd` a `bin-cmake` y ahí escribir: 
+Para la generación de los archivos de compilación y la compilación en sí se usa `cmake`, para ello es necesario ir a la carpeta `builds/macos` o `builds/linux`, según el sistema operativo. En esa carpeta debemos asegurarnos de que la sub-carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`).  Para generar los archivos de compilación, hay que hacer entrar a la carpeta `bin-cmake` y ahí escribir: 
 
 ```
 cmake ..
@@ -108,18 +107,42 @@ Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quie
 cmake --build .
 ```
 
-o bien, en macOS y Linux, podemos usar simplemente `make` en lugar de `cmake --build .`.
+o bien, podemos usar simplemente `make` en lugar de `cmake --build .`.
 
-Si la compilación va bien se genera el ejecutable, que tiene el nombre  `opengl3_minimo_linux_exe` en Linux,  `opengl3_minimo_macos_exe` en macOS o bien `opngl3_minimo_windows.exe`. En Linux y macOs, este archivo está en la carpeta `bin-cmake`. En  Windows está en la subcarpeta `Debug` dentro de `bin-cmake`, dicha carpeta también incluye archivos `.dll`.
+Si la compilación va bien se genera el ejecutable, que tiene el nombre  `opengl3_minimo_linux_exe` en Linux o  `opengl3_minimo_macos_exe` en macOS. Este archivo está en la carpeta `bin-cmake`. 
 
-Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake` y volver a hacer `cmake ..` en ella.
+Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake` y volver a hacer `cmake ..` en ella. Es necesario hacerlo si se añaden o quitan unidades de compilación o cabeceras de las carpetas con los fuentes.
+
+
+### Compilar y ejecutar en la línea de órdenes en Windows
+
+En Windows se debe que usar el terminal llamado __Developer PowerShell for VS__, es la aplicación de terminal para _PowerShell_ de Microsoft, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. 
+
+Estos fuentes se deben compilar con `cmake`, para ello es necesario ir a la carpeta `builds\windows`. 
+En esa carpeta debemos asegurarnos de que la sub-carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`).  Para generar los archivos de compilación, dentro de `bin-cmake` vacío escribimos: 
+
+```
+cmake ..
+``` 
+
+Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación. Esto genera diversos archivos y carpetas en `bin-cmake`. 
+
+Una vez generados los archivos de compilación, cada vez que queramos recompilar los fuentes hay que ejecutar, en `bin-cmake`, esta orden:
+
+```
+cmake --build .
+```
+
+Si la compilación va bien se genera el ejecutable, que tiene el nombre `opengl3_minimo_windows.exe` y está situado en la sub-carpeta `Debug` dentro de `bin-cmake`, dicha carpeta también incluye archivos `.dll` (librerías dináimicas de Windows) y un archivo `.pdb` para depuración.
+
+Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake`, repetir `cmake ..` en ella y finalmente compilar con `cmake --build .`
 
 En Windows se genera por defecto una versión _Debug_ del ejecutable, si se quiere generar una versión _Release_, el paso de compilación debe ser de esta forma:
 
 ```
 cmake --build . --config Release
 ```
-en este caso, el ejecutable (y sus DLLs) quedará en la subcarpeta `Release` dentro de `bin-cmake`.
+en este caso, el ejecutable (y sus archivos `.dll`) quedará en la subcarpeta `Release` dentro de `bin-cmake` (no se genera el `.pdb`).
 
 En windows, las sentencias `cout` o `printf` de C/C++ que contengan acentos o la eñe producen caracteres extraños en el terminal, ya que el terminal no asume por defecto que las cadenas que se imprimen están codificadas en UTF-8, mientras que los programaas fuentes de este repositorio sí están codificadas en ese formato (deben estarlo así). Para solucionar este problema, hay que ejecutar una vez esta orden en el terminal Powershell (incluyendo el carácter `$` inicial):
 
