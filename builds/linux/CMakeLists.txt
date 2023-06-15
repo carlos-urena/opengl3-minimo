@@ -8,9 +8,8 @@
 
 cmake_minimum_required (VERSION 3.5.1)
 project (main_linux_exe)
-set ( ejecutable "${PROJECT_NAME}" )
-set ( carpeta_fuentes  "../../src")
 
+set ( carpeta_fuentes  "../../src")
 set ( flags_compilador "-g -std=c++11 -Wall -Wfatal-errors -Wno-deprecated-declarations" ) 
 
 file (GLOB unidades  ${carpeta_fuentes}/*.cpp )
@@ -23,5 +22,6 @@ find_package( GLEW REQUIRED )
 find_package( OpenGL REQUIRED )
 find_package( glfw3 3.3 REQUIRED )
 
-add_executable ( ${ejecutable} ${unidades} ${cabeceras} )
-target_link_libraries( ${ejecutable} glfw GLEW OpenGL::GL)
+add_executable ( ${PROJECT_NAME} ${unidades} ${cabeceras} )
+set_target_properties( ${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "../bin" )
+target_link_libraries( ${PROJECT_NAME} glfw GLEW OpenGL::GL)

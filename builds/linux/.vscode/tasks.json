@@ -6,7 +6,7 @@
     {
       "label"   : "Compilar y ejecutar",
       "type"    : "shell",
-      "command" : "cd bin-cmake && make && ./main_linux_exe",
+      "command" : "cd cmake && make && ../bin/main_linux_exe",
       "group"   : 
       {
         "kind"      : "build",
@@ -22,7 +22,7 @@
     {
       "label"   : "Compilar si es necesario",
       "type"    : "shell",
-      "command" : "cd bin-cmake && make",
+      "command" : "cd cmake && make",
       "group"   : 
       {
         "kind"      : "build",
@@ -36,9 +36,9 @@
       }
     },
     {
-      "label"   : "Limpiar y Recompilar",
+      "label"   : "Compilar",
       "type"    : "shell",
-      "command" : "cd bin-cmake && make clean && make",
+      "command" : "cd cmake && make clean && make",
       "group"   : 
       {
         "kind"      : "build",
@@ -54,7 +54,7 @@
     {
       "label"   : "Ejecutar",
       "type"    : "shell",
-      "command" : "cd bin-cmake && ./main_macos_exe",
+      "command" : "bin/main_linux_exe",
       "group"   : 
       { "kind"      : "test",
         "isDefault" : true
@@ -67,7 +67,7 @@
     {
       "label"   : "Regenerar archivos de compilación",
       "type"    : "shell",
-      "command" : "cd bin-cmake && touch tmp && rm -rf * && cmake ..",
+      "command" : "cd cmake && rm -rf * && cmake ..",
       "group"   : 
       { "kind"      : "build",
         "isDefault" : false
