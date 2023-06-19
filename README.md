@@ -1,8 +1,23 @@
+
+
+
 # Un ejemplo OpenGL mínimo (usando OpenGL 3.3)
 
-En esta carpeta se encuentra el código fuente mínimo de una programa OpenGL en C++11, suficiente para dibujar un triángulo. Se usa exclusivamente funcionalidad de OpenGL 3.3, y por tanto se requiere esa versión como mínimo. Los fuentes se pueden compilar y ejecutar en Windows, Linux o macOS, para ello se deben de instalar los requisitos software que se indican aquí abajo, y después compilar siguiendo estas instrucciones.
+En esta carpeta se encuentra el código fuente mínimo de una programa OpenGL en C++, suficiente para dibujar un triángulo. Se usa exclusivamente funcionalidad de OpenGL 3.3, y por tanto se requiere esa versión como mínimo. Los fuentes se pueden compilar y ejecutar Linux, MacOS o Windows.
 
-## Requisitos en Linux
+
+1. [Requisitos](#Requisitos)
+    * 1.1 [Linux](#ReqLinux)
+    * 1.2 [MacOS](#ReqMacOS)
+    * 1.3 [Windows](#ReqWindows)
+2. [Compilar y ejecutar](#CompilarEjecutar)
+    * 1.1 [Linux y Mac OS](#CompLinuxMacOS)
+    * 1.2 [Windows](#CompWindows)
+3. [Uso de _VS Code_](#vscode) 
+
+##  1. <a name='Requisitos'>Requisitos</a>
+
+###  1.1 <a name='ReqLinux'>Linux</a>
 
 En linux es necesario tener instalado el compilador de C++ de GNU o del proyecto LLVM, esto permite invocar la orden `g++` y la orden `make`. Si no se tienen disponibles, estas herramientas se pueden instalar con la orden:
 
@@ -30,7 +45,7 @@ sudo apt install libglew-dev
 sudo apt install libglfw3-dev
 ```
 
-## Requisitos en macOS
+##  1.2. <a name='ReqMacOS'>MacOS</a>
 
 En ordenadores macOS hay que tener instalada la herramienta de desarrollo de **XCode** ([developer.apple.com/xcode](https://developer.apple.com/xcode/)).
 Este herramienta de desarrollo incorpora (entre otros) el compilador de C++ del proyecto LLVM adaptado por Apple, el IDE de desarrollo para Apple, así como el _framework_ de **OpenGL**. 
@@ -54,7 +69,7 @@ brew install cmake
 brew install glfw
 ```
 
-## Requisitos en Windows
+##  1.3. <a name='ReqWindows'>Windows</a>
 
 En Windows hay que instalar **Visual Studio** ([visualstudio.microsoft.com](https://visualstudio.microsoft.com))
  de Microsoft, es un entorno de desarrollo y una suite compiladores e intérpretes para varios lenguajes de programación. 
@@ -87,34 +102,34 @@ En la carpeta `vcpkg` quedará el archivo ejecutable `vcpkg.exe`, que se puede e
 El _switch_ `--triplet` indica que se instalen las versiones de 64 bits _dinámicas_ de estas librerías. La instalación de GLEW conlleva la instalación de la librería OpenGL.
 
 
-## Compilar, ejecutar y depurar
+##  2. <a name='CompilarEjecutar'></a>Compilar y Ejecutar</a>
 
-Este programa se puede compilar y ejecutar en la línea de órdenes o bien usando VS Code.
 
-### Compilar y ejecutar en la línea de órdenes, en macOS o Linux
+###  2.1. <a name='CompLinuxMacOS'></a>Linux o MacOS</a>
 
 En estos sistemas operativos podemos compilar en la línea de órdenes usando un terminal normal.
 
-Para la generación de los archivos de compilación y la compilación en sí se usa `cmake`, para ello es necesario ir a la carpeta `builds/macos` o `builds/linux`, según el sistema operativo. En esa carpeta debemos asegurarnos de que la sub-carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`).  Para generar los archivos de compilación, hay que hacer entrar a la carpeta `bin-cmake` y ahí escribir: 
+Para la generación de los archivos de compilación y la compilación en sí se usa `cmake`, para ello es necesario ir a la carpeta `builds/macos` o `builds/linux`, según el sistema operativo. En esa carpeta debemos asegurarnos de que la sub-carpeta `cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`).  Para generar los archivos de compilación, hay que hacer entrar a la carpeta `cmake` y ahí escribir: 
 
 ```
 cmake ..
 ``` 
 
-Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación. Esto genera diversos archivos y carpetas en `bin-cmake`. Después, para compilar los fuentes, hay que ejecutar (en esa misma carpeta):
+Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación. Esto genera diversos archivos y carpetas en `cmake`. Después, para compilar los fuentes, hay que ejecutar (en esa misma carpeta):
 
 ```
-cmake --build .
+make
 ```
 
-o bien, podemos usar simplemente `make` en lugar de `cmake --build .`.
+Si la compilación va bien se genera el ejecutable, que tiene el nombre  `debug_exe` y está en la carpeta `bin`. La orden `make` también se puede usar con un argumento para otros fines:
 
-Si la compilación va bien se genera el ejecutable, que tiene el nombre  `opengl3_minimo_linux_exe` en Linux o  `opengl3_minimo_macos_exe` en macOS. Este archivo está en la carpeta `bin-cmake`. 
+* `make clean` para eliminar el programa compilado y los archivos asociados.
+* `make release_exe` para generar el ejecutable `release_exe` (también `bin`), el cual no tiene los símbolos de depuración y además está optimizado (es más pequeño y puede que sea más rápido al ejecutarse)
 
-Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake` y volver a hacer `cmake ..` en ella. Es necesario hacerlo si se añaden o quitan unidades de compilación o cabeceras de las carpetas con los fuentes.
+Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `cmake` y volver a hacer `cmake ..` en ella. Es necesario hacerlo si se añaden o quitan unidades de compilación o cabeceras de las carpetas con los fuentes.
 
 
-### Compilar y ejecutar en la línea de órdenes en Windows
+###  2.2. <a name='CompWindows'>Windows</a>
 
 En Windows se debe que usar el terminal llamado __Developer PowerShell for VS__, es la aplicación de terminal para _PowerShell_ de Microsoft, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. 
 
@@ -133,7 +148,7 @@ Una vez generados los archivos de compilación, cada vez que queramos recompilar
 cmake --build .
 ```
 
-Si la compilación va bien se genera el ejecutable, que tiene el nombre `opengl3_minimo_windows.exe` y está situado en la sub-carpeta `Debug` dentro de `bin-cmake`, dicha carpeta también incluye archivos `.dll` (librerías dináimicas de Windows) y un archivo `.pdb` para depuración.
+Si la compilación va bien se genera el ejecutable, que tiene el nombre `opengl3_minimo_windows.exe` y está situado en la sub-carpeta `Debug` dentro de `bin-cmake`, dicha carpeta también incluye archivos `.dll` (librerías dinámicas de Windows) y un archivo `.pdb` para depuración.
 
 Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake`, repetir `cmake ..` en ella y finalmente compilar con `cmake --build .`
 
@@ -154,7 +169,7 @@ Si no se quiere teclear esto en cada inicio de sesión, se puede añadir esa lí
 
 (Nota: todo esto se ha probado probado en Mayo-Junio de 2023 en Windows 11).
 
-### Uso de VS Code en Linux, macOS y Windows.
+###  4.3. <a name='UsodeVSCodeenLinuxmacOSyWindows.'></a>Uso de VS Code en Linux, macOS y Windows.
 
 Las carpetas `build/linux`, `build/macos` y `build/windows` incluyen archivos de extensión `.code-workspace`. Estos archivos se pueden abrir con VS Code de Microsoft, para poder editar, compilar, ejecutar y depurar fácilmente el código.
 

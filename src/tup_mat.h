@@ -206,7 +206,7 @@ class MatrizCG
    public:
    TuplaG< TuplaG<T,n>, n > mat ;
 
-   MatrizCG<T,n> ()  {}  // constructor por defecto inline (no inicializa)
+   inline MatrizCG<T,n> ()  {}  // constructor por defecto inline (no inicializa)
 
    // conversion a un puntero de lectura/escritura de tipo: T*
    // ( T* p = matriz )
