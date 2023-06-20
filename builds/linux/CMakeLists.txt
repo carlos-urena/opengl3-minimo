@@ -41,7 +41,7 @@ link_libraries( glfw GLEW OpenGL::GL)
 add_executable       ( ${nombre_exe_debug} ${unidades} ${cabeceras} )
 set_target_properties( ${nombre_exe_debug} PROPERTIES COMPILE_FLAGS "-g" )
 
-add_executable       ( ${nombre_exe_release} EXCLUDE_FROM_ALL ${unidades} ${cabeceras} )
+add_executable       ( ${nombre_exe_release} EXCLUDE_FROM_ALL ${unidades} ${cabeceras} ) ## (no se compila por defecto)
 set_target_properties( ${nombre_exe_release} PROPERTIES COMPILE_FLAGS "-O3" )
 
 set_target_properties( ${nombre_exe_debug} ${nombre_exe_release} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "../bin" )
