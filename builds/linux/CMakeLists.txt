@@ -3,11 +3,13 @@
 ##
 ## Archivo de configuración para compilar usando CMake en Linux
 ## creado: 26-Abril de 2023
+## actualizaciones:
+##    2023 Jun 19 : separo carpetas 'cmake' y 'bin', añado targets debug y release
 ##
 ## --------------------------------------------------------------------------------
 
 cmake_minimum_required (VERSION 3.5.1)
-project (opengl3_minimo_linux_exe)
+project (opengl3_minimo_linux)
 
 ## diversos aspectos configurables
 
