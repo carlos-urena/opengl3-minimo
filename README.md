@@ -124,7 +124,7 @@ make
 Si la compilación va bien se genera el ejecutable, que tiene el nombre  `debug_exe` y está en la carpeta `bin`. La orden `make` también se puede usar con un argumento para otros fines:
 
 * `make clean` para eliminar el programa compilado y los archivos asociados.
-* `make release_exe` para generar el ejecutable `release_exe` (también `bin`), el cual no tiene los símbolos de depuración y además está optimizado (es más pequeño y puede que sea más rápido al ejecutarse)
+* `make release_exe` para generar el ejecutable `release_exe` (también en `bin`), el cual no tiene los símbolos de depuración y además está optimizado (es más pequeño y puede que sea más rápido al ejecutarse)
 
 Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `cmake` y volver a hacer `cmake ..` en ella. Es necesario hacerlo si se añaden o quitan unidades de compilación o cabeceras de las carpetas con los fuentes.
 
@@ -148,16 +148,16 @@ Una vez generados los archivos de compilación, cada vez que queramos recompilar
 cmake --build .
 ```
 
-Si la compilación va bien se genera el ejecutable, que tiene el nombre `opengl3_minimo_windows.exe` y está situado en la sub-carpeta `Debug` dentro de `bin-cmake`, dicha carpeta también incluye archivos `.dll` (librerías dinámicas de Windows) y un archivo `.pdb` para depuración.
+Si la compilación va bien se genera el ejecutable, que tiene el nombre `opengl3_minimo_windows.exe` y está situado en la sub-carpeta `Debug` dentro de `bin`, dicha carpeta también incluye archivos `.dll` (librerías dinámicas de Windows) y un archivo `.pdb` para depuración.
 
-Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `bin-cmake`, repetir `cmake ..` en ella y finalmente compilar con `cmake --build .`
+Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `cmake`, repetir `cmake ..` en ella y finalmente compilar con `cmake --build .`
 
 En Windows se genera por defecto una versión _Debug_ del ejecutable, si se quiere generar una versión _Release_, el paso de compilación debe ser de esta forma:
 
 ```
 cmake --build . --config Release
 ```
-en este caso, el ejecutable (y sus archivos `.dll`) quedará en la subcarpeta `Release` dentro de `bin-cmake` (no se genera el `.pdb`).
+en este caso, el ejecutable (y sus archivos `.dll`) quedará en la subcarpeta `Release` dentro de `bin` (no se genera el `.pdb`).
 
 En windows, las sentencias `cout` o `printf` de C/C++ que contengan acentos o la eñe producen caracteres extraños en el terminal, ya que el terminal no asume por defecto que las cadenas que se imprimen están codificadas en UTF-8, mientras que los programaas fuentes de este repositorio sí están codificadas en ese formato (deben estarlo así). Para solucionar este problema, hay que ejecutar una vez esta orden en el terminal Powershell (incluyendo el carácter `$` inicial):
 
