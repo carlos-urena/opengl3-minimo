@@ -134,21 +134,21 @@ Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `cm
 En Windows se debe que usar el terminal llamado __Developer PowerShell for VS__, es la aplicación de terminal para _PowerShell_ de Microsoft, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. 
 
 Estos fuentes se deben compilar con `cmake`, para ello es necesario ir a la carpeta `builds\windows`. 
-En esa carpeta debemos asegurarnos de que la sub-carpeta `bin-cmake` está vacía (si no lo estaba ya, hay que borrar todos los archivos ahí, excepto `.gitignore`).  Para generar los archivos de compilación, dentro de `bin-cmake` vacío escribimos: 
+En esa carpeta debemos asegurarnos de que la sub-carpeta `cmake` está vacía. Si no lo estaba ya hay que borrar todos los archivos ahí, excepto `.gitignore`.  Para generar los archivos de compilación, dentro de `cmake` vacío escribimos: 
 
 ```
 cmake ..
 ``` 
 
-Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación. Esto genera diversos archivos y carpetas en `bin-cmake`. 
+Esto hay que hacerlo una vez, o cada vez que se añadan nuevos fuentes o se quiera cambiar la configuración de compilación. Esto genera diversos archivos y carpetas en `cmake`. 
 
-Una vez generados los archivos de compilación, cada vez que queramos recompilar los fuentes hay que ejecutar, en `bin-cmake`, esta orden:
+Una vez generados los archivos de compilación, cada vez que queramos recompilar los fuentes hay que ejecutar, en `cmake`, esta orden:
 
 ```
 cmake --build .
 ```
 
-Si la compilación va bien se genera el ejecutable, que tiene el nombre `opengl3_minimo_windows.exe` y está situado en la sub-carpeta `Debug` dentro de `bin`, dicha carpeta también incluye archivos `.dll` (librerías dinámicas de Windows) y un archivo `.pdb` para depuración.
+Si la compilación va bien se genera el ejecutable, que tiene el nombre `opengl3_minimo.exe` y está situado en la sub-carpeta `Debug` dentro de la carpeta `bin`, dicha carpeta también incluye archivos `.dll` (librerías dinámicas de Windows) y un archivo `.pdb` para depuración.
 
 Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `cmake`, repetir `cmake ..` en ella y finalmente compilar con `cmake --build .`
 
@@ -171,5 +171,5 @@ Si no se quiere teclear esto en cada inicio de sesión, se puede añadir esa lí
 
 ###  4.3. <a name='UsodeVSCodeenLinuxmacOSyWindows.'></a>Uso de VS Code en Linux, macOS y Windows.
 
-Las carpetas `build/linux`, `build/macos` y `build/windows` incluyen archivos de extensión `.code-workspace`. Estos archivos se pueden abrir con VS Code de Microsoft, para poder editar, compilar, ejecutar y depurar fácilmente el código.
+Las carpetas `build/linux`, `build/macos` y `build/windows` incluyen archivos de nombre `workspace` (y extensión `.code-workspace`). Estos archivos se pueden abrir con la aplicación *VS Code* de Microsoft, para poder editar, compilar, ejecutar y depurar fácilmente el código.
 
