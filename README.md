@@ -105,6 +105,20 @@ El _switch_ `--triplet` indica que se instalen las versiones de 64 bits _dinámi
 
 ##  2. <a name='ClonarRepo'></a>Clonar este repositorio</a>
 
+Para clonar el repositorio se necesita ejecutar:
+
+```
+  git clone https://github.com/carlos-urena/opengl3-minimo.git [subcarpeta]
+```
+donde `[subcarpeta]` es opcional, si se especifica designa el path relativo de una subcarpeta donde quedará alojado el repositorio.
+
+Este repositorio incluye GLM como submódulo (es decir, incluye el repositorio de GLM en GitHub:  [github.com/g-truc/glm](https://github.com/g-truc/glm)). Por tanto, después de clonar, será necesario descargar y actualizar GLM dentro de nuestro repositorio, lo cual puede hacerse con:
+
+```
+git submodule init
+git submodule update 
+```
+
 
 ##  3. <a name='CompilarEjecutar'></a>Compilar y Ejecutar</a>
 
