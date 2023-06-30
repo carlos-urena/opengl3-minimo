@@ -3,17 +3,19 @@
 
 # Un ejemplo OpenGL mínimo (usando OpenGL 3.3)
 
-En esta carpeta se encuentra el código fuente mínimo de una programa OpenGL en C++, suficiente para dibujar un triángulo. Se usa exclusivamente funcionalidad de OpenGL 3.3, y por tanto se requiere esa versión como mínimo. Los fuentes se pueden compilar y ejecutar Linux, MacOS o Windows.
+En esta carpeta se encuentra el código fuente mínimo de una programa OpenGL en C++, suficiente para dibujar un triángulo. Se usa exclusivamente funcionalidad de OpenGL 3.3, y por tanto se requiere esa versión como mínimo. Los fuentes se pueden compilar y ejecutar Linux, MacOS o Windows. Se usan las librerías GLFW (para gestión de ventanas), GLM (vectores y matrices) y GLEW (acceso a funciones de OpenGL de la versión 3, únicamente en Linux y Windows).
 
 
 1. [Requisitos](#Requisitos)
     * 1.1 [Linux](#ReqLinux)
     * 1.2 [MacOS](#ReqMacOS)
     * 1.3 [Windows](#ReqWindows)
-2. [Compilar y ejecutar](#CompilarEjecutar)
-    * 1.1 [Linux y Mac OS](#CompLinuxMacOS)
-    * 1.2 [Windows](#CompWindows)
-3. [Uso de _VS Code_](#vscode) 
+2. [Clonar este repositorio](#ClonarRepo)
+3. [Compilar y ejecutar](#CompilarEjecutar)
+    * 3.1 [Linux y Mac OS](#CompLinuxMacOS)
+    * 3.2 [Windows](#CompWindows)
+4. [Uso de _VS Code_](#vscode) 
+
 
 ##  1. <a name='Requisitos'>Requisitos</a>
 
@@ -45,7 +47,7 @@ sudo apt install libglew-dev
 sudo apt install libglfw3-dev
 ```
 
-##  1.2. <a name='ReqMacOS'>MacOS</a>
+###  1.2. <a name='ReqMacOS'>MacOS</a>
 
 En ordenadores macOS hay que tener instalada la herramienta de desarrollo de **XCode** ([developer.apple.com/xcode](https://developer.apple.com/xcode/)).
 Este herramienta de desarrollo incorpora (entre otros) el compilador de C++ del proyecto LLVM adaptado por Apple, el IDE de desarrollo para Apple, así como el _framework_ de **OpenGL**. 
@@ -69,7 +71,7 @@ brew install cmake
 brew install glfw
 ```
 
-##  1.3. <a name='ReqWindows'>Windows</a>
+###  1.3. <a name='ReqWindows'>Windows</a>
 
 En Windows hay que instalar **Visual Studio** ([visualstudio.microsoft.com](https://visualstudio.microsoft.com))
  de Microsoft, es un entorno de desarrollo y una suite compiladores e intérpretes para varios lenguajes de programación. 
@@ -101,11 +103,13 @@ En la carpeta `vcpkg` quedará el archivo ejecutable `vcpkg.exe`, que se puede e
 
 El _switch_ `--triplet` indica que se instalen las versiones de 64 bits _dinámicas_ de estas librerías. La instalación de GLEW conlleva la instalación de la librería OpenGL.
 
+##  2. <a name='ClonarRepo'></a>Clonar este repositorio</a>
 
-##  2. <a name='CompilarEjecutar'></a>Compilar y Ejecutar</a>
+
+##  3. <a name='CompilarEjecutar'></a>Compilar y Ejecutar</a>
 
 
-###  2.1. <a name='CompLinuxMacOS'></a>Linux o MacOS</a>
+###  3.1. <a name='CompLinuxMacOS'></a>Linux o MacOS</a>
 
 En estos sistemas operativos podemos compilar en la línea de órdenes usando un terminal normal.
 
@@ -129,7 +133,7 @@ Si la compilación va bien se genera el ejecutable, que tiene el nombre  `debug_
 Para forzar un recompilado de todos los fuentes, basta con vaciar la carpeta `cmake` y volver a hacer `cmake ..` en ella. Es necesario hacerlo si se añaden o quitan unidades de compilación o cabeceras de las carpetas con los fuentes.
 
 
-###  2.2. <a name='CompWindows'>Windows</a>
+###  3.2. <a name='CompWindows'>Windows</a>
 
 En Windows se debe que usar el terminal llamado __Developer PowerShell for VS__, es la aplicación de terminal para _PowerShell_ de Microsoft, pero configurada con las variables de entorno necesarias para compilar desde la línea de órdenes. 
 
@@ -169,7 +173,7 @@ Si no se quiere teclear esto en cada inicio de sesión, se puede añadir esa lí
 
 (Nota: todo esto se ha probado probado en Mayo-Junio de 2023 en Windows 11).
 
-###  4.3. <a name='UsodeVSCodeenLinuxmacOSyWindows.'></a>Uso de VS Code en Linux, macOS y Windows.
+##  4. <a name='UsodeVSCodeenLinuxmacOSyWindows.'></a>Uso de VS Code en Linux, macOS y Windows.
 
 Las carpetas `build/linux`, `build/macos` y `build/windows` incluyen archivos de nombre `workspace` (y extensión `.code-workspace`). Estos archivos se pueden abrir con la aplicación *VS Code* de Microsoft, para poder editar, compilar, ejecutar y depurar fácilmente el código.
 
