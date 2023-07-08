@@ -18,7 +18,7 @@ set( carpeta_ejecutable "../bin" )
 set( nombre_ejecutable  "opengl3_minimo" )
 set( opcs_warnings      "/wd4244 /wd4305 /wd4267" ) ## deshabilitar warnings de conversión implicita double --> float, size_t --> int (este ultimo es dudoso..)
 set( opcs_primer_error  "" ) ## "-Wfatal-errors"  --> no hay nada equivalente a esto en el compilador de microsoft, no se puede parar con el 1er error
-set( flags_compilador   "/std:c++17  /MT /O2 ${opcs_warnings} ${opcs_primer_error}" ) 
+set( flags_compilador   "/std:c++20  /MT /O2 ${opcs_warnings} ${opcs_primer_error}" ) 
 
 ## definir donde están las unidades de compilación y los headers
 
@@ -39,7 +39,6 @@ include_directories( ${carpeta_fuentes})
 ## definir el ejecutable
 
 add_executable            ( ${nombre_ejecutable} ${unidades} ${cabeceras} )
-target_include_directories( ${nombre_ejecutable} PUBLIC ${dir_src} )
 set_target_properties     ( ${nombre_ejecutable} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${carpeta_ejecutable} )
 
 

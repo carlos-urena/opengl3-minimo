@@ -108,7 +108,7 @@ El _switch_ `--triplet` indica que se instalen las versiones de 64 bits _dinámi
 Para clonar el repositorio se necesita ejecutar:
 
 ```
-  git clone https://github.com/carlos-urena/opengl3-minimo.git [subcarpeta]
+git clone https://github.com/carlos-urena/opengl3-minimo.git [subcarpeta]
 ```
 donde `[subcarpeta]` es opcional, si se especifica designa el path relativo de una subcarpeta donde quedará alojado el repositorio.
 
