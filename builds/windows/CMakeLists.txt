@@ -11,7 +11,8 @@ cmake_minimum_required (VERSION 3.5.1)
 set( CMAKE_TOOLCHAIN_FILE ~/vcpkg/scripts/buildsystems/vcpkg.cmake)  ## permite a 'find_package' encontrar librerías instaladas con VCPKG
 project( opengl3_minimo )
 
-## Opciones para el compilador (configurables)
+## ----------------------------------------------------------------------------------------------------
+## Aspectos configurables
 
 set( carpeta_fuentes    "../../src" )
 set( carpeta_ejecutable "../bin" )
@@ -20,26 +21,27 @@ set( opcs_warnings      "/wd4244 /wd4305 /wd4267" ) ## deshabilitar warnings de 
 set( opcs_primer_error  "" ) ## "-Wfatal-errors"  --> no hay nada equivalente a esto en el compilador de microsoft, no se puede parar con el 1er error
 set( flags_compilador   "/std:c++20  /MT /O2 ${opcs_warnings} ${opcs_primer_error}" ) 
 
-## definir donde están las unidades de compilación y los headers
+## ----------------------------------------------------------------------------------------------------
+##  definir flags para compilador y carpeta(s) de includes en todos los targets
 
-file( GLOB unidades  ${carpeta_fuentes}/*.cpp  )
-file( GLOB cabeceras ${carpeta_fuentes}/*.h    )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flags_compilador}")
+include_directories( ${carpeta_fuentes})
 
+## ----------------------------------------------------------------------------------------------------
 ## buscar librerías en el sistema y añadirlas a todos los targets
 
 find_package( GLEW REQUIRED )
 find_package( glfw3 CONFIG REQUIRED )
 link_libraries( GLEW::GLEW glfw )
 
-##  definir flags para compilador 
+## ----------------------------------------------------------------------------------------------------
+## definir ejecutable (unidades y cabeceras a compilar), indicar carpeta donde debe alojarse el .exe
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flags_compilador}")
-include_directories( ${carpeta_fuentes})
+file( GLOB unidades  ${carpeta_fuentes}/*.cpp  )
+file( GLOB cabeceras ${carpeta_fuentes}/*.h    )
 
-## definir el ejecutable
-
-add_executable            ( ${nombre_ejecutable} ${unidades} ${cabeceras} )
-set_target_properties     ( ${nombre_ejecutable} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${carpeta_ejecutable} )
+add_executable       ( ${nombre_ejecutable} ${unidades} ${cabeceras} )
+set_target_properties( ${nombre_ejecutable} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${carpeta_ejecutable} )
 
 
 
