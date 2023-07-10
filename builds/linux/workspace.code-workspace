@@ -10,7 +10,7 @@
 
   "settings" : 
   {
-    "C_Cpp.default.cppStandard": "c++11",
+    "C_Cpp.default.cppStandard": "c++20",
 
     // es importante decirle aquí a IntelliSense que use el compilador de GNU, 
     // fijando la variable "compilerPath" a lo que sea. Si no se hace así y se 
