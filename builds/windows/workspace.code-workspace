@@ -14,7 +14,6 @@
     "C_Cpp.default.includePath" : 
     [
       "${workspaceFolder:FUENTES}",
-      "${worspaceFolder}../../../submodules/glm",
       "~/vcpkg/installed/x64-windows/include",
       "${default}"
     ]

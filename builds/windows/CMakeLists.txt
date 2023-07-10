@@ -15,7 +15,6 @@ project( opengl3_minimo )
 ## Aspectos configurables
 
 set( carpeta_fuentes       "../../src" )
-set( carpeta_includes_adic "../../submodules/glm")
 set( carpeta_ejecutable    "../bin" )
 set( nombre_ejecutable     "opengl3_minimo" )
 set( opcs_warnings         "/wd4244 /wd4305 /wd4267" ) ## deshabilitar warnings de conversión implicita double --> float, size_t --> int (este ultimo es dudoso..)
@@ -26,10 +25,11 @@ set( flags_compilador      "/std:c++20  /MT /O2 ${opcs_warnings} ${opcs_primer_e
 ##  definir flags para compilador y carpeta(s) de includes en todos los targets
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flags_compilador}")
-include_directories( ${carpeta_fuentes} ${carpeta_includes_adic} )
+include_directories( ${carpeta_fuentes} )
 
 ## ----------------------------------------------------------------------------------------------------
 ## buscar librerías en el sistema y añadirlas a todos los targets
+## (no se busca GLM ya que es una librería 'header only')
 
 find_package( GLEW REQUIRED )
 find_package( glfw3 CONFIG REQUIRED )
