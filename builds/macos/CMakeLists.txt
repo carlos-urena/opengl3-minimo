@@ -15,6 +15,7 @@ project (opengl3_minimo_macos)
 ## diversos aspectos configurables
 
 set ( carpeta_fuentes     "../../src")
+set( carpeta_ejecutables  "../bin" )
 set ( flags_compilador    "-std=c++20 -Wall -Wfatal-errors -Wno-deprecated-declarations" ) 
 set ( nombre_exe_debug    "debug_exe" )
 set ( nombre_exe_release  "release_exe" )
@@ -38,18 +39,16 @@ link_libraries(  glfw OpenGL::GL)
 ## se compila con 'make' 
 
 add_executable       ( ${nombre_exe_debug} ${unidades} ${cabeceras} )
-set_target_properties( ${nombre_exe_debug} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "../bin" )
+set_target_properties( ${nombre_exe_debug} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${carpeta_ejecutables} )
 set_target_properties( ${nombre_exe_debug} PROPERTIES COMPILE_FLAGS "-g" )
-##target_link_libraries( ${nombre_exe_debug} glfw OpenGL::GL)
 
 
 ## definir el ejecutable de 'release' (se usa la opción adicional: -O3)
 ## se compila con 'make release_exe'
 
 add_executable       ( ${nombre_exe_release} EXCLUDE_FROM_ALL ${unidades} ${cabeceras} )
-set_target_properties( ${nombre_exe_release} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "../bin" )
+set_target_properties( ${nombre_exe_release} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${carpeta_ejecutables} )
 set_target_properties( ${nombre_exe_release} PROPERTIES COMPILE_FLAGS "-O3" )
-##target_link_libraries( ${nombre_exe_release} glfw OpenGL::GL)
 
 
 
