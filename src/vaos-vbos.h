@@ -1,6 +1,7 @@
 #ifndef VBOS_VAOS_H
 #define VBOS_VAOS_H
 
+#include <vector>
 #include "glincludes.h"
 
 

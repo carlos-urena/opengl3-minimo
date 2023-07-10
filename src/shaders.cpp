@@ -1,7 +1,9 @@
 // Ejemplo mínimo de código OpenGL, usa OpenGL 3.3 + GLSL 3.3
 
-#include "shaders.h"
+#include <iostream>
+#include <iomanip>
 
+#include "shaders.h"
 
 GLchar  ProgramObject::buffer[ buffer_length ] ;
 GLsizei ProgramObject::report_length ;  
@@ -82,6 +84,7 @@ void ProgramObject::createCompileUseProgram( )
    using namespace std ;
    assert( vertex_shader_source != nullptr );
    assert( fragment_shader_source != nullptr );
+   assert( program_id == 0 );
    assert( glGetError() == GL_NO_ERROR );
    
    // create program, ceate and compile shaders, link program
@@ -109,6 +112,18 @@ void ProgramObject::createCompileUseProgram( )
 }
 
 // ---------------------------------------------------------------------------------------------
+// use (activate) this program object for following draw operations
+
+   
+void ProgramObject::use()
+{
+   assert( program_id > 0 );
+   assert( glGetError() == GL_NO_ERROR );
+   glUseProgram( program_id );
+   assert( glGetError() == GL_NO_ERROR );
+}
+
+// ---------------------------------------------------------------------------------------------
 // Basic program object source
 
 const char * const basic_vertex_shader_source = R"glsl(
@@ -128,15 +143,15 @@ const char * const basic_vertex_shader_source = R"glsl(
 
    // output variables, going to the geometry shader
 
-   out      vec3 var_color_1       ; // color RGB del vértice (el mismo que proporciona la aplic.)
-   flat out vec3 var_color_plano_1 ; // color RGB del 'provoking vertex'
+   out      vec3 var_color_interpolado ; // color RGB del vértice (el mismo que proporciona la aplic.)
+   flat out vec3 var_color_plano  ; // color RGB del 'provoking vertex'
 
    // función principal que se ejecuta una vez por vértice
    void main()
    {
       // copiamos color recibido en el color de salida, tal cual
-      var_color_1       = atrib_color ;
-      var_color_plano_1 = atrib_color ;
+      var_color_interpolado = atrib_color ;
+      var_color_plano       = atrib_color ;
 
       // calcular las posiciones del vértice en posiciones de mundo y escribimos 'gl_Position'
       // (se calcula multiplicando las cordenadas por la matrices 'modelview' y 'projection')
@@ -146,116 +161,20 @@ const char * const basic_vertex_shader_source = R"glsl(
 
 // ------------------------------------------------------------------------------------------------------
 
-const char * basic_geometry_shader_source = R"glsl(
-   #version 330 core 
-
-   // type of input and output (triangles --> triangles (equivalent to triangle strip with 3 vertexes)
-   layout (triangles) in;  // acepta triángulos como entrada
-   layout (triangle_strip, max_vertices=24) out; // escribe una tira de triángulos con 3 vértices (tiene un solo triángulo)
-
-   // array of input values, coming from the vertex shader
-   in vec3         var_color_1[] ;
-   flat in vec3    var_color_plano_1[] ;
-
-   // per-vertex output values, going to the fragment shader
-   out vec3      var_color_2 ;
-   flat out vec3 var_color_plano_2 ;
-
-   // passthrough shader
-
-   void PassthroughGS()
-   {
-      for( int i = 0; i < 3; i++ )
-      {
-         gl_Position       = gl_in[i].gl_Position ;
-         var_color_plano_2 = var_color_plano_1[i] ;
-         var_color_2       = var_color_1[i] ;
-         EmitVertex();
-      }
-      EndPrimitive();
-   }
-
-   void ScaledTriangleGS( float f )
-   {
-      vec4 v[3];
-      for( int i = 0; i < 3; i++ )
-         v[i] = gl_in[i].gl_Position ;
-
-      vec4 c = (v[0]+v[1]+v[2])/3.0 ;
-      
-      
-      for( int i = 0; i < 3; i++ )
-      {
-         gl_Position       = c + f*(v[i]-c) ;
-         var_color_plano_2 = var_color_plano_1[i] ;
-         var_color_2       = var_color_1[i] ;
-         EmitVertex();
-      }
-      EndPrimitive();
-   }
-
-   void EdgeToQuadGS()
-   {
-      vec4 v[3], vinner[3], vouter[3], c = vec4(0.0,0.0,0.0,0.0);
-      for( int i = 0; i < 3; i++ )
-      {
-         v[i] = gl_in[i].gl_Position ;
-         c    = c+v[i] ;
-      }
-      c = c/3.0 ;
-      for( int i = 0; i < 3; i++ )
-      {
-         vinner[i] = c+0.9*v[i] ;
-         vouter[i] = c+1.1*v[i] ;
-      }
-      for( int i = 0 ; i < 3 ; i++ )
-      {
-         int j = (i+1)%3 ;
-
-         var_color_plano_2 = var_color_plano_1[i] ;
-         var_color_2       = var_color_1[i] ;
-
-         gl_Position = vinner[i] ;
-         EmitVertex() ;
-         gl_Position = vouter[i] ;
-         EmitVertex();
-
-         gl_Position       = vinner[j] ;
-         var_color_plano_2 = var_color_plano_1[j] ;
-         var_color_2       = var_color_1[j] ;
-         EmitVertex() ;
-
-         gl_Position       = vouter[j] ;
-         EmitVertex() ;
-
-         EndPrimitive() ; 
-      }
-   }
-   
-   // 
-   void main()
-   { 
-      EdgeToQuadGS();
-   }
-
-)glsl";
-
-// ------------------------------------------------------------------------------------------------------
-
 const char * const basic_fragment_shader_source = R"glsl(
     #version 330 core
 
-   uniform bool u_usar_color_plano; // false -> usar color interpolado, true --> usar color plano, 
-   in      vec3 var_color_2 ;       // color interpolado en el pixel.
-   flat in vec3 var_color_plano_2 ; // color (plano) producido por el 'provoking vertex'
+   uniform bool u_usar_color_plano;     // false -> usar color interpolado, true --> usar color plano, 
+   in      vec3 var_color_interpolado ; // color interpolado en el pixel.
+   flat in vec3 var_color_plano ;       // color (plano) producido por el 'provoking vertex'
    layout( location = 0 ) out vec4 out_color_fragmento ; // variable de salida (color del pixel)
    
    void main()
    {
       if ( u_usar_color_plano )
-         out_color_fragmento = vec4( var_color_plano_2, 1.0 ) ; // el color del pixel es el color interpolado
+         out_color_fragmento = vec4( var_color_plano, 1.0 ) ; // el color del pixel es el color interpolado
       else 
-         out_color_fragmento = vec4( var_color_2, 1.0 ); // el color plano (de un único vértice)
+         out_color_fragmento = vec4( var_color_interpolado, 1.0 ); // el color plano (de un único vértice)
    }
 )glsl";
 
@@ -268,7 +187,7 @@ BasicProgramObject::BasicProgramObject()
    // set shaders sources pointers
    vertex_shader_source   = basic_vertex_shader_source ;
    fragment_shader_source = basic_fragment_shader_source ;
-   geometry_shader_source = basic_geometry_shader_source ; // optional (may be null) - just testing
+   //geometry_shader_source = basic_geometry_shader_source ; // optional (may be null) - just testing
 
    // create all the shaders:
    createCompileUseProgram();

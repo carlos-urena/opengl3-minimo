@@ -3,7 +3,15 @@
 #ifndef SHADERS_H
 #define SHADERS_H
 
+#include <vector>
 #include "glincludes.h"
+
+// ****************************************************************************************
+// clase 'ProgramObject'
+//
+// Incluye funcionalidad común para cualquier tipo de objeto programa ('program object')
+// de OpenGL. Se debe usar como clase base de otras clases derivadas que definen los shaders 
+// concretos que se quieran usar.
 
 class ProgramObject
 {
@@ -22,6 +30,9 @@ class ProgramObject
    // creates, compiles and uses (activates) the program object
    void createCompileUseProgram( );
 
+   // use (activate) this program object for each following operation
+   void use();
+
    // index for the vertex positions attribute (must be cero)
    static constexpr GLuint ind_atrib_posiciones = 0 ;
 
@@ -30,7 +41,7 @@ class ProgramObject
    // program id (0 means still not properly initialized)
    GLuint program_id = 0 ;
 
-   // pointer to strings with shaders sources
+   // pointer to strings with shaders sources (assigned by derived classes constructors)
    const char * vertex_shader_source   = nullptr,
               * fragment_shader_source = nullptr,
               * geometry_shader_source = nullptr ;
@@ -38,11 +49,14 @@ class ProgramObject
    //  buffer used to report logs
    static constexpr GLsizei  buffer_length = 1024*16 ;
    static           GLchar   buffer[ buffer_length ] ;
-   static           GLsizei  report_length ;  
+   static           GLsizei  report_length ; 
 
 } ;
 
-// ---------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
+// clase 'BasicProgramObject'
+//
+// Derivada de 'ProgramObject', incluye shaders para visualización 2D sencilla 
 
 class BasicProgramObject : public ProgramObject 
 {

@@ -1,25 +1,14 @@
-// OpenGL+GLFW include directives, 
-// uses OpenGL 3.3 + GLSL 3.3 + GLFW 3
-// also includes 'tup_mat'
-
+// OpenGL+GLFW+GLEW+GLM includes
+// uses OpenGL 3.3 + GLSL 3.3 + GLFW 3 + GLM
+ 
 #ifndef GL_INCLUDES_H
 #define GL_INCLUDES_H
 
-// includes de la librería estándard de C++
-#include <cassert>   // 'assert' (enforce preconditions)
-#include <cstring>   // 'strlen' (to compile shaders)
-#include <iostream>  // 'cout' and such
-#include <iomanip>   // set precision and such
-#include <vector>    // 'std::vector' types
+// includes de la librería std de C++
+#include <iostream>
+#include <iomanip>
 
-// includes de GLM
-#include <glm/glm.hpp>               // incluye cosas básicas de GLM (vectores y matrices)
-#include <glm/gtc/type_ptr.hpp>      // conversion de vectores y matrices hacia/desde 'float *' con 'value_ptr' (https://glm.g-truc.net/0.9.9/api/a00305.html)
-#include <glm/gtc/matrix_access.hpp> // acceso a filas y columnas de una matriz, con glm::row( mat4 )
-#include <glm/gtx/string_cast.hpp>   // función 'to_string'
-#include <glm/gtx/transform.hpp>     // funciones 'scale', 'rotate', 'translate' sin especificar una matriz original (https://glm.g-truc.net/0.9.9/api/a00362.html)
-
-
+// includes de OpenGL, GLFW and GLEW
 #ifdef __linux__
 // -----------------------------------------------
 // Includes y definiciones específicos en Linux
@@ -47,6 +36,14 @@
 #endif
 #endif
 #endif
+
+
+// includes de GLM
+#include <glm/glm.hpp>               // incluye cosas básicas de GLM (vectores y matrices)
+#include <glm/gtc/type_ptr.hpp>      // conversion de vectores y matrices hacia/desde 'float *' con 'value_ptr' (https://glm.g-truc.net/0.9.9/api/a00305.html)
+#include <glm/gtc/matrix_access.hpp> // acceso a filas y columnas de una matriz, con glm::row( mat4 )
+#include <glm/gtx/string_cast.hpp>   // función 'to_string'
+#include <glm/gtx/transform.hpp>     // funciones 'scale', 'rotate', 'translate' sin especificar una matriz original (https://glm.g-truc.net/0.9.9/api/a00362.html)
 
 
 /// aux function to print vectors and matrices

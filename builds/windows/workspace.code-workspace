@@ -10,11 +10,12 @@
 
   "settings" : 
   {
-    "C_Cpp.default.cppStandard": "c++14",
+    "C_Cpp.default.cppStandard": "c++20",
     "C_Cpp.default.includePath" : 
     [
-      "~/vcpkg/installed/x64-windows/include",
       "${workspaceFolder:FUENTES}",
+      "${worspaceFolder}../../../submodules/glm",
+      "~/vcpkg/installed/x64-windows/include",
       "${default}"
     ]
   }

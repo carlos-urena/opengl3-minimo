@@ -1,5 +1,5 @@
 
-#include "vbos_vaos.h"
+#include "vaos-vbos.h"
     
 constexpr GLsizei stride = 0 ;
 constexpr void *  offset = 0 ;
