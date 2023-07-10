@@ -99,6 +99,7 @@ En la carpeta `vcpkg` quedará el archivo ejecutable `vcpkg.exe`, que se puede e
 ```
 .\vcpkg install glew  --triplet x64-windows
 .\vcpkg install glfw3 --triplet x64-windows
+.\vcpkg install glm   --triplet x64-windows
 ```
 
 El _switch_ `--triplet` indica que se instalen las versiones de 64 bits _dinámicas_ de estas librerías. La instalación de GLEW conlleva la instalación de la librería OpenGL.
@@ -111,13 +112,6 @@ Para clonar el repositorio se necesita ejecutar:
 git clone https://github.com/carlos-urena/opengl3-minimo.git [subcarpeta]
 ```
 donde `[subcarpeta]` es opcional, si se especifica designa el path relativo de una subcarpeta donde quedará alojado el repositorio.
-
-Este repositorio incluye GLM como submódulo (es decir, incluye el repositorio de GLM en GitHub:  [github.com/g-truc/glm](https://github.com/g-truc/glm)). Por tanto, después de clonar, será necesario descargar y actualizar GLM dentro de nuestro repositorio, lo cual puede hacerse con:
-
-```
-git submodule init
-git submodule update 
-```
 
 
 ##  3. <a name='CompilarEjecutar'></a>Compilar y Ejecutar</a>
