@@ -59,11 +59,12 @@ Además de _XCode_, también podemos usar el instalador de paquetes open source 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-La librería OpenGL ya viene instalada con _XCode_, así que únicamente hará falta instalar la orden **cmake** y la librería **GLFW**. Ambos paquetes se pueden instalar fácilmente con _homebrew_, usando:  
+La librería OpenGL ya viene instalada con _XCode_, así que únicamente hará falta instalar la orden **cmake** y las librerías **GLFW** y **glm**. Estos paquetes se pueden instalar fácilmente con _homebrew_, usando:  
 
 ```
 brew install cmake
 brew install glfw
+brew install glm
 ```
 
 ###  1.3. <a name='ReqWindows'>Windows</a>

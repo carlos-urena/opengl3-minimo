@@ -19,10 +19,10 @@
 // ---------------------------------------------------------------------------------------------
 // Constantes y variables globales
 
-constexpr GLuint
-    ind_atrib_posiciones = 0,      // índice del atributo de vértice con su posiciones (debe ser el índice 0, siempre)
-    ind_atrib_colores    = 1,      // índice del atributo de vértice con su color RGB
-    num_atribs           = 2 ;     // número de atributos que gestionan los shaders
+// constexpr GLuint
+//     ind_atrib_posiciones = 0,      // índice del atributo de vértice con su posiciones (debe ser el índice 0, siempre)
+//     ind_atrib_colores    = 1,      // índice del atributo de vértice con su color RGB
+//     num_atribs           = 2 ;     // número de atributos que gestionan los shaders
 bool
     redibujar_ventana   = true ,   // puesto a true por los gestores de eventos cuando cambia el modelo y hay que regenerar la vista
     terminar_programa   = false ;  // puesto a true en los gestores de eventos cuando hay que terminar el programa

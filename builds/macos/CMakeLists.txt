@@ -32,6 +32,7 @@ set (CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${flags_compilador}")
 
 find_package( OpenGL REQUIRED )
 find_package( glfw3 3.3 REQUIRED )
+link_libraries(  glfw OpenGL::GL)
 
 ## definir el ejecutable de 'debug' (se usa la opción adicional: -g)
 ## se compila con 'make' 
@@ -39,7 +40,7 @@ find_package( glfw3 3.3 REQUIRED )
 add_executable       ( ${nombre_exe_debug} ${unidades} ${cabeceras} )
 set_target_properties( ${nombre_exe_debug} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "../bin" )
 set_target_properties( ${nombre_exe_debug} PROPERTIES COMPILE_FLAGS "-g" )
-target_link_libraries( ${nombre_exe_debug} glfw OpenGL::GL)
+##target_link_libraries( ${nombre_exe_debug} glfw OpenGL::GL)
 
 
 ## definir el ejecutable de 'release' (se usa la opción adicional: -O3)
@@ -48,7 +49,7 @@ target_link_libraries( ${nombre_exe_debug} glfw OpenGL::GL)
 add_executable       ( ${nombre_exe_release} EXCLUDE_FROM_ALL ${unidades} ${cabeceras} )
 set_target_properties( ${nombre_exe_release} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "../bin" )
 set_target_properties( ${nombre_exe_release} PROPERTIES COMPILE_FLAGS "-O3" )
-target_link_libraries( ${nombre_exe_release} glfw OpenGL::GL)
+##target_link_libraries( ${nombre_exe_release} glfw OpenGL::GL)
 
 
 
