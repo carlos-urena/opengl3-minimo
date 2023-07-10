@@ -40,11 +40,12 @@ Se debe usar _apt_ para instalar _cmake_, que se usa para poder compilar fácilm
 sudo apt install cmake
 ```
 
-Finalmente se deben instalar los paquetes _libglew-dev_ y _glfw3-dev_ (tienen las librerías que se usan en estos fuentes), se puede hacer con:
+Finalmente se deben instalar los paquetes _libglew-dev_, _libglfw3-dev_ y _libglm-dev_ (tienen las librerías que se usan en estos fuentes, es decir *GLEW*, *GLFW* y *GLM*), se puede hacer con:
 
 ```
 sudo apt install libglew-dev
 sudo apt install libglfw3-dev
+sudo apt install libglm-dev
 ```
 
 ###  1.2. <a name='ReqMacOS'>MacOS</a>
