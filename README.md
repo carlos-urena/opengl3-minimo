@@ -27,12 +27,6 @@ En linux es necesario tener instalado el compilador de C++ de GNU o del proyecto
 sudo apt install build-essential
 ```
 
-Alternativamente, el compilador del proyecto LLVM (junto con la orden _make_) se puede instalar con:
-
-```
-sudo apt install clang
-sudo apt install make
-```
 
 Se debe usar _apt_ para instalar _cmake_, que se usa para poder compilar fácilmente el ejemplo, se hace con:
 
