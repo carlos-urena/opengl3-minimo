@@ -6,9 +6,10 @@
 
 
 // --------------------------------------------------------------------------------------------
-// Datos y metadatos de un VBO con una tabla de atributos de vértice
 
-class AttribsVBO
+// Guarada los datos y metadatos de un VBO con una tabla de atributos de vértice
+//
+class AttrVBOdescr
 {
    private: 
 
@@ -29,12 +30,12 @@ class AttribsVBO
    public:
 
    // constructores, asumen offset y stride a 0 (AOS con una tabla por VBO)
-   AttribsVBO( const unsigned p_index, const GLenum p_type, const unsigned p_size, 
+   AttrVBOdescr( const unsigned p_index, const GLenum p_type, const unsigned p_size, 
                const unsigned long p_count, const void *p_data );  
-   AttribsVBO( const unsigned p_index, const std::vector<glm::vec3> & src_vec );
-   AttribsVBO( const unsigned p_index, const std::vector<glm::vec2> & src_vec );
+   AttrVBOdescr( const unsigned p_index, const std::vector<glm::vec3> & src_vec );
+   AttrVBOdescr( const unsigned p_index, const std::vector<glm::vec2> & src_vec );
 
-   AttribsVBO() = delete ; // impide usar constructor por defecto (sin parámetros)
+   AttrVBOdescr() = delete ; // impide usar constructor por defecto (sin parámetros)
 
    // comprueba que los valores son correctos, aborta si no
    void comprobar() const ; 
@@ -56,13 +57,14 @@ class AttribsVBO
    void drawArrays( const GLenum mode ) ;
 
    // destructor
-   ~AttribsVBO();
+   ~AttrVBOdescr();
 } ;
 
 // --------------------------------------------------------------------------------------------
-// Datos y metadatos de un VBO de índices
 
-class IndexesVBO
+// Guarda los datos y metadatos de un VBO de índices
+//
+class IndsVBOdescr
 {
    private:
 
@@ -79,13 +81,11 @@ class IndexesVBO
 
    public:
 
-   // constructores, asumen offset a 0
-   IndexesVBO( const GLenum p_type, const GLsizei p_count, const void * p_data );
-   IndexesVBO( const std::vector<glm::uvec3> & src_vec );
+   IndsVBOdescr() = delete ; // impide usar constructor por defecto (sin parámetros)
 
-   IndexesVBO() = delete ; // impide usar constructor por defecto (sin parámetros)
+   IndsVBOdescr( const GLenum p_type, const GLsizei p_count, const void * p_data );
+   IndsVBOdescr( const std::vector<glm::uvec3> & src_vec );
 
-   
    // comprueba que los valores son correctos, aborta si no
    void comprobar() const ;
 
@@ -108,14 +108,14 @@ class IndexesVBO
    void drawElements( const GLenum mode );
 
    // destruye un VAO (libera memoria dinámica de la aplic. y elimina VAO en la GPU)
-   ~IndexesVBO();
+   ~IndsVBOdescr();
 
 } ;
 
 // -----------------------------------------------------------------------------------------------------
-// Descriptor de un VAO
-// Guarda todos los datos necesarios relativos a una secuencia de vértices almacenada en un VAO
 
+// Guarda los datos y metadatos de los VBOs que forman un VAO
+//
 class VAOdescr
 {
    private:
@@ -133,10 +133,10 @@ class VAOdescr
    GLsizei idxs_count = 0 ;
 
    // si la secuencia es indexada, VBO de attrs, en otro caso
-   IndexesVBO * idxs_vbo   = nullptr ; 
+   IndsVBOdescr * idxs_vbo   = nullptr ; 
    
    // array de descriptores de VBOs de atributos
-   std::vector<AttribsVBO *> attr_vbos ;
+   std::vector<AttrVBOdescr *> attr_vbos ;
 
    // array que indica si cada tabla de atributos está habilitada o deshabilitada
    std::vector<bool> attr_habilitado ;
