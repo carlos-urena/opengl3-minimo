@@ -5,126 +5,14 @@
 
 #include "shaders.h"
 
-GLchar  ProgramObject::buffer[ buffer_length ] ;
-GLsizei ProgramObject::report_length ;  
-
-// ---------------------------------------------------------------------------------------------
-// Clase: Program Object 
-
-ProgramObject::ProgramObject()
-{
-
-}
 // ---------------------------------------------------------------------------------------------
 
-GLuint ProgramObject::createCompileAttachShader
-(  
-   GLenum       shader_type,         // one of: GL_VERTEX_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER
-   const char * shader_description,  // text description for error log ('vertex shader', 'fragment shader', etc...)
-   const char * shader_source        // source string
-)
-{  using namespace std ;
-   assert( shader_type == GL_VERTEX_SHADER || 
-           shader_type == GL_GEOMETRY_SHADER || 
-           shader_type == GL_FRAGMENT_SHADER ) ;
 
-   assert( shader_source != nullptr );
-   assert( program_id > 0 );
-
-   assert( glGetError() == GL_NO_ERROR );
-
-   const GLuint shader_id     = glCreateShader( shader_type );
-   GLint        source_length = strlen( shader_source );
-
-   glShaderSource( shader_id, 1, (const GLchar **) &shader_source, &source_length ) ;
-   glCompileShader( shader_id ) ;
-
-   glGetShaderInfoLog( shader_id, buffer_length, &report_length, buffer );
-   if ( report_length > 0 )
-   {
-      cout << shader_description << " compilation log: " << endl ;
-      cout << buffer << endl ;
-   }
-
-   GLint compile_status ;
-   glGetShaderiv( shader_id, GL_COMPILE_STATUS, &compile_status );
-
-   if ( compile_status != GL_TRUE )
-   {
-      cout << "Compilation errors, aborting." << endl ;
-      exit(1);
-   }
-
-   glAttachShader( program_id, shader_id );
-   assert( glGetError() == GL_NO_ERROR );
-   return shader_id ;
-}
-// ---------------------------------------------------------------------------------------------
-// Gets uniform location + warns if it is not active.
-
-GLint ProgramObject::getLocation( const char * name )
-{
-   using namespace std ;
-   assert( name != nullptr );
-   assert( program_id > 0 );
-
-   const GLint location = glGetUniformLocation( program_id, name ); 
-
-   if ( location == -1 )
-      cout << "Warning: uniform '" << name << "' is not declared or not used." << endl ;
-   
-   return location ;
-}
-// ---------------------------------------------------------------------------------------------
-// Creates, compiles and uses (activates) the program object
-
-void ProgramObject::createCompileUseProgram( )
-{
-   // check preconditions
-   using namespace std ;
-   assert( vertex_shader_source != nullptr );
-   assert( fragment_shader_source != nullptr );
-   assert( program_id == 0 );
-   assert( glGetError() == GL_NO_ERROR );
-   
-   // create program, ceate and compile shaders, link program
-   program_id = glCreateProgram() ;  assert( program_id > 0 );
-   createCompileAttachShader( GL_VERTEX_SHADER,   "vertex shader",   vertex_shader_source );
-   createCompileAttachShader( GL_FRAGMENT_SHADER, "fragment shader", fragment_shader_source );
-   if ( geometry_shader_source != nullptr )
-      createCompileAttachShader( GL_GEOMETRY_SHADER, "geometry shader", geometry_shader_source );
-   glLinkProgram( program_id ) ;
-
-   // check for link errors
-   GLint estado_prog ;
-   glGetProgramiv( program_id, GL_LINK_STATUS, &estado_prog );
-   if ( estado_prog != GL_TRUE )
-   {  cout << "Program link error, log:" << endl ;
-      glGetProgramInfoLog( program_id, buffer_length, &report_length, buffer );
-      cout << buffer << endl ;
-      exit(1);
-   }
-   
-   // use program
-   glUseProgram( program_id );
-   assert( glGetError() == GL_NO_ERROR );
-   cout << "Program object created." << endl ; 
-}
+GLchar  Pipeline::buffer[ buffer_length ] ;
+GLsizei Pipeline::report_length ; 
 
 // ---------------------------------------------------------------------------------------------
-// use (activate) this program object for following draw operations
-
-   
-void ProgramObject::use()
-{
-   assert( program_id > 0 );
-   assert( glGetError() == GL_NO_ERROR );
-   glUseProgram( program_id );
-   assert( glGetError() == GL_NO_ERROR );
-}
-
-// ---------------------------------------------------------------------------------------------
-// Basic program object source
+// Basic pipeline shaders sources
 
 const char * const basic_vertex_shader_source = R"glsl(
    #version 330 core
@@ -178,16 +66,16 @@ const char * const basic_fragment_shader_source = R"glsl(
    }
 )glsl";
 
+// ---------------------------------------------------------------------------------------------
 
-
-// ----------------------------------------------------------------------------------------------------
-
-BasicProgramObject::BasicProgramObject()
+Pipeline::Pipeline()
 {
+   using namespace std ;
+
    // set shaders sources pointers
    vertex_shader_source   = basic_vertex_shader_source ;
    fragment_shader_source = basic_fragment_shader_source ;
-   //geometry_shader_source = basic_geometry_shader_source ; // optional (may be null) - just testing
+   //geometry_shader_source = basic_geometry_shader_source ; 
 
    // create all the shaders:
    createCompileUseProgram();
@@ -199,18 +87,132 @@ BasicProgramObject::BasicProgramObject()
    
    // done.
    using namespace std ;
-   cout << "Basic program object created with no errors." << endl ;
+   cout << "Pipeline created with no errors." << endl ;
 }
+
 // ---------------------------------------------------------------------------------------------
 
-void BasicProgramObject::setColor( const glm::vec3 & new_color )
+GLuint Pipeline::createCompileAttachShader
+(  
+   GLenum       shader_type,         // one of: GL_VERTEX_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER
+   const char * shader_description,  // text description for error log ('vertex shader', 'fragment shader', etc...)
+   const char * shader_source        // source string
+)
+{  using namespace std ;
+   assert( shader_type == GL_VERTEX_SHADER || 
+           shader_type == GL_GEOMETRY_SHADER || 
+           shader_type == GL_FRAGMENT_SHADER ) ;
+
+   assert( shader_source != nullptr );
+   assert( program_id > 0 );
+
+   assert( glGetError() == GL_NO_ERROR );
+
+   const GLuint shader_id     = glCreateShader( shader_type );
+   GLint        source_length = strlen( shader_source );
+
+   glShaderSource( shader_id, 1, (const GLchar **) &shader_source, &source_length ) ;
+   glCompileShader( shader_id ) ;
+
+   glGetShaderInfoLog( shader_id, buffer_length, &report_length, buffer );
+   if ( report_length > 0 )
+   {
+      cout << shader_description << " compilation log: " << endl ;
+      cout << buffer << endl ;
+   }
+
+   GLint compile_status ;
+   glGetShaderiv( shader_id, GL_COMPILE_STATUS, &compile_status );
+
+   if ( compile_status != GL_TRUE )
+   {
+      cout << "Compilation errors, aborting." << endl ;
+      exit(1);
+   }
+
+   glAttachShader( program_id, shader_id );
+   assert( glGetError() == GL_NO_ERROR );
+   return shader_id ;
+}
+// ---------------------------------------------------------------------------------------------
+// Gets uniform location + warns if it is not active.
+
+GLint Pipeline::getLocation( const char * name )
+{
+   using namespace std ;
+   assert( name != nullptr );
+   assert( program_id > 0 );
+
+   const GLint location = glGetUniformLocation( program_id, name ); 
+
+   if ( location == -1 )
+      cout << "Warning: uniform '" << name << "' is not declared or not used." << endl ;
+   
+   return location ;
+}
+// ---------------------------------------------------------------------------------------------
+// Creates, compiles and uses (activates) the program object
+
+void Pipeline::createCompileUseProgram( )
+{
+   // check preconditions
+   using namespace std ;
+   assert( vertex_shader_source != nullptr );
+   assert( fragment_shader_source != nullptr );
+   assert( program_id == 0 );
+   assert( glGetError() == GL_NO_ERROR );
+   
+   // create program, ceate and compile shaders, link program
+   program_id = glCreateProgram() ;  assert( program_id > 0 );
+   createCompileAttachShader( GL_VERTEX_SHADER,   "vertex shader",   vertex_shader_source );
+   createCompileAttachShader( GL_FRAGMENT_SHADER, "fragment shader", fragment_shader_source );
+   if ( geometry_shader_source != nullptr )
+      createCompileAttachShader( GL_GEOMETRY_SHADER, "geometry shader", geometry_shader_source );
+   glLinkProgram( program_id ) ;
+
+   // check for link errors
+   GLint estado_prog ;
+   glGetProgramiv( program_id, GL_LINK_STATUS, &estado_prog );
+   if ( estado_prog != GL_TRUE )
+   {  cout << "Program link error, log:" << endl ;
+      glGetProgramInfoLog( program_id, buffer_length, &report_length, buffer );
+      cout << buffer << endl ;
+      exit(1);
+   }
+   
+   // use program
+   glUseProgram( program_id );
+   assert( glGetError() == GL_NO_ERROR );
+   cout << "Program object created." << endl ; 
+}
+
+// ---------------------------------------------------------------------------------------------
+// use (activate) this program object for following draw operations
+
+   
+void Pipeline::use()
+{
+   assert( program_id > 0 );
+   assert( glGetError() == GL_NO_ERROR );
+   glUseProgram( program_id );
+   assert( glGetError() == GL_NO_ERROR );
+}
+
+
+
+// ----------------------------------------------------------------------------------------------------
+
+
+// ---------------------------------------------------------------------------------------------
+
+void Pipeline::setColor( const glm::vec3 & new_color )
 {
    color = new_color ;
-   glVertexAttrib3f(	ind_atrib_colores, color.r, color.g, color.b );
+   glVertexAttrib3f(	ind_atrib_colors, color.r, color.g, color.b );
 }
 // ---------------------------------------------------------------------------------------------
 
-void BasicProgramObject::setUseFlatColor( const bool new_use_flat_color )
+void Pipeline::setUseFlatColor( const bool new_use_flat_color )
 {
    assert( use_flat_color_loc != -1 ); 
    assert( glGetError() == GL_NO_ERROR );
@@ -219,7 +221,7 @@ void BasicProgramObject::setUseFlatColor( const bool new_use_flat_color )
 }
 // ---------------------------------------------------------------------------------------------
 
-void BasicProgramObject::setProjectionMatrix( const glm::mat4 & new_projection_mat )
+void Pipeline::setProjectionMatrix( const glm::mat4 & new_projection_mat )
 {
    assert( projection_mat_loc != -1 ); 
    assert( glGetError() == GL_NO_ERROR );
@@ -229,7 +231,7 @@ void BasicProgramObject::setProjectionMatrix( const glm::mat4 & new_projection_m
 }
 // ---------------------------------------------------------------------------------------------
 
-void BasicProgramObject::resetMM()
+void Pipeline::resetMM()
 {
    assert( modelview_mat_loc != -1 );  
    assert( glGetError() == GL_NO_ERROR );
@@ -240,13 +242,13 @@ void BasicProgramObject::resetMM()
 }
 // ---------------------------------------------------------------------------------------------
 
-void BasicProgramObject::pushMM()
+void Pipeline::pushMM()
 {
    modelview_mat_stack.push_back( modelview_mat );
 }
 // ---------------------------------------------------------------------------------------------
 
-void BasicProgramObject::compMM( const glm::mat4 & mat )
+void Pipeline::compMM( const glm::mat4 & mat )
 {
    assert( modelview_mat_loc >= 0 );
    modelview_mat = modelview_mat * mat ;
@@ -254,7 +256,7 @@ void BasicProgramObject::compMM( const glm::mat4 & mat )
 }
 // ---------------------------------------------------------------------------------------------
 
-void BasicProgramObject::popMM()
+void Pipeline::popMM()
 {
    assert( modelview_mat_loc >= 0 );
    assert( modelview_mat_stack.size() > 0 );
@@ -263,4 +265,79 @@ void BasicProgramObject::popMM()
    glUniformMatrix4fv( modelview_mat_loc, 1, GL_FALSE, glm::value_ptr(modelview_mat) );
 }
 // --------------------------------------------------------------------------------------------
+
+const std::string typeName( const GLenum type )
+{
+   std::string name ;
+
+   switch( type )
+   {
+      case GL_FLOAT       : name = "float" ; break ;
+      case GL_FLOAT_VEC2  : name = "vec2" ; break ;
+      case GL_FLOAT_VEC3  : name = "vec3" ; break ;
+      case GL_FLOAT_VEC4  : name = "vec4" ; break ;
+      case GL_INT	        : name = "int" ; break ;  
+      case GL_INT_VEC2	  : name = "ivec2" ; break ;
+      case GL_INT_VEC3	  : name = "ivec3" ; break ;
+      case GL_INT_VEC4	  : name = "ivec4" ; break ;
+      case GL_UNSIGNED_INT	      : name = "unsigned int" ; break ;
+      case GL_UNSIGNED_INT_VEC2	: name = "uvec2" ; break ;
+      case GL_UNSIGNED_INT_VEC3	: name = "uvec3" ; break ;
+      case GL_UNSIGNED_INT_VEC4	: name = "uvec4" ; break ;
+      case GL_BOOL	   : name = "bool" ; break ;
+      case GL_BOOL_VEC2	: name = "bvec2" ; break ;
+      case GL_BOOL_VEC3	: name = "bvec3" ; break ;
+      case GL_BOOL_VEC4	: name = "bvec4" ; break ;
+      case GL_FLOAT_MAT2	: name = "mat2" ; break ;
+      case GL_FLOAT_MAT3	: name = "mat3" ; break ;
+      case GL_FLOAT_MAT4	: name = "mat4" ; break ;
+      case GL_FLOAT_MAT2x3	: name = "mat2x3" ; break ;
+      case GL_FLOAT_MAT2x4	: name = "mat2x4" ; break ;
+      case GL_FLOAT_MAT3x2	: name = "mat3x2" ; break ;
+      case GL_FLOAT_MAT3x4	: name = "mat3x4" ; break ;
+      case GL_FLOAT_MAT4x2	: name = "mat4x2" ; break ;
+      case GL_FLOAT_MAT4x3	: name = "mat4x3" ; break ;
+      case GL_SAMPLER_1D	: name = "sampler1D" ; break ;
+      case GL_SAMPLER_2D	: name = "sampler2D" ; break ;
+      case GL_SAMPLER_3D	: name = "sampler3D" ; break ;
+      case GL_SAMPLER_CUBE	: name = "samplerCube" ; break ;
+      case GL_SAMPLER_1D_SHADOW	: name = "sampler1DShadow" ; break ;
+      case GL_SAMPLER_2D_SHADOW	: name = "sampler2DShadow" ; break ;
+      case GL_SAMPLER_1D_ARRAY	: name = "sampler1DArray" ; break ;
+      case GL_SAMPLER_2D_ARRAY	: name = "sampler2DArray" ; break ;
+      case GL_SAMPLER_1D_ARRAY_SHADOW	: name = "sampler1DArrayShadow" ; break ;
+      case GL_SAMPLER_2D_ARRAY_SHADOW	: name = "sampler2DArrayShadow" ; break ;
+      case GL_SAMPLER_2D_MULTISAMPLE	: name = "sampler2DMS" ; break ;
+      case GL_SAMPLER_2D_MULTISAMPLE_ARRAY : name = "sampler2DMSArray" ; break ;
+      case GL_SAMPLER_CUBE_SHADOW	  : name = "samplerCubeShadow" ; break ;
+      case GL_SAMPLER_BUFFER	        : name = "samplerBuffer" ; break ;
+      case GL_SAMPLER_2D_RECT	        : name = "sampler2DRect" ; break ;
+      case GL_SAMPLER_2D_RECT_SHADOW  : name = "sampler2DRectShadow" ; break ;
+      case GL_INT_SAMPLER_1D	        : name = "isampler1D" ; break ;
+      case GL_INT_SAMPLER_2D	        : name = "isampler2D" ; break ;
+      case GL_INT_SAMPLER_3D	        : name = "isampler3D" ; break ;
+      case GL_INT_SAMPLER_CUBE	     : name = "isamplerCube" ; break ;
+      case GL_INT_SAMPLER_1D_ARRAY	  : name = "isampler1DArray" ; break ;
+      case GL_INT_SAMPLER_2D_ARRAY	  : name = "isampler2DArray" ; break ;
+      case GL_INT_SAMPLER_2D_MULTISAMPLE	     : name = "isampler2DMS" ; break ;
+      case GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY : name = "isampler2DMSArray" ; break ;
+      case GL_INT_SAMPLER_BUFFER	         : name = "isamplerBuffer" ; break ;
+      case GL_INT_SAMPLER_2D_RECT	      : name = "isampler2DRect" ; break ;
+      case GL_UNSIGNED_INT_SAMPLER_1D	   : name = "usampler1D" ; break ;
+      case GL_UNSIGNED_INT_SAMPLER_2D	   : name = "usampler2D" ; break ;
+      case GL_UNSIGNED_INT_SAMPLER_3D	   : name = "usampler3D" ; break ;
+      case GL_UNSIGNED_INT_SAMPLER_CUBE	: name = "usamplerCube" ; break ;
+      case GL_UNSIGNED_INT_SAMPLER_1D_ARRAY	: name = "usampler2DArray" ; break ;
+      case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY	: name = "usampler2DArray" ; break ;
+      case GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE	      : name = "usampler2DMS" ; break ;
+      case GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY	: name = "usampler2DMSArray" ; break ;
+      case GL_UNSIGNED_INT_SAMPLER_BUFFER	   : name = "usamplerBuffer" ; break ;
+      case GL_UNSIGNED_INT_SAMPLER_2D_RECT	: name = "usampler2DRect" ; break ;
+      default : assert( false ); break ;
+   
+   }
+   return name ;
+}
+
+
 

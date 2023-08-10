@@ -21,7 +21,7 @@
 
 // constexpr GLuint
 //     ind_atrib_posiciones = 0,      // índice del atributo de vértice con su posiciones (debe ser el índice 0, siempre)
-//     ind_atrib_colores    = 1,      // índice del atributo de vértice con su color RGB
+//     ind_atrib_colors    = 1,      // índice del atributo de vértice con su color RGB
 //     num_atribs           = 2 ;     // número de atributos que gestionan los shaders
 bool
     redibujar_ventana   = true ,   // puesto a true por los gestores de eventos cuando cambia el modelo y hay que regenerar la vista
@@ -35,8 +35,8 @@ VAOdescr
     * vao_ind          = nullptr , // identificador de VAO (vertex array object) para secuencia indexada
     * vao_no_ind       = nullptr , // identificador de VAO para secuencia de vértices no indexada
     * vao_glm          = nullptr ; // identificador de VAO para secuencia de vértices guardada en vectors de vec3
-BasicProgramObject 
-    * po               = nullptr ; // Interfaz del objeto programa
+Pipeline 
+    * cauce            = nullptr ; // 'pipeline object' --> puntero al objeto 'Pipeline' actual
 
 
 // ---------------------------------------------------------------------------------------------
@@ -61,25 +61,25 @@ void DibujarTriangulo_NoInd( )
             colores   [ num_verts*3 ] = {  1.0, 0.0, 0.0,   0.0, 1.0, 0.0,  0.0, 0.0, 1.0 };
 
         // Crear VAO con posiciones, colores e indices
-        vao_no_ind = new VAOdescr( po->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
-        vao_no_ind->addAttrib( po->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores );    
+        vao_no_ind = new VAOdescr( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
+        vao_no_ind->addAttrib( cauce->ind_atrib_colors, GL_FLOAT, 3, num_verts, colores );    
     }
     
     assert( glGetError() == GL_NO_ERROR );
 
     // duibujar relleno usando los colores del VAO
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    po->setUseFlatColor( false );
-    vao_no_ind->habilitarAttrib( po->ind_atrib_colores, true );
+    cauce->setUseFlatColor( false );
+    vao_no_ind->habilitarAttrib( cauce->ind_atrib_colors, true );
     vao_no_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
 
     // dibujar las líneas usando color negro
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    po->setUseFlatColor( true );
-    po->setColor( { 0.0, 0.0, 0.0 });
-    vao_no_ind->habilitarAttrib( po->ind_atrib_colores, false );
+    cauce->setUseFlatColor( true );
+    cauce->setColor( { 0.0, 0.0, 0.0 });
+    vao_no_ind->habilitarAttrib( cauce->ind_atrib_colors, false );
     vao_no_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
@@ -106,23 +106,23 @@ void DibujarTriangulo_Ind( )
         const GLuint
             indices   [ num_inds    ] = { 0, 1, 2 };
 
-        vao_ind = new VAOdescr( po->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
-        vao_ind->addAttrib( po->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores ) ;
+        vao_ind = new VAOdescr( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
+        vao_ind->addAttrib( cauce->ind_atrib_colors, GL_FLOAT, 3, num_verts, colores ) ;
         vao_ind->addIndices( GL_UNSIGNED_INT, num_inds, indices );
     }
    
     assert( glGetError() == GL_NO_ERROR );
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    po->setUseFlatColor( false );
-    vao_ind->habilitarAttrib( po->ind_atrib_colores, true );
+    cauce->setUseFlatColor( false );
+    vao_ind->habilitarAttrib( cauce->ind_atrib_colors, true );
     vao_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
    
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    po->setColor( { 0.0, 0.0, 0.0 });
-    vao_ind->habilitarAttrib( po->ind_atrib_colores, false );
+    cauce->setColor( { 0.0, 0.0, 0.0 });
+    vao_ind->habilitarAttrib( cauce->ind_atrib_colors, false );
     vao_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
@@ -148,8 +148,8 @@ void DibujarTriangulo_glm( )
         const vector<vec3>   colores    = {  {1.0, 1.0, 0.0},  {0.0, 1.0, 1.0},  {1.0, 0.0, 1.0} };
         const vector<uvec3>  indices    = {  { 0, 1, 2 }};   // (un único triángulo)      
 
-        vao_glm = new VAOdescr( po->num_atribs, posiciones );
-        vao_glm->addAttrib( po->ind_atrib_colores, colores ) ;
+        vao_glm = new VAOdescr( cauce->num_atribs, posiciones );
+        vao_glm->addAttrib( cauce->ind_atrib_colors, colores ) ;
         vao_glm->addIndices( indices );
 
         assert( glGetError() == GL_NO_ERROR );
@@ -158,15 +158,15 @@ void DibujarTriangulo_glm( )
     assert( glGetError() == GL_NO_ERROR );
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    po->setUseFlatColor( false );
-    vao_glm->habilitarAttrib( po->ind_atrib_colores, true );
+    cauce->setUseFlatColor( false );
+    vao_glm->habilitarAttrib( cauce->ind_atrib_colors, true );
     vao_glm->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
    
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    po->setColor( { 0.0, 0.0, 0.0 });
-    vao_glm->habilitarAttrib( po->ind_atrib_colores, false );
+    cauce->setColor( { 0.0, 0.0, 0.0 });
+    vao_glm->habilitarAttrib( cauce->ind_atrib_colors, false );
     vao_glm->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
@@ -186,17 +186,17 @@ void VisualizarFrame( )
     // usar (acrivar) el objeto programa (no es necesario hacerlo en 
     // cada frame si solo hay uno de estos objetos, pero se incluye 
     // para hacer explícito que el objeto programa debe estar activado)
-    po->use();
+    cauce->use();
 
     // establece la zona visible (toda la ventana)
     glViewport( 0, 0, ancho_actual, alto_actual );
 
     // fija la matriz de transformación de posiciones de los shaders 
     // (la hace igual a la matriz identidad)
-    po->resetMM();
+    cauce->resetMM();
 
     // fija la matriz de proyeccion (la hace igual a la matriz identidad)
-    po->setProjectionMatrix( glm::mat4(1.0) );
+    cauce->setProjectionMatrix( glm::mat4(1.0) );
 
     // limpiar la ventana
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -208,14 +208,14 @@ void VisualizarFrame( )
     DibujarTriangulo_NoInd();
 
     // usa el color plano para el segundo triángulo
-    po->setUseFlatColor( true );
+    cauce->setUseFlatColor( true );
 
     // dibujar triángulo indexado (rotado y luego desplazado) 
-    po->pushMM();
-        po->compMM( translate( vec3{ 0.4f, 0.1f, -0.1f}  ));
-        po->compMM( rotate(  radians(23.0f), vec3{ 0.0f, 0.0f, 1.0f}   ));
+    cauce->pushMM();
+        cauce->compMM( translate( vec3{ 0.4f, 0.1f, -0.1f}  ));
+        cauce->compMM( rotate(  radians(23.0f), vec3{ 0.0f, 0.0f, 1.0f}   ));
         DibujarTriangulo_Ind();     // indexado
-    po->popMM();
+    cauce->popMM();
 
     // dibujar un triángulo usando vectores de GLM
     DibujarTriangulo_glm() ;
@@ -369,9 +369,9 @@ void InicializaOpenGL()
     
     glClearColor( 1.0, 1.0, 1.0, 0.0 ); // color para 'glClear' (blanco, 100% opaco)
     glDisable( GL_CULL_FACE );          // dibujar todos los triángulos independientemente de su orientación
-    po = new BasicProgramObject() ;     // crear el objeto programa (variable global 'po')
+    cauce = new Pipeline() ;            // crear el objeto programa (variable global 'cauce')
     
-    assert( po != nullptr );
+    assert( cauce != nullptr );
     assert( glGetError() == GL_NO_ERROR );
 }
 // ---------------------------------------------------------------------------------------------
