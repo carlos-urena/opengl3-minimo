@@ -6,7 +6,7 @@
     {
       "label"   : "Compilar y ejecutar",
       "type"    : "shell",
-      "command" : "cd cmake && make && ../bin/main_linux_exe",
+      "command" : "cd cmake && make && ../bin/debug_exe",
       "group"   : 
       {
         "kind"      : "build",
@@ -36,7 +36,23 @@
       }
     },
     {
-      "label"   : "Compilar",
+      "label"   : "Limpiar",
+      "type"    : "shell",
+      "command" : "cd cmake && make clean && cd .. && cd bin && rm -f *_exe",
+      "group"   : 
+      {
+        "kind"      : "build",
+        "isDefault" : false
+      },
+      "problemMatcher" : "$gcc",
+      "presentation" : 
+      {
+        "reveal" : "always",
+        "panel"  : "new"
+      }
+    },
+    {
+      "label"   : "Compilar todo",
       "type"    : "shell",
       "command" : "cd cmake && make clean && make",
       "group"   : 
@@ -54,7 +70,7 @@
     {
       "label"   : "Ejecutar",
       "type"    : "shell",
-      "command" : "bin/main_linux_exe",
+      "command" : "bin/debug_exe",
       "group"   : 
       { "kind"      : "test",
         "isDefault" : true
@@ -65,9 +81,9 @@
       }
     },
     {
-      "label"   : "Regenerar archivos de compilación",
+      "label"   : "Generar archivos de compilación",
       "type"    : "shell",
-      "command" : "cd cmake && rm -rf * && cmake ..",
+      "command" : "cd cmake && rm -rf * && cmake .. && cd .. && cd bin && rm -f *_exe",
       "group"   : 
       { "kind"      : "build",
         "isDefault" : false
