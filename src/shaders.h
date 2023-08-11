@@ -6,41 +6,46 @@
 #include <vector>
 #include "glincludes.h"
 
+// devuelve el nombre de un tipo OpenGL, a partir de 
+// la correspondiente constante simbólica
+const std::string NombreTipoGL( const GLenum tipo ) ;
+
+
 // ****************************************************************************************
-// This class holds a program object name or id, all the uniform locations, and provides 
-// helper functions which made it easier to use a program object and modify its status
+
+// Clase para el cauce de funcionalidad programable (OpenGL 3.3 o superior)
 //
-class Pipeline
+class Cauce
 {
    public: 
 
-   // creates an empty, non-usable, program object
-   Pipeline() ;
+   // crea un objeto cauce vacío
+   Cauce() ;
 
-   // Creates, compiles and attach a shader to the current binded program object
+   // compila un shader y lo adjunta al objeto programa 'id_prog' (que debe ser >0)
    //
    // @param shader_type        (GLenum) one of: GL_VERTEX_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER
    // @param shader_description (const char *) text description for error log ('vertex shader', 'fragment shader', etc...)
    // @param shader_source      (const char *) source string
    //
-   GLuint createCompileAttachShader(  GLenum shader_type, const char * shader_description, const char * shader_source );
+   GLuint compilarAdjuntarShader(  GLenum shader_type, const char * shader_description, const char * shader_source );
                                        
-   // get uniform location. warns if it is not active. 
+   // lee la 'location' de un uniform, da una advertencia si no está activo
    // @param name (conat char *) - uniform name in the shaders sources
    //
-   GLint getLocation( const char * name );
+   GLint leerLocation( const char * name );
 
-   // creates, compiles and uses (activates) the program object
-   void createCompileUseProgram( );
+   // crea, compila y usa el objeto programa
+   void crearObjetoPrograma( );
 
-   // read all uniforms locations and initializes the uniforms
-   void initializeUniforms();
+   // lee las 'locations' de los parámetros uniforms y los inicializa 
+   void inicializarUniforms();
 
    // imprime los nombres y tipos de los uniform del programa (para debug)
-   void printUniformsInfo();
+   void imprimeInfoUniforms();
 
-   // use (activate) this program object for each following operation
-   void use();
+   // usar (activar) el objeto programa para las siguientes operaciones de visualización
+   void activar();
 
    // sets current color
    // @param new_color (glm::vec3) new color to use for drawing without vertex colors 
@@ -80,8 +85,11 @@ class Pipeline
    
    protected: // ---------------------------
    
-   // program id (0 means still not properly initialized)
-   GLuint program_id = 0 ;
+   // program and shaders ids (0 means still not properly initialized)
+   GLuint id_prog     = 0 ,
+          id_frag_shader = 0 ,
+          id_vert_shader = 0 ;
+
 
    // pointer to strings with shaders sources (assigned by derived classes constructors)
    const char * vertex_shader_source   = nullptr,

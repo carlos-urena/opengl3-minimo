@@ -8,13 +8,13 @@
 // ---------------------------------------------------------------------------------------------
 
 
-GLchar  Pipeline::buffer[ buffer_length ] ;
-GLsizei Pipeline::report_length ; 
+GLchar  Cauce::buffer[ buffer_length ] ;
+GLsizei Cauce::report_length ; 
 
 // ---------------------------------------------------------------------------------------------
 // Basic pipeline shaders sources
 
-const char * const basic_vertex_shader_source = R"glsl(
+const char * const fuente_vertex_shader = R"glsl(
    #version 330 core
 
    // Parámetros uniform (variables de entrada iguales para todos los vértices en cada primitiva)
@@ -49,7 +49,7 @@ const char * const basic_vertex_shader_source = R"glsl(
 
 // ------------------------------------------------------------------------------------------------------
 
-const char * const basic_fragment_shader_source = R"glsl(
+const char * const fuente_fragment_shader = R"glsl(
     #version 330 core
 
    uniform bool u_usar_color_plano;     // false -> usar color interpolado, true --> usar color plano, 
@@ -68,35 +68,54 @@ const char * const basic_fragment_shader_source = R"glsl(
 
 // ---------------------------------------------------------------------------------------------
 
-Pipeline::Pipeline()
+Cauce::Cauce()
 {
    using namespace std ;
 
-   // set shaders sources pointers
-   vertex_shader_source   = basic_vertex_shader_source ;
-   fragment_shader_source = basic_fragment_shader_source ;
-   //geometry_shader_source = basic_geometry_shader_source ; 
+   crearObjetoPrograma();
+   inicializarUniforms();
+   imprimeInfoUniforms();
 
-   // create all the shaders:
-   createCompileUseProgram();
-
-   // get uniforms locations
-   modelview_mat_loc    = getLocation( "u_mat_modelview" );      assert( modelview_mat_loc  != -1 );
-   projection_mat_loc   = getLocation( "u_mat_proyeccion" );     assert( projection_mat_loc != -1 );
-   use_flat_color_loc   = getLocation( "u_usar_color_plano" );   assert( use_flat_color_loc != -1 );
-   
-   // done.
-   using namespace std ;
-   cout << "Pipeline created with no errors." << endl ;
+   cout << "Cauce creado sin errores." << endl ;
 }
 
 // ---------------------------------------------------------------------------------------------
 
-GLuint Pipeline::createCompileAttachShader
+void Cauce::inicializarUniforms()
+{
+   modelview_mat_loc  = leerLocation( "u_mat_modelview" );      
+   projection_mat_loc = leerLocation( "u_mat_proyeccion" );     
+   use_flat_color_loc = leerLocation( "u_usar_color_plano" );     
+}
+// ---------------------------------------------------------------------------------------------
+
+void Cauce::imprimeInfoUniforms()
+{
+   using namespace std ;
+   assert( 0 < id_prog );
+   assert( glGetError() == GL_NO_ERROR );
+
+   GLint n_uniforms;
+   glGetProgramiv( id_prog, GL_ACTIVE_UNIFORMS, &n_uniforms );
+   cout << "Cuenta de parámetros uniform activos: " << n_uniforms << endl ;
+
+   for ( int i = 0; i < n_uniforms; i++ )
+   {
+      GLenum tipo;       // tipo de la variable (float, vec3 or mat4, etc)  
+      GLint  n_entradas; // si es array, número de entradas, en otro caso 1.
+      glGetActiveUniform( id_prog, (GLuint)i, buffer_length, &report_length, &n_entradas, &tipo, buffer);
+      cout << "   Uniform " << i << ": " << buffer << " (" << NombreTipoGL(tipo) << " x" << n_entradas << ")." << endl ;
+   }
+   assert( glGetError() == GL_NO_ERROR );
+}
+
+// ---------------------------------------------------------------------------------------------
+
+GLuint Cauce::compilarAdjuntarShader
 (  
-   GLenum       shader_type,         // one of: GL_VERTEX_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER
-   const char * shader_description,  // text description for error log ('vertex shader', 'fragment shader', etc...)
-   const char * shader_source        // source string
+   GLenum       shader_type,         // uno de GL_VERTEX_SHADER, GL_GEOMETRY_SHADER, GL_FRAGMENT_SHADER
+   const char * shader_description,  // texto descriptivo por si hay error ('vertex shader', 'fragment shader', etc...)
+   const char * shader_source        // código fuente del shader
 )
 {  using namespace std ;
    assert( shader_type == GL_VERTEX_SHADER || 
@@ -104,7 +123,7 @@ GLuint Pipeline::createCompileAttachShader
            shader_type == GL_FRAGMENT_SHADER ) ;
 
    assert( shader_source != nullptr );
-   assert( program_id > 0 );
+   assert( id_prog > 0 );
 
    assert( glGetError() == GL_NO_ERROR );
 
@@ -130,20 +149,20 @@ GLuint Pipeline::createCompileAttachShader
       exit(1);
    }
 
-   glAttachShader( program_id, shader_id );
+   glAttachShader( id_prog, shader_id );
    assert( glGetError() == GL_NO_ERROR );
    return shader_id ;
 }
 // ---------------------------------------------------------------------------------------------
 // Gets uniform location + warns if it is not active.
 
-GLint Pipeline::getLocation( const char * name )
+GLint Cauce::leerLocation( const char * name )
 {
    using namespace std ;
    assert( name != nullptr );
-   assert( program_id > 0 );
+   assert( id_prog > 0 );
 
-   const GLint location = glGetUniformLocation( program_id, name ); 
+   const GLint location = glGetUniformLocation( id_prog, name ); 
 
    if ( location == -1 )
       cout << "Warning: uniform '" << name << "' is not declared or not used." << endl ;
@@ -151,50 +170,51 @@ GLint Pipeline::getLocation( const char * name )
    return location ;
 }
 // ---------------------------------------------------------------------------------------------
-// Creates, compiles and uses (activates) the program object
 
-void Pipeline::createCompileUseProgram( )
+void Cauce::crearObjetoPrograma( )
 {
    // check preconditions
    using namespace std ;
-   assert( vertex_shader_source != nullptr );
-   assert( fragment_shader_source != nullptr );
-   assert( program_id == 0 );
+   assert( fuente_vertex_shader != nullptr );
+   assert( fuente_fragment_shader != nullptr );
+   assert( id_prog == 0 );
    assert( glGetError() == GL_NO_ERROR );
    
-   // create program, ceate and compile shaders, link program
-   program_id = glCreateProgram() ;  assert( program_id > 0 );
-   createCompileAttachShader( GL_VERTEX_SHADER,   "vertex shader",   vertex_shader_source );
-   createCompileAttachShader( GL_FRAGMENT_SHADER, "fragment shader", fragment_shader_source );
-   if ( geometry_shader_source != nullptr )
-      createCompileAttachShader( GL_GEOMETRY_SHADER, "geometry shader", geometry_shader_source );
-   glLinkProgram( program_id ) ;
+   // crear el programa, compilar los shaders
+   id_prog = glCreateProgram() ;  assert( id_prog > 0 );
+   id_frag_shader = compilarAdjuntarShader( GL_VERTEX_SHADER,   "vertex shader",   fuente_vertex_shader );
+   id_vert_shader = compilarAdjuntarShader( GL_FRAGMENT_SHADER, "fragment shader", fuente_fragment_shader );
+   
 
-   // check for link errors
+   // enlazar el programa y ver si ha habido errores
    GLint estado_prog ;
-   glGetProgramiv( program_id, GL_LINK_STATUS, &estado_prog );
+   glLinkProgram( id_prog ) ;   
+   assert( glGetError() == GL_NO_ERROR );
+   
+   glGetProgramiv( id_prog, GL_LINK_STATUS, &estado_prog );
    if ( estado_prog != GL_TRUE )
-   {  cout << "Program link error, log:" << endl ;
-      glGetProgramInfoLog( program_id, buffer_length, &report_length, buffer );
+   {  
+      cout << "Program link error, log:" << endl ;
+      glGetProgramInfoLog( id_prog, buffer_length, &report_length, buffer );
       cout << buffer << endl ;
       exit(1);
    }
    
-   // use program
-   glUseProgram( program_id );
+   // activar (usar) el programa
+   glUseProgram( id_prog );
    assert( glGetError() == GL_NO_ERROR );
-   cout << "Program object created." << endl ; 
+   cout << "El objeto programa se ha creado sin problemas." << endl ; 
 }
 
 // ---------------------------------------------------------------------------------------------
 // use (activate) this program object for following draw operations
 
    
-void Pipeline::use()
+void Cauce::activar()
 {
-   assert( program_id > 0 );
+   assert( id_prog > 0 );
    assert( glGetError() == GL_NO_ERROR );
-   glUseProgram( program_id );
+   glUseProgram( id_prog );
    assert( glGetError() == GL_NO_ERROR );
 }
 
@@ -205,14 +225,14 @@ void Pipeline::use()
 
 // ---------------------------------------------------------------------------------------------
 
-void Pipeline::setColor( const glm::vec3 & new_color )
+void Cauce::setColor( const glm::vec3 & new_color )
 {
    color = new_color ;
    glVertexAttrib3f(	ind_atrib_colors, color.r, color.g, color.b );
 }
 // ---------------------------------------------------------------------------------------------
 
-void Pipeline::setUseFlatColor( const bool new_use_flat_color )
+void Cauce::setUseFlatColor( const bool new_use_flat_color )
 {
    assert( use_flat_color_loc != -1 ); 
    assert( glGetError() == GL_NO_ERROR );
@@ -221,7 +241,7 @@ void Pipeline::setUseFlatColor( const bool new_use_flat_color )
 }
 // ---------------------------------------------------------------------------------------------
 
-void Pipeline::setProjectionMatrix( const glm::mat4 & new_projection_mat )
+void Cauce::setProjectionMatrix( const glm::mat4 & new_projection_mat )
 {
    assert( projection_mat_loc != -1 ); 
    assert( glGetError() == GL_NO_ERROR );
@@ -231,7 +251,7 @@ void Pipeline::setProjectionMatrix( const glm::mat4 & new_projection_mat )
 }
 // ---------------------------------------------------------------------------------------------
 
-void Pipeline::resetMM()
+void Cauce::resetMM()
 {
    assert( modelview_mat_loc != -1 );  
    assert( glGetError() == GL_NO_ERROR );
@@ -242,13 +262,13 @@ void Pipeline::resetMM()
 }
 // ---------------------------------------------------------------------------------------------
 
-void Pipeline::pushMM()
+void Cauce::pushMM()
 {
    modelview_mat_stack.push_back( modelview_mat );
 }
 // ---------------------------------------------------------------------------------------------
 
-void Pipeline::compMM( const glm::mat4 & mat )
+void Cauce::compMM( const glm::mat4 & mat )
 {
    assert( modelview_mat_loc >= 0 );
    modelview_mat = modelview_mat * mat ;
@@ -256,7 +276,7 @@ void Pipeline::compMM( const glm::mat4 & mat )
 }
 // ---------------------------------------------------------------------------------------------
 
-void Pipeline::popMM()
+void Cauce::popMM()
 {
    assert( modelview_mat_loc >= 0 );
    assert( modelview_mat_stack.size() > 0 );
@@ -266,7 +286,7 @@ void Pipeline::popMM()
 }
 // --------------------------------------------------------------------------------------------
 
-const std::string typeName( const GLenum type )
+const std::string NombreTipoGL( const GLenum type )
 {
    std::string name ;
 

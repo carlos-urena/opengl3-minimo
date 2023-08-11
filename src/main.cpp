@@ -35,8 +35,8 @@ VAOdescr
     * vao_ind          = nullptr , // identificador de VAO (vertex array object) para secuencia indexada
     * vao_no_ind       = nullptr , // identificador de VAO para secuencia de vértices no indexada
     * vao_glm          = nullptr ; // identificador de VAO para secuencia de vértices guardada en vectors de vec3
-Pipeline 
-    * cauce            = nullptr ; // 'pipeline object' --> puntero al objeto 'Pipeline' actual
+Cauce 
+    * cauce            = nullptr ; // puntero al objeto de la clase 'Cauce' en uso.
 
 
 // ---------------------------------------------------------------------------------------------
@@ -186,7 +186,7 @@ void VisualizarFrame( )
     // usar (acrivar) el objeto programa (no es necesario hacerlo en 
     // cada frame si solo hay uno de estos objetos, pero se incluye 
     // para hacer explícito que el objeto programa debe estar activado)
-    cauce->use();
+    cauce->activar();
 
     // establece la zona visible (toda la ventana)
     glViewport( 0, 0, ancho_actual, alto_actual );
@@ -369,7 +369,7 @@ void InicializaOpenGL()
     
     glClearColor( 1.0, 1.0, 1.0, 0.0 ); // color para 'glClear' (blanco, 100% opaco)
     glDisable( GL_CULL_FACE );          // dibujar todos los triángulos independientemente de su orientación
-    cauce = new Pipeline() ;            // crear el objeto programa (variable global 'cauce')
+    cauce = new Cauce() ;            // crear el objeto programa (variable global 'cauce')
     
     assert( cauce != nullptr );
     assert( glGetError() == GL_NO_ERROR );
