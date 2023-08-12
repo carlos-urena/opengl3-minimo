@@ -14,7 +14,7 @@
 
 // incluir cabeceras auxiliares para shaders, vaos y vbos.
 #include "shaders.h"     // ProgramObject and BasicProgramObject
-#include "vaos-vbos.h"   // AttribsVBO, IndexesVBO, VAOdescr
+#include "vaos-vbos.h"   // AttribsVBO, IndexesVBO, DescrVAO
 
 // ---------------------------------------------------------------------------------------------
 // Constantes y variables globales
@@ -31,7 +31,7 @@ GLFWwindow *
 int
     ancho_actual        = 512 ,    // ancho actual del framebuffer, en pixels
     alto_actual         = 512 ;    // alto actual del framebuffer, en pixels
-VAOdescr 
+DescrVAO
     * vao_ind          = nullptr , // identificador de VAO (vertex array object) para secuencia indexada
     * vao_no_ind       = nullptr , // identificador de VAO para secuencia de vértices no indexada
     * vao_glm          = nullptr ; // identificador de VAO para secuencia de vértices guardada en vectors de vec3
@@ -41,7 +41,7 @@ Cauce
 
 // ---------------------------------------------------------------------------------------------
 // función que se encarga de visualizar un triángulo relleno en modo diferido,
-// no indexado, usando la clase 'VAOdescr' (declarada en 'vaos-vbos.h')
+// no indexado, usando la clase 'DescrVAO' (declarada en 'vaos-vbos.h')
 // el triángulo se dibuja en primer lugar relleno con colores, y luego las aristas en negro
 
 
@@ -61,7 +61,7 @@ void DibujarTriangulo_NoInd( )
             colores   [ num_verts*3 ] = {  1.0, 0.0, 0.0,   0.0, 1.0, 0.0,  0.0, 0.0, 1.0 };
 
         // Crear VAO con posiciones, colores e indices
-        vao_no_ind = new VAOdescr( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
+        vao_no_ind = new DescrVAO( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
         vao_no_ind->addAttrib( cauce->ind_atrib_colors, GL_FLOAT, 3, num_verts, colores );    
     }
     
@@ -87,7 +87,7 @@ void DibujarTriangulo_NoInd( )
 
 // ---------------------------------------------------------------------------------------------
 // función que se encarga de visualizar un triángulo  en modo diferido,
-// indexado, usando la clase  'VAOdescr' (declarada en vaos-vbos.h)
+// indexado, usando la clase  'DescrVAO' (declarada en vaos-vbos.h)
 // el triángulo se dibuja en primer lugar relleno con colores, y luego las aristas en negro
 
 void DibujarTriangulo_Ind( )
@@ -106,7 +106,7 @@ void DibujarTriangulo_Ind( )
         const GLuint
             indices   [ num_inds    ] = { 0, 1, 2 };
 
-        vao_ind = new VAOdescr( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
+        vao_ind = new DescrVAO( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
         vao_ind->addAttrib( cauce->ind_atrib_colors, GL_FLOAT, 3, num_verts, colores ) ;
         vao_ind->addIndices( GL_UNSIGNED_INT, num_inds, indices );
     }
@@ -148,7 +148,7 @@ void DibujarTriangulo_glm( )
         const vector<vec3>   colores    = {  {1.0, 1.0, 0.0},  {0.0, 1.0, 1.0},  {1.0, 0.0, 1.0} };
         const vector<uvec3>  indices    = {  { 0, 1, 2 }};   // (un único triángulo)      
 
-        vao_glm = new VAOdescr( cauce->num_atribs, posiciones );
+        vao_glm = new DescrVAO( cauce->num_atribs, posiciones );
         vao_glm->addAttrib( cauce->ind_atrib_colors, colores ) ;
         vao_glm->addIndices( indices );
 

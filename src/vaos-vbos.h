@@ -9,7 +9,7 @@
 
 // Guarada los datos y metadatos de un VBO con una tabla de atributos de vértice
 //
-class AttrVBOdescr
+class DescrVBOAtribs
 {
    private: 
 
@@ -25,46 +25,39 @@ class AttrVBOdescr
    const void * data     = nullptr ; // datos originales en la CPU (null antes de saberlos, no null después)
    void *       own_data = nullptr ; // si no nulo, tiene copia de los datos (propiedad de este objeto).
    
-   void copyData() ; // incializa 'own_data' con una copia de los datos en 'data', y apunta 'data' a 'own_data'
+   void copyData() ; // copia los datos del VBO a una zona de memoria controlada por esta instancia
 
    public:
 
    // constructores, asumen offset y stride a 0 (AOS con una tabla por VBO)
-   AttrVBOdescr( const unsigned p_index, const GLenum p_type, const unsigned p_size, 
+   
+   DescrVBOAtribs( const unsigned p_index, const GLenum p_type, const unsigned p_size, 
                const unsigned long p_count, const void *p_data );  
-   AttrVBOdescr( const unsigned p_index, const std::vector<glm::vec3> & src_vec );
-   AttrVBOdescr( const unsigned p_index, const std::vector<glm::vec2> & src_vec );
+   DescrVBOAtribs( const unsigned p_index, const std::vector<glm::vec3> & src_vec );
+   DescrVBOAtribs( const unsigned p_index, const std::vector<glm::vec2> & src_vec );
 
-   AttrVBOdescr() = delete ; // impide usar constructor por defecto (sin parámetros)
+   DescrVBOAtribs() = delete ; // impide usar constructor por defecto (sin parámetros)
 
-   // comprueba que los valores son correctos, aborta si no
-   void comprobar() const ; 
-
-   // Crea y el VBO en la GPU (solo se puede llamar una vez), deja el VBO habilitado
-   void crearVBO() ;
+   void comprobar() const ; // comprueba que los valores son correctos, aborta si no
+   void crearVBO() ; // Crea y el VBO en la GPU (solo se puede llamar una vez), deja el VBO habilitado
 
    // Devuelve true solo si el VBO ya ha sido creado en la GPU
-   inline bool creado() const { return buffer != 0; }
+   inline bool creado() const { return buffer != 0; } 
 
-   // devuelve el índice 
+   // Devuelve el índice de este VBO
    inline GLuint getIndex() const { return index; }
 
-   // devuelve el número de vértices
+   // Devuelve el número de vértices
    inline GLuint getCount() const { return count; }
 
-   // Dibuja un VBO de posiciones usando el modo especificado
-   // supone que el VAO, los VBOs de atributos y este VBO ya están 'binded' en openGL.
-   void drawArrays( const GLenum mode ) ;
-
-   // destructor
-   ~AttrVBOdescr();
+   ~DescrVBOAtribs();  // libera toda la memoria ocupada por el VBO en CPU y en GPU
 } ;
 
 // --------------------------------------------------------------------------------------------
 
 // Guarda los datos y metadatos de un VBO de índices
 //
-class IndsVBOdescr
+class DescrVBOInds
 {
    private:
 
@@ -81,10 +74,10 @@ class IndsVBOdescr
 
    public:
 
-   IndsVBOdescr() = delete ; // impide usar constructor por defecto (sin parámetros)
+   DescrVBOInds() = delete ; // impide usar constructor por defecto (sin parámetros)
 
-   IndsVBOdescr( const GLenum p_type, const GLsizei p_count, const void * p_data );
-   IndsVBOdescr( const std::vector<glm::uvec3> & src_vec );
+   DescrVBOInds( const GLenum p_type, const GLsizei p_count, const void * p_data );
+   DescrVBOInds( const std::vector<glm::uvec3> & src_vec );
 
    // comprueba que los valores son correctos, aborta si no
    void comprobar() const ;
@@ -108,7 +101,7 @@ class IndsVBOdescr
    void drawElements( const GLenum mode );
 
    // destruye un VAO (libera memoria dinámica de la aplic. y elimina VAO en la GPU)
-   ~IndsVBOdescr();
+   ~DescrVBOInds();
 
 } ;
 
@@ -116,7 +109,7 @@ class IndsVBOdescr
 
 // Guarda los datos y metadatos de los VBOs que forman un VAO
 //
-class VAOdescr
+class DescrVAO
 {
    private:
 
@@ -133,31 +126,34 @@ class VAOdescr
    GLsizei idxs_count = 0 ;
 
    // si la secuencia es indexada, VBO de attrs, en otro caso
-   IndsVBOdescr * idxs_vbo   = nullptr ; 
+   DescrVBOInds * idxs_vbo   = nullptr ; 
    
    // array de descriptores de VBOs de atributos
-   std::vector<AttrVBOdescr *> attr_vbos ;
+   std::vector<DescrVBOAtribs *> attr_vbos ;
 
    // array que indica si cada tabla de atributos está habilitada o deshabilitada
    std::vector<bool> attr_habilitado ;
 
+   void check( const unsigned index ); // comprueba precondiciones antes de añadir tabla de atribs
+
    public:    
 
    // inicializa un descriptor de VAO no indexado, leyendo una tabla de posiciones de vértices
-   VAOdescr( const unsigned p_num_atribs, const std::vector<glm::vec3> & tabla_posiciones ) ;
-   VAOdescr( const unsigned p_num_atribs, const std::vector<glm::vec2> & tabla_posiciones ) ;
+   DescrVAO( const unsigned p_num_atribs, const std::vector<glm::vec3> & tabla_posiciones ) ;
+   DescrVAO( const unsigned p_num_atribs, const std::vector<glm::vec2> & tabla_posiciones ) ;
 
    // incializa un descriptor de VAO no indexado, leyendo de un array (tipo C) de posiciones de vértices
-   VAOdescr( const unsigned p_num_atribs, const GLenum p_type, const unsigned p_size, const unsigned long p_count, const void *p_data ) ;
+   DescrVAO( const unsigned p_num_atribs, const GLenum p_type, const unsigned p_size, const unsigned long p_count, const void *p_data ) ;
 
-   VAOdescr() = delete ; // impide usar constructor por defecto (sin parámetros)
-
+   DescrVAO() = delete ; // impide usar constructor por defecto (sin parámetros)
 
    // crea el VAO en la GPU
    void crearVAO();
 
    // añade una tabla de atributos a un VAO
+
    void addAttrib( const unsigned index, const std::vector<glm::vec3> tabla_atributo  );
+   void addAttrib( const unsigned index, const std::vector<glm::vec2> tabla_atributo  );
    void addAttrib( const unsigned index, const GLenum p_type, const unsigned p_size, 
                    const unsigned long p_count, const void *p_data );
 
@@ -171,7 +167,7 @@ class VAOdescr
    void draw( const GLenum mode ) ;
 
    // ....
-   ~VAOdescr();
+   ~DescrVAO();
 } ;
 
 
