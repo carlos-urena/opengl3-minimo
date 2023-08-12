@@ -1,7 +1,7 @@
 // Shader program object wrapper class
 
-#ifndef SHADERS_H
-#define SHADERS_H
+#ifndef CAUCE_H
+#define CAUCE_H
 
 #include <vector>
 #include "glincludes.h"

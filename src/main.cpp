@@ -13,8 +13,8 @@
 #include "glincludes.h"
 
 // incluir cabeceras auxiliares para shaders, vaos y vbos.
-#include "shaders.h"     // ProgramObject and BasicProgramObject
-#include "vaos-vbos.h"   // AttribsVBO, IndexesVBO, DescrVAO
+#include "cauce.h"      // clase 'Cauce'
+#include "vaos-vbos.h"  // clases 'DescrVAO', 'DescrVBOAtribs' y 'DescrVBOInds' 
 
 // ---------------------------------------------------------------------------------------------
 // Constantes y variables globales

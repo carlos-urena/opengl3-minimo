@@ -3,7 +3,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "shaders.h"
+#include "cauce.h"
 
 // ---------------------------------------------------------------------------------------------
 
@@ -285,79 +285,3 @@ void Cauce::popMM()
    glUniformMatrix4fv( modelview_mat_loc, 1, GL_FALSE, glm::value_ptr(modelview_mat) );
 }
 // --------------------------------------------------------------------------------------------
-
-const std::string NombreTipoGL( const GLenum type )
-{
-   std::string name ;
-
-   switch( type )
-   {
-      case GL_FLOAT       : name = "float" ; break ;
-      case GL_FLOAT_VEC2  : name = "vec2" ; break ;
-      case GL_FLOAT_VEC3  : name = "vec3" ; break ;
-      case GL_FLOAT_VEC4  : name = "vec4" ; break ;
-      case GL_INT	        : name = "int" ; break ;  
-      case GL_INT_VEC2	  : name = "ivec2" ; break ;
-      case GL_INT_VEC3	  : name = "ivec3" ; break ;
-      case GL_INT_VEC4	  : name = "ivec4" ; break ;
-      case GL_UNSIGNED_INT	      : name = "unsigned int" ; break ;
-      case GL_UNSIGNED_INT_VEC2	: name = "uvec2" ; break ;
-      case GL_UNSIGNED_INT_VEC3	: name = "uvec3" ; break ;
-      case GL_UNSIGNED_INT_VEC4	: name = "uvec4" ; break ;
-      case GL_BOOL	   : name = "bool" ; break ;
-      case GL_BOOL_VEC2	: name = "bvec2" ; break ;
-      case GL_BOOL_VEC3	: name = "bvec3" ; break ;
-      case GL_BOOL_VEC4	: name = "bvec4" ; break ;
-      case GL_FLOAT_MAT2	: name = "mat2" ; break ;
-      case GL_FLOAT_MAT3	: name = "mat3" ; break ;
-      case GL_FLOAT_MAT4	: name = "mat4" ; break ;
-      case GL_FLOAT_MAT2x3	: name = "mat2x3" ; break ;
-      case GL_FLOAT_MAT2x4	: name = "mat2x4" ; break ;
-      case GL_FLOAT_MAT3x2	: name = "mat3x2" ; break ;
-      case GL_FLOAT_MAT3x4	: name = "mat3x4" ; break ;
-      case GL_FLOAT_MAT4x2	: name = "mat4x2" ; break ;
-      case GL_FLOAT_MAT4x3	: name = "mat4x3" ; break ;
-      case GL_SAMPLER_1D	: name = "sampler1D" ; break ;
-      case GL_SAMPLER_2D	: name = "sampler2D" ; break ;
-      case GL_SAMPLER_3D	: name = "sampler3D" ; break ;
-      case GL_SAMPLER_CUBE	: name = "samplerCube" ; break ;
-      case GL_SAMPLER_1D_SHADOW	: name = "sampler1DShadow" ; break ;
-      case GL_SAMPLER_2D_SHADOW	: name = "sampler2DShadow" ; break ;
-      case GL_SAMPLER_1D_ARRAY	: name = "sampler1DArray" ; break ;
-      case GL_SAMPLER_2D_ARRAY	: name = "sampler2DArray" ; break ;
-      case GL_SAMPLER_1D_ARRAY_SHADOW	: name = "sampler1DArrayShadow" ; break ;
-      case GL_SAMPLER_2D_ARRAY_SHADOW	: name = "sampler2DArrayShadow" ; break ;
-      case GL_SAMPLER_2D_MULTISAMPLE	: name = "sampler2DMS" ; break ;
-      case GL_SAMPLER_2D_MULTISAMPLE_ARRAY : name = "sampler2DMSArray" ; break ;
-      case GL_SAMPLER_CUBE_SHADOW	  : name = "samplerCubeShadow" ; break ;
-      case GL_SAMPLER_BUFFER	        : name = "samplerBuffer" ; break ;
-      case GL_SAMPLER_2D_RECT	        : name = "sampler2DRect" ; break ;
-      case GL_SAMPLER_2D_RECT_SHADOW  : name = "sampler2DRectShadow" ; break ;
-      case GL_INT_SAMPLER_1D	        : name = "isampler1D" ; break ;
-      case GL_INT_SAMPLER_2D	        : name = "isampler2D" ; break ;
-      case GL_INT_SAMPLER_3D	        : name = "isampler3D" ; break ;
-      case GL_INT_SAMPLER_CUBE	     : name = "isamplerCube" ; break ;
-      case GL_INT_SAMPLER_1D_ARRAY	  : name = "isampler1DArray" ; break ;
-      case GL_INT_SAMPLER_2D_ARRAY	  : name = "isampler2DArray" ; break ;
-      case GL_INT_SAMPLER_2D_MULTISAMPLE	     : name = "isampler2DMS" ; break ;
-      case GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY : name = "isampler2DMSArray" ; break ;
-      case GL_INT_SAMPLER_BUFFER	         : name = "isamplerBuffer" ; break ;
-      case GL_INT_SAMPLER_2D_RECT	      : name = "isampler2DRect" ; break ;
-      case GL_UNSIGNED_INT_SAMPLER_1D	   : name = "usampler1D" ; break ;
-      case GL_UNSIGNED_INT_SAMPLER_2D	   : name = "usampler2D" ; break ;
-      case GL_UNSIGNED_INT_SAMPLER_3D	   : name = "usampler3D" ; break ;
-      case GL_UNSIGNED_INT_SAMPLER_CUBE	: name = "usamplerCube" ; break ;
-      case GL_UNSIGNED_INT_SAMPLER_1D_ARRAY	: name = "usampler2DArray" ; break ;
-      case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY	: name = "usampler2DArray" ; break ;
-      case GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE	      : name = "usampler2DMS" ; break ;
-      case GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY	: name = "usampler2DMSArray" ; break ;
-      case GL_UNSIGNED_INT_SAMPLER_BUFFER	   : name = "usamplerBuffer" ; break ;
-      case GL_UNSIGNED_INT_SAMPLER_2D_RECT	: name = "usampler2DRect" ; break ;
-      default : assert( false ); break ;
-   
-   }
-   return name ;
-}
-
-
-
