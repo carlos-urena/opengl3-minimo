@@ -6,10 +6,6 @@
 #include <vector>
 #include "glincludes.h"
 
-// devuelve el nombre de un tipo OpenGL, a partir de 
-// la correspondiente constante simbólica
-const std::string NombreTipoGL( const GLenum tipo ) ;
-
 
 // ****************************************************************************************
 
