@@ -25,7 +25,7 @@ class DescrVBOAtribs
    const void * data     = nullptr ; // datos originales en la CPU (null antes de saberlos, no null después)
    void *       own_data = nullptr ; // si no nulo, tiene copia de los datos (propiedad de este objeto).
    
-   void copyData() ; // copia los datos del VBO a una zona de memoria controlada por esta instancia
+   void copyData() ; // copia los datos del VBO desde 'data' a 'own_data'
 
    public:
 
