@@ -62,24 +62,24 @@ void DibujarTriangulo_NoInd( )
 
         // Crear VAO con posiciones, colores e indices
         vao_no_ind = new DescrVAO( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
-        vao_no_ind->addAttrib( cauce->ind_atrib_colors, GL_FLOAT, 3, num_verts, colores );    
+        vao_no_ind->addAttrib( cauce->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores );    
     }
     
     assert( glGetError() == GL_NO_ERROR );
 
     // duibujar relleno usando los colores del VAO
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    cauce->setUseFlatColor( false );
-    vao_no_ind->habilitarAttrib( cauce->ind_atrib_colors, true );
+    cauce->fijarUsarColorPlano( false );
+    vao_no_ind->habilitarAttrib( cauce->ind_atrib_colores, true );
     vao_no_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
 
     // dibujar las líneas usando color negro
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    cauce->setUseFlatColor( true );
-    cauce->setColor( { 0.0, 0.0, 0.0 });
-    vao_no_ind->habilitarAttrib( cauce->ind_atrib_colors, false );
+    cauce->fijarUsarColorPlano( true );
+    cauce->fijarColor( { 0.0, 0.0, 0.0 });
+    vao_no_ind->habilitarAttrib( cauce->ind_atrib_colores, false );
     vao_no_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
@@ -107,22 +107,22 @@ void DibujarTriangulo_Ind( )
             indices   [ num_inds    ] = { 0, 1, 2 };
 
         vao_ind = new DescrVAO( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
-        vao_ind->addAttrib( cauce->ind_atrib_colors, GL_FLOAT, 3, num_verts, colores ) ;
+        vao_ind->addAttrib( cauce->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores ) ;
         vao_ind->addIndices( GL_UNSIGNED_INT, num_inds, indices );
     }
    
     assert( glGetError() == GL_NO_ERROR );
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    cauce->setUseFlatColor( false );
-    vao_ind->habilitarAttrib( cauce->ind_atrib_colors, true );
+    cauce->fijarUsarColorPlano( false );
+    vao_ind->habilitarAttrib( cauce->ind_atrib_colores, true );
     vao_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
    
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    cauce->setColor( { 0.0, 0.0, 0.0 });
-    vao_ind->habilitarAttrib( cauce->ind_atrib_colors, false );
+    cauce->fijarColor( { 0.0, 0.0, 0.0 });
+    vao_ind->habilitarAttrib( cauce->ind_atrib_colores, false );
     vao_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
@@ -149,7 +149,7 @@ void DibujarTriangulo_glm( )
         const vector<uvec3>  indices    = {  { 0, 1, 2 }};   // (un único triángulo)      
 
         vao_glm = new DescrVAO( cauce->num_atribs, posiciones );
-        vao_glm->addAttrib( cauce->ind_atrib_colors, colores ) ;
+        vao_glm->addAttrib( cauce->ind_atrib_colores, colores ) ;
         vao_glm->addIndices( indices );
 
         assert( glGetError() == GL_NO_ERROR );
@@ -158,15 +158,15 @@ void DibujarTriangulo_glm( )
     assert( glGetError() == GL_NO_ERROR );
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    cauce->setUseFlatColor( false );
-    vao_glm->habilitarAttrib( cauce->ind_atrib_colors, true );
+    cauce->fijarUsarColorPlano( false );
+    vao_glm->habilitarAttrib( cauce->ind_atrib_colores, true );
     vao_glm->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
    
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-    cauce->setColor( { 0.0, 0.0, 0.0 });
-    vao_glm->habilitarAttrib( cauce->ind_atrib_colors, false );
+    cauce->fijarColor( { 0.0, 0.0, 0.0 });
+    vao_glm->habilitarAttrib( cauce->ind_atrib_colores, false );
     vao_glm->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
@@ -196,7 +196,7 @@ void VisualizarFrame( )
     cauce->resetMM();
 
     // fija la matriz de proyeccion (la hace igual a la matriz identidad)
-    cauce->setProjectionMatrix( glm::mat4(1.0) );
+    cauce->fijarMatrizProyeccion( glm::mat4(1.0) );
 
     // limpiar la ventana
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -208,7 +208,7 @@ void VisualizarFrame( )
     DibujarTriangulo_NoInd();
 
     // usa el color plano para el segundo triángulo
-    cauce->setUseFlatColor( true );
+    cauce->fijarUsarColorPlano( true );
 
     // dibujar triángulo indexado (rotado y luego desplazado) 
     cauce->pushMM();

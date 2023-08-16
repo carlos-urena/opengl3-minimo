@@ -43,15 +43,15 @@ class Cauce
    // usar (activar) el objeto programa para las siguientes operaciones de visualización
    void activar();
 
-   // sets current color
-   // @param new_color (glm::vec3) new color to use for drawing without vertex colors 
+   // Fija el color actual (valor por defecto del aributo de color)
+   // @param nuevo_color (glm::vec3) nuevo color para visualizaciones sin tabla de colores. 
    //
-   void setColor( const glm::vec3 & new_color );
+   void fijarColor( const glm::vec3 & nuevo_color );
 
    // set 'use flat color' flag to true or false 
    // @param new_use_flat_color (bool) - 
    //
-   void setUseFlatColor( const bool new_use_flat_color );
+   void fijarUsarColorPlano( const bool nuevo_usar_color_plano );
 
    // resets the modelview matrix (MM) stack and set modelview to identity
    void resetMM();
@@ -68,13 +68,13 @@ class Cauce
    void popMM();
 
    // sets the projection matrix
-   void setProjectionMatrix( const glm::mat4 & new_projection_mat );
+   void fijarMatrizProyeccion( const glm::mat4 & new_projection_mat );
 
    // index for the vertex positions attribute (must be cero)
    static constexpr GLuint ind_atrib_positions = 0 ; 
 
    // index for the vertex colors attribute (shaders must use attribute with index 1)
-   static constexpr GLuint ind_atrib_colors = 1 ;
+   static constexpr GLuint ind_atrib_colores = 1 ;
 
    // total number of attributes these program objects handles (0->positions, 1->colors)
    static constexpr GLuint num_atribs = 2 ;
@@ -107,7 +107,7 @@ class Cauce
    glm::mat4              projection_mat     = glm::mat4(1.0);  // current projection matrix (initially equal to the identity matrix)
    GLint                  projection_mat_loc = -1 ;             // uniform location for projection matrix
    glm::vec3              color              = { 0.0, 0.0, 0.0 }; // current color 
-   GLint                  use_flat_color_loc = -1 ;               // location for the uniform 'use flat color'
+   GLint                  loc_usar_color_plano = -1 ;               // location for the uniform 'use flat color'
    
 };
 

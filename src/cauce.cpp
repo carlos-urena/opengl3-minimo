@@ -85,7 +85,7 @@ void Cauce::inicializarUniforms()
 {
    modelview_mat_loc  = leerLocation( "u_mat_modelview" );      
    projection_mat_loc = leerLocation( "u_mat_proyeccion" );     
-   use_flat_color_loc = leerLocation( "u_usar_color_plano" );     
+   loc_usar_color_plano = leerLocation( "u_usar_color_plano" );     
 }
 // ---------------------------------------------------------------------------------------------
 
@@ -225,23 +225,23 @@ void Cauce::activar()
 
 // ---------------------------------------------------------------------------------------------
 
-void Cauce::setColor( const glm::vec3 & new_color )
+void Cauce::fijarColor( const glm::vec3 & nuevo_color )
 {
-   color = new_color ;
-   glVertexAttrib3f(	ind_atrib_colors, color.r, color.g, color.b );
+   color = nuevo_color ;
+   glVertexAttrib3f(	ind_atrib_colores, color.r, color.g, color.b );
 }
 // ---------------------------------------------------------------------------------------------
 
-void Cauce::setUseFlatColor( const bool new_use_flat_color )
+void Cauce::fijarUsarColorPlano( const bool nuevo_usar_color_plano )
 {
-   assert( use_flat_color_loc != -1 ); 
+   assert( loc_usar_color_plano != -1 ); 
    assert( glGetError() == GL_NO_ERROR );
-   glUniform1i( use_flat_color_loc, new_use_flat_color );
+   glUniform1i( loc_usar_color_plano, nuevo_usar_color_plano );
    assert( glGetError() == GL_NO_ERROR );
 }
 // ---------------------------------------------------------------------------------------------
 
-void Cauce::setProjectionMatrix( const glm::mat4 & new_projection_mat )
+void Cauce::fijarMatrizProyeccion( const glm::mat4 & new_projection_mat )
 {
    assert( projection_mat_loc != -1 ); 
    assert( glGetError() == GL_NO_ERROR );
