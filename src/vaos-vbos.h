@@ -4,6 +4,7 @@
 #include <vector>
 #include "glincludes.h"
 
+#define CError()  assert( glGetError() == GL_NO_ERROR );
 
 // --------------------------------------------------------------------------------------------
 
@@ -25,7 +26,7 @@ class DescrVBOAtribs
    const void * data     = nullptr ; // datos originales en la CPU (null antes de saberlos, no null después)
    void *       own_data = nullptr ; // si no nulo, tiene copia de los datos (propiedad de este objeto).
    
-   void copyData() ; // copia los datos del VBO desde 'data' a 'own_data'
+   void copyData() ; // copia los datos del VBO a una zona de memoria controlada por esta instancia
 
    public:
 
@@ -70,16 +71,41 @@ class DescrVBOInds
    const void * indices     = nullptr ; // datos originales en la CPU (null antes de saberlos, no null después)
    void *       own_indices = nullptr ; // si no nulo, tiene copia de los datos (propiedad de este objeto).
    
-   void copyIndices() ; // incializa 'own_indices' con una copia de los datos en 'indices', y apunta 'indices' a 'own_indices'
+   // Inicializa 'own_indices' con una copia de los datos en 'indices', y apunta 
+   // 'indices' a 'own_indices'
+   //
+   void copyIndices() ; 
 
    public:
 
    DescrVBOInds() = delete ; // impide usar constructor por defecto (sin parámetros)
 
-   DescrVBOInds( const GLenum p_type, const GLsizei p_count, const void * p_data );
+   // Crea un descriptor de VBO de índices, a partir de sus metadatos (type, count) y un 
+   // puntero a los datos (p_indices)
+   // 
+   // @param p_type  (GLEnum)   tipo de los datos (GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT o GL_UNSIGNED_INT)
+   // @param p_count (unsigned) número de índices (>0)
+   // @param p_data  (void *)   puntero al array de índices (no nulo, solo se lee)   
+   //
+   DescrVBOInds( const GLenum p_type, const GLsizei p_count, const void * p_data ); 
+
+   // Crea un descriptor de VBO de índices, a partir de una tabla de tuplas con 3 enteros
+   // (se puede usar típicamente para tablas de triángulos)
+   // 
+   // @param src_vec  (vector<uvec3> &)  tabla de tuplas de 3 enteros (triángulos)
+   //
+   DescrVBOInds( const std::vector<unsigned> & src_vec );
+   
+   
+   // Crea un descriptor de VBO de índices, a partir de una tabla de tuplas con 3 enteros
+   // (se puede usará típicamente para tablas de triángulos)
+   // 
+   // @param src_vec  (vector<uvec3> &)  tabla de tuplas de 3 enteros (triángulos)
+   // 
    DescrVBOInds( const std::vector<glm::uvec3> & src_vec );
 
-   // comprueba que los valores son correctos, aborta si no
+
+   // Comprueba que los metadatos son correctos, aborta si no
    void comprobar() const ;
 
    // Devuelve true solo si el VBO ya ha sido creado en la GPU
@@ -88,17 +114,8 @@ class DescrVBOInds
    // Crear y activar el VBO de índices, es decir:
    //   1. Crea el VBO y envía la tabla de índices a la GPU (únicamente la primera vez)
    //   2. Hace 'bind' de la tabla en el 'target' GL_ELEMENT_ARRAY_BUFFER
+   //
    void crearVBO( );
-
-   // devuelve el número de vértices
-   //inline GLuint getCount() const { return count; }
-
-   // devuelve el número de vértices
-   inline GLuint getType() const { return type; }
-
-   // Dibuja el VAO actualmente activado usando esta tabla de índices
-   // supone que el VAO, los VBOs de atributos y este VBO de índices ya están activados en openGL.
-   void drawElements( const GLenum mode );
 
    // destruye un VAO (libera memoria dinámica de la aplic. y elimina VAO en la GPU)
    ~DescrVBOInds();
@@ -125,39 +142,104 @@ class DescrVAO
    // número de índices en la tabla de índices (si hay índices, en otro caso 0)
    GLsizei idxs_count = 0 ;
 
+   // si hay índices, tiene el tipo de los índices 
+   GLenum idxs_type ;
+
    // si la secuencia es indexada, VBO de attrs, en otro caso
-   DescrVBOInds * idxs_vbo   = nullptr ; 
+   DescrVBOInds * buffer_indices   = nullptr ; 
    
-   // array de descriptores de VBOs de atributos
-   std::vector<DescrVBOAtribs *> attr_vbos ;
+   // vector de punteros a los descriptores de VBOs de atributos
+   std::vector<DescrVBOAtribs *> buffer_atributo ;
 
    // array que indica si cada tabla de atributos está habilitada o deshabilitada
-   std::vector<bool> attr_habilitado ;
+   std::vector<bool> atrib_habilitado ;
 
    void check( const unsigned index ); // comprueba precondiciones antes de añadir tabla de atribs
 
    public:    
 
-   // inicializa un descriptor de VAO no indexado, leyendo una tabla de posiciones de vértices
+   // impide usar constructor por defecto (sin parámetros)
+   DescrVAO() = delete ; 
+
+   // Crea un VAO no indexado, dando una tabla de coordendas (vec3) de posición de vértices
+   //
+   // @param p_num_atribs     (unsigned)      número de atributos que puede tener este VAO 
+   // @param tabla_posiciones (vector<vec3>)  tabla de coordenadas de vértices (únicmante se lee)
+   //
    DescrVAO( const unsigned p_num_atribs, const std::vector<glm::vec3> & tabla_posiciones ) ;
+   
+   // Crea un VAO no indexado, dando una tabla de coordendas (vec2) de posición de vértices
+   //
+   // @param p_num_atribs     (unsigned)      número de atributos que puede tener este VAO 
+   // @param tabla_posiciones (vector<vec3>)  tabla de coordenadas de vértices (únicmante se lee)
+   //
    DescrVAO( const unsigned p_num_atribs, const std::vector<glm::vec2> & tabla_posiciones ) ;
 
-   // incializa un descriptor de VAO no indexado, leyendo de un array (tipo C) de posiciones de vértices
-   DescrVAO( const unsigned p_num_atribs, const GLenum p_type, const unsigned p_size, const unsigned long p_count, const void *p_data ) ;
+   // Crea un descriptor de VAO, a partir de los metadatos de la tabla 
+   // de posiciones (type, size, count) y un puntero a los datos (p_data)
+   // 
+   // @param p_num_atribs (unsigned) número de atributos que tendrá este VAO como máximo 
+   // @param p_type  (GLenum)   tipo de los datos (GL_FLOAT o GL_DOUBLE)
+   // @param p_size  (unsigned) tamaño de las tuplas o vectores (2, 3 o 4)
+   // @param p_count (unisgned) número de tuplas (>0)
+   // @param p_data  (void *)   puntero al array de tuplas (no nulo)   
+   //
+   DescrVAO( const unsigned p_num_atribs, const GLenum p_type, const unsigned p_size, 
+             const unsigned long p_count, const void *p_data ) ;
 
-   DescrVAO() = delete ; // impide usar constructor por defecto (sin parámetros)
-
-   // crea el VAO en la GPU
+   
+   // Crea el identificador del VAO (array), crea los identificadores de los VBOs asociados, 
+   // transfiere los datos de todas las tablas a la GPU.
+   //
    void crearVAO();
 
-   // añade una tabla de atributos a un VAO
-
+   // Añade una tabla de atributos a este VAO, a partir de un vector de 'vec3' con 
+   // los datos del atributo
+   //
+   // @param index (unsigned) índice del atributo (no puede ser 0, la tabla de posiciones se da en el constructor)
+   // @param tabla_atributo (vector<vec3>) datos para el VBO 
+   //
    void addAttrib( const unsigned index, const std::vector<glm::vec3> tabla_atributo  );
+
+   // Añade una tabla de atributos a este VAO, a partir de un vector de 'vec2' con 
+   // los datos del atributo
+   //
+   // @param index (unsigned) índice del atributo (no puede ser 0, la tabla de posiciones se da en el constructor)
+   // @param tabla_atributo (vector<vec3>) datos para el VBO 
+   //
    void addAttrib( const unsigned index, const std::vector<glm::vec2> tabla_atributo  );
+
+   // Añade una tabla de atributos a este VAO, a partir de los metadatos y datos 
+   // del atributo
+   //
+   // @param index (unsigned) índice del atributo (no puede ser 0, la tabla de posiciones se da en el constructor)
+   // @param tabla_atributo (vector<vec3>) tabla de datos del VBO a crear 
+   //
    void addAttrib( const unsigned index, const GLenum p_type, const unsigned p_size, 
                    const unsigned long p_count, const void *p_data );
 
+   // Añade una tabla de índices a este VAO a partir de los datos en un vector de 'uvec3' 
+   // (por tanto el VAO pasa a ser indexado). Se usa típicamente para tablas de triángulos.
+   //
+   // @param tabla_indices (vector<uvec3>) tabla de índices, organizados en vectores de 3 unsigned (únicamente se lee)
+   //
    void addIndices( const std::vector<glm::uvec3> & tabla_indices );
+   
+   // Añade una tabla de índices a este VAO a partir de 
+   // los datos en un vector de 'uvec3' (por tanto el VAO pasa a ser indexado)
+   // Se usa típicamente para tablas de triángulos.
+   //
+   // @param tabla_indices (vector<uvec3>) tabla de índices, organizados en vectores de 3 unsigned (únicamente se lee)
+   //
+   void addIndices( const std::vector<unsigned> & tabla_indices );
+
+   // Añade una tabla de índices a este VAO a partir de 
+   // los metadatos y datos de la tabla de índices (por tanto el VAO pasa a ser indexado)
+   //
+   // @param p_type (GLenum) tipo de los índices, debe ser:
+   // @param p_count (GLsizei = unsigned long) número de índices en la tabla (>0)
+   // @param p_indices (void *) puntero a la tabla con los índices  
+   //
    void addIndices( const GLenum p_type, const GLsizei p_count, const void * p_indices );
 
    // habilita/deshabilita una tabla de atributos (index no puede ser 0)

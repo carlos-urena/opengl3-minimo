@@ -236,7 +236,7 @@ void VisualizarFrame( )
 void FGE_CambioTamano( GLFWwindow* ventana, int nuevo_ancho, int nuevo_alto )
 {
     using namespace std ;
-    cout << "FGE cambio tamaño, nuevas dimensiones: " << nuevo_ancho << " x " << nuevo_alto << "." << endl ;
+    //cout << "FGE cambio tamaño, nuevas dimensiones: " << nuevo_ancho << " x " << nuevo_alto << "." << endl ;
     ancho_actual      = nuevo_ancho ;
     alto_actual       = nuevo_alto ;
     redibujar_ventana = true ; // fuerza a redibujar la ventana
@@ -247,7 +247,7 @@ void FGE_CambioTamano( GLFWwindow* ventana, int nuevo_ancho, int nuevo_alto )
 void FGE_PulsarLevantarTecla( GLFWwindow* ventana, int key, int scancode, int action, int mods )
 {
     using namespace std ;
-    cout << "FGE pulsar levantar tecla, número de tecla == " << key << "." << endl ;
+    //cout << "FGE pulsar levantar tecla, número de tecla == " << key << "." << endl ;
     // si se pulsa la tecla 'ESC', acabar el programa
     if ( key == GLFW_KEY_ESCAPE )
         terminar_programa = true ;
