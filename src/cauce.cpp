@@ -7,9 +7,8 @@
 
 // ---------------------------------------------------------------------------------------------
 
-
-GLchar  Cauce::buffer[ buffer_length ] ;
-GLsizei Cauce::report_length ; 
+GLchar   Cauce::log_buffer[ Cauce::log_long_max ] ; //  buffer para log 
+GLsizei  Cauce::log_long ;                           // longitud actual del buffer (en chars)
 
 // ---------------------------------------------------------------------------------------------
 // Basic pipeline shaders sources
@@ -83,8 +82,8 @@ Cauce::Cauce()
 
 void Cauce::inicializarUniforms()
 {
-   modelview_mat_loc  = leerLocation( "u_mat_modelview" );      
-   projection_mat_loc = leerLocation( "u_mat_proyeccion" );     
+   loc_mat_modelview  = leerLocation( "u_mat_modelview" );      
+   loc_mat_proyeccion = leerLocation( "u_mat_proyeccion" );     
    loc_usar_color_plano = leerLocation( "u_usar_color_plano" );     
 }
 // ---------------------------------------------------------------------------------------------
@@ -103,8 +102,8 @@ void Cauce::imprimeInfoUniforms()
    {
       GLenum tipo;       // tipo de la variable (float, vec3 or mat4, etc)  
       GLint  n_entradas; // si es array, número de entradas, en otro caso 1.
-      glGetActiveUniform( id_prog, (GLuint)i, buffer_length, &report_length, &n_entradas, &tipo, buffer);
-      cout << "   Uniform " << i << ": " << buffer << " (" << NombreTipoGL(tipo) << " x" << n_entradas << ")." << endl ;
+      glGetActiveUniform( id_prog, (GLuint)i, log_long_max, &log_long, &n_entradas, &tipo, log_buffer);
+      cout << "   Uniform " << i << ": " << log_buffer << " (" << NombreTipoGL(tipo) << " x" << n_entradas << ")." << endl ;
    }
    assert( glGetError() == GL_NO_ERROR );
 }
@@ -133,11 +132,11 @@ GLuint Cauce::compilarAdjuntarShader
    glShaderSource( shader_id, 1, (const GLchar **) &shader_source, &source_length ) ;
    glCompileShader( shader_id ) ;
 
-   glGetShaderInfoLog( shader_id, buffer_length, &report_length, buffer );
-   if ( report_length > 0 )
+   glGetShaderInfoLog( shader_id, log_long_max, &log_long, log_buffer );
+   if ( log_long > 0 )
    {
       cout << shader_description << " compilation log: " << endl ;
-      cout << buffer << endl ;
+      cout << log_buffer << endl ;
    }
 
    GLint compile_status ;
@@ -190,13 +189,18 @@ void Cauce::crearObjetoPrograma( )
    GLint estado_prog ;
    glLinkProgram( id_prog ) ;   
    assert( glGetError() == GL_NO_ERROR );
+
+   glGetProgramInfoLog( id_prog, log_long_max, &log_long, log_buffer );
+   if ( log_long > 0 )
+   {
+      cout << "Log de enlazado del objeto programa:" << endl ;
+      cout << log_buffer << endl ;
+   }
    
    glGetProgramiv( id_prog, GL_LINK_STATUS, &estado_prog );
    if ( estado_prog != GL_TRUE )
    {  
-      cout << "Program link error, log:" << endl ;
-      glGetProgramInfoLog( id_prog, buffer_length, &report_length, buffer );
-      cout << buffer << endl ;
+      cout << "Errores al enlazar el objeto programa. Aborto." << endl ;
       exit(1);
    }
    
@@ -218,11 +222,6 @@ void Cauce::activar()
    assert( glGetError() == GL_NO_ERROR );
 }
 
-
-
-// ----------------------------------------------------------------------------------------------------
-
-
 // ---------------------------------------------------------------------------------------------
 
 void Cauce::fijarColor( const glm::vec3 & nuevo_color )
@@ -230,6 +229,23 @@ void Cauce::fijarColor( const glm::vec3 & nuevo_color )
    color = nuevo_color ;
    glVertexAttrib3f(	ind_atrib_colores, color.r, color.g, color.b );
 }
+// -----------------------------------------------------------------------------
+
+void Cauce::pushColor()
+{
+   pila_colores.push_back( color );
+}
+// -----------------------------------------------------------------------------
+
+void Cauce::popColor()
+{
+   using namespace glm ;
+   assert( pila_colores.size() > 0 );
+   const vec3 c = pila_colores[ pila_colores.size()-1] ;
+   pila_colores.pop_back();
+   fijarColor( c );
+}
+
 // ---------------------------------------------------------------------------------------------
 
 void Cauce::fijarUsarColorPlano( const bool nuevo_usar_color_plano )
@@ -243,45 +259,45 @@ void Cauce::fijarUsarColorPlano( const bool nuevo_usar_color_plano )
 
 void Cauce::fijarMatrizProyeccion( const glm::mat4 & new_projection_mat )
 {
-   assert( projection_mat_loc != -1 ); 
+   assert( loc_mat_proyeccion != -1 ); 
    assert( glGetError() == GL_NO_ERROR );
-   projection_mat = new_projection_mat ;
-   glUniformMatrix4fv( projection_mat_loc, 1, GL_FALSE, glm::value_ptr(projection_mat) );
+   mat_proyeccion = new_projection_mat ;
+   glUniformMatrix4fv( loc_mat_proyeccion, 1, GL_FALSE, glm::value_ptr(mat_proyeccion) );
    assert( glGetError() == GL_NO_ERROR );
 }
 // ---------------------------------------------------------------------------------------------
 
 void Cauce::resetMM()
 {
-   assert( modelview_mat_loc != -1 );  
+   assert( loc_mat_modelview != -1 );  
    assert( glGetError() == GL_NO_ERROR );
-   modelview_mat = glm::mat4( 1.0f );
-   modelview_mat_stack.clear();
-   glUniformMatrix4fv( modelview_mat_loc, 1, GL_FALSE, glm::value_ptr(modelview_mat) );
+   mat_modelview = glm::mat4( 1.0f );
+   pila_mat_modelview.clear();
+   glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, glm::value_ptr(mat_modelview) );
    assert( glGetError() == GL_NO_ERROR );
 }
 // ---------------------------------------------------------------------------------------------
 
 void Cauce::pushMM()
 {
-   modelview_mat_stack.push_back( modelview_mat );
+   pila_mat_modelview.push_back( mat_modelview );
 }
 // ---------------------------------------------------------------------------------------------
 
 void Cauce::compMM( const glm::mat4 & mat )
 {
-   assert( modelview_mat_loc >= 0 );
-   modelview_mat = modelview_mat * mat ;
-   glUniformMatrix4fv( modelview_mat_loc, 1, GL_FALSE, glm::value_ptr(modelview_mat) );
+   assert( loc_mat_modelview >= 0 );
+   mat_modelview = mat_modelview * mat ;
+   glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, glm::value_ptr(mat_modelview) );
 }
 // ---------------------------------------------------------------------------------------------
 
 void Cauce::popMM()
 {
-   assert( modelview_mat_loc >= 0 );
-   assert( modelview_mat_stack.size() > 0 );
-   modelview_mat = modelview_mat_stack[ modelview_mat_stack.size()-1 ] ;
-   modelview_mat_stack.pop_back();
-   glUniformMatrix4fv( modelview_mat_loc, 1, GL_FALSE, glm::value_ptr(modelview_mat) );
+   assert( loc_mat_modelview >= 0 );
+   assert( pila_mat_modelview.size() > 0 );
+   mat_modelview = pila_mat_modelview[ pila_mat_modelview.size()-1 ] ;
+   pila_mat_modelview.pop_back();
+   glUniformMatrix4fv( loc_mat_modelview, 1, GL_FALSE, glm::value_ptr(mat_modelview) );
 }
 // --------------------------------------------------------------------------------------------

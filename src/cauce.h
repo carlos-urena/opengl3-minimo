@@ -48,10 +48,16 @@ class Cauce
    //
    void fijarColor( const glm::vec3 & nuevo_color );
 
-   // set 'use flat color' flag to true or false 
-   // @param new_use_flat_color (bool) - 
+   // fija el valor de 'usar_color_plano'  
+   // @param nuevo_usar_color_plano (bool) - nuevo valor del booleano 
    //
    void fijarUsarColorPlano( const bool nuevo_usar_color_plano );
+
+   // inserta una copia del color actual en el tope de la pila de colores
+   void pushColor();
+
+   // extrae un color de la pila de colores y lo fija como color actual.
+   void popColor();
 
    // resets the modelview matrix (MM) stack and set modelview to identity
    void resetMM();
@@ -70,44 +76,42 @@ class Cauce
    // sets the projection matrix
    void fijarMatrizProyeccion( const glm::mat4 & new_projection_mat );
 
-   // index for the vertex positions attribute (must be cero)
-   static constexpr GLuint ind_atrib_positions = 0 ; 
+   // índice del atributo de posiciones (debe ser 0)
+   static constexpr GLuint ind_atrib_posiciones = 0 ; 
 
-   // index for the vertex colors attribute (shaders must use attribute with index 1)
+   // índice del atributo 'color de vértice' 
    static constexpr GLuint ind_atrib_colores = 1 ;
 
-   // total number of attributes these program objects handles (0->positions, 1->colors)
+   // número total de atributos que gestiona este cauce (0->positions, 1->colors)
    static constexpr GLuint num_atribs = 2 ;
    
    protected: // ---------------------------
    
-   // program and shaders ids (0 means still not properly initialized)
-   GLuint id_prog     = 0 ,
-          id_frag_shader = 0 ,
-          id_vert_shader = 0 ;
+   // nombres de objeto programa y objetos shaders
+   GLuint id_prog        = 0 , // nombre o identificador del objeto programa
+          id_frag_shader = 0 , // nombre o identificador del objeto shader (fragment shader)
+          id_vert_shader = 0 ; // nombre o identificador del objeto shader (vertex shader)
 
+   // variables estáticas con información del log errores
+   static constexpr GLsizei  log_long_max = 1024*16 ;     //  longitud máxima en chars del buffer para log 
+   static           GLchar   log_buffer[ log_long_max ] ; //  buffer para log 
+   static           GLsizei  log_long ;                   // longitud actual del buffer
 
-   // pointer to strings with shaders sources (assigned by derived classes constructors)
-   const char * vertex_shader_source   = nullptr,
-              * fragment_shader_source = nullptr,
-              * geometry_shader_source = nullptr ;
+   // pila de colores 
+   std::vector<glm::vec3> pila_colores ;  
 
-   //  buffer used to report logs
-   static constexpr GLsizei  buffer_length = 1024*16 ;
-   static           GLchar   buffer[ buffer_length ] ;
-   static           GLsizei  report_length ; 
+   // variables con valores actuales de los uniforms y locations asociados
 
+   glm::vec3 color                = { 0.0, 0.0, 0.0 }; // color actual
+   GLint     loc_usar_color_plano = -1 ;               // location for the uniform 'use flat color'
    
-
-   // pipeline state variables
-
-   glm::mat4              modelview_mat      = glm::mat4(1.0);  // current modelview matrix (initially equal to the identity matrix)
-   std::vector<glm::mat4> modelview_mat_stack ;                 // stack for saved modelview matrices
-   GLint                  modelview_mat_loc  = -1 ;             // uniform location for the modelview matrix
-   glm::mat4              projection_mat     = glm::mat4(1.0);  // current projection matrix (initially equal to the identity matrix)
-   GLint                  projection_mat_loc = -1 ;             // uniform location for projection matrix
-   glm::vec3              color              = { 0.0, 0.0, 0.0 }; // current color 
-   GLint                  loc_usar_color_plano = -1 ;               // location for the uniform 'use flat color'
+   glm::mat4              mat_modelview      = glm::mat4(1.0);  // current modelview matrix (initially equal to the identity matrix)
+   std::vector<glm::mat4> pila_mat_modelview ;                 // stack for saved modelview matrices
+   GLint                  loc_mat_modelview  = -1 ;             // uniform location for the modelview matrix
+   
+   glm::mat4 mat_proyeccion     = glm::mat4(1.0);  // current projection matrix (initially equal to the identity matrix)
+   GLint     loc_mat_proyeccion = -1 ;             // uniform location for projection matrix
+   
    
 };
 
