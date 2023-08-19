@@ -401,7 +401,7 @@ void DescrVAO::check( const unsigned index )
 }
 // ----------------------------------------------------------------------------
 
-void DescrVAO::addAttrib( const unsigned index, const std::vector<glm::vec3> tabla_atributo )
+void DescrVAO::agregar( const unsigned index, const std::vector<glm::vec3> tabla_atributo )
 {
    // comprobar precondiciones
    check( index );
@@ -413,7 +413,7 @@ void DescrVAO::addAttrib( const unsigned index, const std::vector<glm::vec3> tab
 // ----------------------------------------------------------------------------
 
 
-void DescrVAO::addAttrib( const unsigned index, const std::vector<glm::vec2> tabla_atributo )
+void DescrVAO::agregar( const unsigned index, const std::vector<glm::vec2> tabla_atributo )
 {
    // comprobar precondiciones:
    check( index );
@@ -425,7 +425,7 @@ void DescrVAO::addAttrib( const unsigned index, const std::vector<glm::vec2> tab
 // ----------------------------------------------------------------------------
 
 
-void DescrVAO::addAttrib( const unsigned index, const GLenum p_type, const unsigned p_size, 
+void DescrVAO::agregar( const unsigned index, const GLenum p_type, const unsigned p_size, 
                           const unsigned long p_count, const void *p_data )
 {
    // comprobar precondiciones:
@@ -438,7 +438,7 @@ void DescrVAO::addAttrib( const unsigned index, const GLenum p_type, const unsig
 // ------------------------------------------------------------------------------------------------------
 
 
-void DescrVAO::addIndices( const GLenum p_type, const GLsizei p_count, const void * p_indices )
+void DescrVAO::agregar( const GLenum p_type, const GLsizei p_count, const void * p_indices )
 {
    // comprobar precondiciones:
    assert( array == 0 ); // no permite añadir atributos si el VAO ya esá alojado en la GPU
@@ -454,7 +454,7 @@ void DescrVAO::addIndices( const GLenum p_type, const GLsizei p_count, const voi
 }
 // ------------------------------------------------------------------------------------------------------
 
-void DescrVAO::addIndices( const std::vector<glm::uvec3> & tabla_indices )
+void DescrVAO::agregar( const std::vector<glm::uvec3> & tabla_indices )
 {
    // comprobar precondiciones:
    assert( array == 0 ); // no permite añadir atributos si el VAO ya esá alojado en la GPU
@@ -471,7 +471,7 @@ void DescrVAO::addIndices( const std::vector<glm::uvec3> & tabla_indices )
 
 // ------------------------------------------------------------------------------------------------------
 
-void DescrVAO::addIndices( const std::vector<unsigned> & tabla_indices )
+void DescrVAO::agregar( const std::vector<unsigned> & tabla_indices )
 {
    // comprobar precondiciones:
    assert( array == 0 ); // no permite añadir atributos si el VAO ya esá alojado en la GPU

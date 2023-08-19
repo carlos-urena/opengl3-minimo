@@ -199,7 +199,7 @@ class DescrVAO
    // @param index (unsigned) índice del atributo (no puede ser 0, la tabla de posiciones se da en el constructor)
    // @param tabla_atributo (vector<vec3>) datos para el VBO 
    //
-   void addAttrib( const unsigned index, const std::vector<glm::vec3> tabla_atributo  );
+   void agregar( const unsigned index, const std::vector<glm::vec3> tabla_atributo  );
 
    // Añade una tabla de atributos a este VAO, a partir de un vector de 'vec2' con 
    // los datos del atributo
@@ -207,7 +207,7 @@ class DescrVAO
    // @param index (unsigned) índice del atributo (no puede ser 0, la tabla de posiciones se da en el constructor)
    // @param tabla_atributo (vector<vec3>) datos para el VBO 
    //
-   void addAttrib( const unsigned index, const std::vector<glm::vec2> tabla_atributo  );
+   void agregar( const unsigned index, const std::vector<glm::vec2> tabla_atributo  );
 
    // Añade una tabla de atributos a este VAO, a partir de los metadatos y datos 
    // del atributo
@@ -215,7 +215,7 @@ class DescrVAO
    // @param index (unsigned) índice del atributo (no puede ser 0, la tabla de posiciones se da en el constructor)
    // @param tabla_atributo (vector<vec3>) tabla de datos del VBO a crear 
    //
-   void addAttrib( const unsigned index, const GLenum p_type, const unsigned p_size, 
+   void agregar( const unsigned index, const GLenum p_type, const unsigned p_size, 
                    const unsigned long p_count, const void *p_data );
 
    // Añade una tabla de índices a este VAO a partir de los datos en un vector de 'uvec3' 
@@ -223,7 +223,7 @@ class DescrVAO
    //
    // @param tabla_indices (vector<uvec3>) tabla de índices, organizados en vectores de 3 unsigned (únicamente se lee)
    //
-   void addIndices( const std::vector<glm::uvec3> & tabla_indices );
+   void agregar( const std::vector<glm::uvec3> & tabla_indices );
    
    // Añade una tabla de índices a este VAO a partir de 
    // los datos en un vector de 'uvec3' (por tanto el VAO pasa a ser indexado)
@@ -231,7 +231,7 @@ class DescrVAO
    //
    // @param tabla_indices (vector<uvec3>) tabla de índices, organizados en vectores de 3 unsigned (únicamente se lee)
    //
-   void addIndices( const std::vector<unsigned> & tabla_indices );
+   void agregar( const std::vector<unsigned> & tabla_indices );
 
    // Añade una tabla de índices a este VAO a partir de 
    // los metadatos y datos de la tabla de índices (por tanto el VAO pasa a ser indexado)
@@ -240,7 +240,7 @@ class DescrVAO
    // @param p_count (GLsizei = unsigned long) número de índices en la tabla (>0)
    // @param p_indices (void *) puntero a la tabla con los índices  
    //
-   void addIndices( const GLenum p_type, const GLsizei p_count, const void * p_indices );
+   void agregar( const GLenum p_type, const GLsizei p_count, const void * p_indices );
 
    // habilita/deshabilita una tabla de atributos (index no puede ser 0)
    void habilitarAttrib( const unsigned index, const bool habilitar );

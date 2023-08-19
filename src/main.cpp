@@ -62,7 +62,7 @@ void DibujarTriangulo_NoInd( )
 
         // Crear VAO con posiciones, colores e indices
         vao_no_ind = new DescrVAO( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
-        vao_no_ind->addAttrib( cauce->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores );    
+        vao_no_ind->agregar( cauce->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores );    
     }
     
     assert( glGetError() == GL_NO_ERROR );
@@ -107,8 +107,8 @@ void DibujarTriangulo_Ind( )
             indices   [ num_inds    ] = { 0, 1, 2 };
 
         vao_ind = new DescrVAO( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
-        vao_ind->addAttrib( cauce->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores ) ;
-        vao_ind->addIndices( GL_UNSIGNED_INT, num_inds, indices );
+        vao_ind->agregar( cauce->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores ) ;
+        vao_ind->agregar( GL_UNSIGNED_INT, num_inds, indices );
     }
    
     assert( glGetError() == GL_NO_ERROR );
@@ -149,8 +149,8 @@ void DibujarTriangulo_glm( )
         const vector<uvec3>  indices    = {  { 0, 1, 2 }};   // (un único triángulo)      
 
         vao_glm = new DescrVAO( cauce->num_atribs, posiciones );
-        vao_glm->addAttrib( cauce->ind_atrib_colores, colores ) ;
-        vao_glm->addIndices( indices );
+        vao_glm->agregar( cauce->ind_atrib_colores, colores ) ;
+        vao_glm->agregar( indices );
 
         assert( glGetError() == GL_NO_ERROR );
     }
