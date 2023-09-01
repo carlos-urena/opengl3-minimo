@@ -61,8 +61,8 @@ void DibujarTriangulo_NoInd( )
             colores   [ num_verts*3 ] = {  1.0, 0.0, 0.0,   0.0, 1.0, 0.0,  0.0, 0.0, 1.0 };
 
         // Crear VAO con posiciones, colores e indices
-        vao_no_ind = new DescrVAO( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
-        vao_no_ind->agregar( cauce->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores );    
+        vao_no_ind = new DescrVAO( cauce->num_atribs, new DescrVBOAtribs( cauce->ind_atrib_posiciones, GL_FLOAT, 2, num_verts, posiciones ));
+        vao_no_ind->agregar( new DescrVBOAtribs( cauce->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores ));    
     }
     
     assert( glGetError() == GL_NO_ERROR );
@@ -70,7 +70,7 @@ void DibujarTriangulo_NoInd( )
     // duibujar relleno usando los colores del VAO
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     cauce->fijarUsarColorPlano( false );
-    vao_no_ind->habilitarAttrib( cauce->ind_atrib_colores, true );
+    vao_no_ind->habilitarAtrib( cauce->ind_atrib_colores, true );
     vao_no_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
@@ -79,7 +79,7 @@ void DibujarTriangulo_NoInd( )
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     cauce->fijarUsarColorPlano( true );
     cauce->fijarColor( { 0.0, 0.0, 0.0 });
-    vao_no_ind->habilitarAttrib( cauce->ind_atrib_colores, false );
+    vao_no_ind->habilitarAtrib( cauce->ind_atrib_colores, false );
     vao_no_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
@@ -106,23 +106,23 @@ void DibujarTriangulo_Ind( )
         const GLuint
             indices   [ num_inds    ] = { 0, 1, 2 };
 
-        vao_ind = new DescrVAO( cauce->num_atribs, GL_FLOAT, 2, num_verts, posiciones );
-        vao_ind->agregar( cauce->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores ) ;
-        vao_ind->agregar( GL_UNSIGNED_INT, num_inds, indices );
+        vao_ind = new DescrVAO( cauce->num_atribs, new DescrVBOAtribs( cauce->ind_atrib_posiciones, GL_FLOAT, 2, num_verts, posiciones) );
+        vao_ind->agregar( new DescrVBOAtribs( cauce->ind_atrib_colores, GL_FLOAT, 3, num_verts, colores) ) ;
+        vao_ind->agregar( new DescrVBOInds( GL_UNSIGNED_INT, num_inds, indices ));
     }
    
     assert( glGetError() == GL_NO_ERROR );
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     cauce->fijarUsarColorPlano( false );
-    vao_ind->habilitarAttrib( cauce->ind_atrib_colores, true );
+    vao_ind->habilitarAtrib( cauce->ind_atrib_colores, true );
     vao_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
    
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     cauce->fijarColor( { 0.0, 0.0, 0.0 });
-    vao_ind->habilitarAttrib( cauce->ind_atrib_colores, false );
+    vao_ind->habilitarAtrib( cauce->ind_atrib_colores, false );
     vao_ind->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
@@ -148,9 +148,9 @@ void DibujarTriangulo_glm( )
         const vector<vec3>   colores    = {  {1.0, 1.0, 0.0},  {0.0, 1.0, 1.0},  {1.0, 0.0, 1.0} };
         const vector<uvec3>  indices    = {  { 0, 1, 2 }};   // (un único triángulo)      
 
-        vao_glm = new DescrVAO( cauce->num_atribs, posiciones );
-        vao_glm->agregar( cauce->ind_atrib_colores, colores ) ;
-        vao_glm->agregar( indices );
+        vao_glm = new DescrVAO( cauce->num_atribs, new DescrVBOAtribs( cauce->ind_atrib_posiciones, posiciones ));
+        vao_glm->agregar( new DescrVBOAtribs( cauce->ind_atrib_colores, colores )) ;
+        vao_glm->agregar( new DescrVBOInds( indices ) );
 
         assert( glGetError() == GL_NO_ERROR );
     }
@@ -159,14 +159,14 @@ void DibujarTriangulo_glm( )
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     cauce->fijarUsarColorPlano( false );
-    vao_glm->habilitarAttrib( cauce->ind_atrib_colores, true );
+    vao_glm->habilitarAtrib( cauce->ind_atrib_colores, true );
     vao_glm->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
    
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     cauce->fijarColor( { 0.0, 0.0, 0.0 });
-    vao_glm->habilitarAttrib( cauce->ind_atrib_colores, false );
+    vao_glm->habilitarAtrib( cauce->ind_atrib_colores, false );
     vao_glm->draw( GL_TRIANGLES );
 
     assert( glGetError() == GL_NO_ERROR );
