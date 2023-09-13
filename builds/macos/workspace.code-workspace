@@ -22,8 +22,7 @@
       "ms-vscode.cpptools", 
       "ms-vscode.cpptools-extension-pack", 
       "ms-vscode.cpptools-themes", 
-      "slevesque.shader",    // soporte para archivos .glsl en GLSL
-      "boyswan.glsl-literal"         // idem para cadenas en código fuente
+      "slevesque.shader",    // soporte para archivos (¿y literales?) glsl en C++
     ],
     "unwantedRecommendations": 
     [
